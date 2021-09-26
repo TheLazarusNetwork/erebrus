@@ -1,0 +1,9 @@
+# /etc/systemd/system/wg-watcher.path
+[Unit]
+Description=Watch /etc/wireguard for changes
+
+[Path]
+PathModified=/etc/wireguard
+
+[Install]
+WantedBy=multi-user.target
