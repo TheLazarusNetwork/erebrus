@@ -54,7 +54,18 @@ func main() {
 			log.WithFields(log.Fields{
 				"err": err,
 				"dir": filepath.Join(os.Getenv("WG_CONF_DIR")),
-			}).Fatal("failed to create directory")
+			}).Fatal("failed to create wireguard configuration directory")
+		}
+	}
+
+	// check directories or create it
+	if !util.DirectoryExists(filepath.Join(os.Getenv("WG_CLIENTS_DIR"))) {
+		err := os.Mkdir(filepath.Join(os.Getenv("WG_CLIENTS_DIR")), 0755)
+		if err != nil {
+			log.WithFields(log.Fields{
+				"err": err,
+				"dir": filepath.Join(os.Getenv("WG_CLIENTS_DIR")),
+			}).Fatal("failed to create wireguard clients directory")
 		}
 	}
 
@@ -62,7 +73,7 @@ func main() {
 	if !util.FileExists(filepath.Join(os.Getenv("WG_CONF_DIR"), "server.json")) {
 		_, err := core.ReadServer()
 		if err != nil {
-			log.WithFields(util.StandardFields).Fatal("server.json doesnt not exists and can not read it")
+			log.WithFields(util.StandardFields).Fatal("server.json does not exist and unable to open")
 		}
 	}
 
@@ -112,4 +123,6 @@ func main() {
 
 	err = ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
 	util.CheckError("Failed to Start HTTP Server: ", err)
+
+	// Add gRPC route
 }

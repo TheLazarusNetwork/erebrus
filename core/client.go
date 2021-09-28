@@ -217,7 +217,7 @@ func EmailClient(id string) error {
 	}
 
 	// conf as .conf file
-	tmpfileCfg, err := ioutil.TempFile("", "wireguard-avpn-*.conf")
+	tmpfileCfg, err := ioutil.TempFile("", "erebrus-*.conf") //Append region name
 	if err != nil {
 		return err
 	}
@@ -227,7 +227,12 @@ func EmailClient(id string) error {
 	if err := tmpfileCfg.Close(); err != nil {
 		return err
 	}
-	defer os.Remove(tmpfileCfg.Name()) // clean up
+
+	//Rename the file after operations are completed
+	new_name := "erebrus-" + client.Name + "-" + os.Getenv("REGION") + ".conf"
+	os.Rename(tmpfileCfg.Name(), new_name)
+
+	defer os.Remove(new_name) // clean up
 
 	// conf as png image
 	png, err := qrcode.Encode(string(configData), qrcode.Medium, 280)
@@ -267,9 +272,9 @@ func EmailClient(id string) error {
 
 	m.SetHeader("From", os.Getenv("SMTP_FROM"))
 	m.SetAddressHeader("To", client.Email, client.Name)
-	m.SetHeader("Subject", "Lazarus Anonymous VPN - WireGuard Configuration")
+	m.SetHeader("Subject", "Lazarus Network - Erebrus Client Configuration")
 	m.SetBody("text/html", string(emailBody))
-	m.Attach(tmpfileCfg.Name())
+	m.Attach(new_name)
 	m.Embed(tmpfilePng.Name())
 
 	err = gomail.Send(s, m)

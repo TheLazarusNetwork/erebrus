@@ -16,12 +16,25 @@ func Serialize(id string, c interface{}) error {
 		return err
 	}
 
+	//If the file is not server.json write in clients directory
+	if id != "server.json" {
+		return util.WriteFile(filepath.Join(os.Getenv("WG_CLIENTS_DIR"), id), b)
+	}
+
+	//If the file is server.json write in wg_conf directory
 	return util.WriteFile(filepath.Join(os.Getenv("WG_CONF_DIR"), id), b)
 }
 
 // Deserialize read interface from disk
 func Deserialize(id string) (interface{}, error) {
-	path := filepath.Join(os.Getenv("WG_CONF_DIR"), id)
+	var path string
+
+	//if the id is for client use client directory otherwise use WG_CONF directory
+	if id != "server.json" {
+		path = filepath.Join(os.Getenv("WG_CLIENTS_DIR"), id)
+	} else {
+		path = filepath.Join(os.Getenv("WG_CONF_DIR"), id)
+	}
 
 	data, err := util.ReadFile(path)
 	if err != nil {
