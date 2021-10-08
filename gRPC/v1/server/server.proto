@@ -1,0 +1,23 @@
+syntax="proto3";
+
+import "model/model.proto";
+
+package server;
+
+message Empty{
+
+}
+
+message Config{
+    bytes Config=1;
+}
+
+
+
+service ServerService{
+    rpc GetServerInformation(Empty) returns (model.Response);
+    rpc GetServerConfiguraion(Empty) returns(Config);
+    rpc GetStatus(Empty) returns (model.Status);
+    rpc UpdateServer(model.Server) returns (model.Response);
+    
+}

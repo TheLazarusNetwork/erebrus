@@ -2,6 +2,9 @@ package core
 
 import (
 	"errors"
+	"io/ioutil"
+	"net"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -28,7 +31,8 @@ func ReadServer() (*model.Server, error) {
 		server.PublicKey = key.PublicKey().String()
 
 		server.Endpoint = os.Getenv("WG_ENDPOINT_HOST")
-		listenPort, err := strconv.Atoi(os.Getenv("WG_ENDPOINT_PORT"))
+		listenPort, _ := strconv.ParseInt(os.Getenv("WG_ENDPOINT_PORT"), 10, 32)
+
 		util.CheckError("Error while reading listen port:", err)
 		server.ListenPort = listenPort
 
@@ -50,7 +54,7 @@ func ReadServer() (*model.Server, error) {
 		server.PostUp = os.Getenv("WG_POST_UP")     //	"echo WireGuard PostUp"
 		server.PreDown = os.Getenv("WG_PRE_DOWN")   //	"echo WireGuard PreDown"
 		server.PostDown = os.Getenv("WG_POST_DOWN") //	"echo WireGuard PostDown"
-		server.Created = time.Now().UTC()
+		server.Created = int64(time.Now().Nanosecond())
 		server.Updated = server.Created
 
 		err = storage.Serialize("server.json", server)
@@ -94,7 +98,7 @@ func UpdateServer(server *model.Server) (*model.Server, error) {
 	server.PrivateKey = current.(*model.Server).PrivateKey
 	server.PublicKey = current.(*model.Server).PublicKey
 	//server.PresharedKey = current.(*model.Server).PresharedKey
-	server.Updated = time.Now().UTC()
+	server.Updated = int64(time.Now().Nanosecond())
 
 	err = storage.Serialize("server.json", server)
 	if err != nil {
@@ -176,4 +180,62 @@ func GetAllReservedIps() ([]string, error) {
 // ReadWgConfigFile return content of wireguard config file
 func ReadWgConfigFile() ([]byte, error) {
 	return util.ReadFile(filepath.Join(os.Getenv("WG_CONF_DIR"), os.Getenv("WG_INTERFACE_NAME")))
+}
+
+//Method to get the server status
+func GetServerStatus() (*model.Status, error) {
+	var response = &model.Status{}
+	resp, _ := http.Get("https://api.ipify.org/?format=text")
+	ip, _ := ioutil.ReadAll(resp.Body)
+	response.PublicIP = string(ip)
+	hostname, _ := os.Hostname()
+	response.Hostname = hostname
+	response.Domain = os.Getenv("DOMAIN")
+	response.GRPCPort = os.Getenv("GRPC_PORT")
+	response.Version = util.Version
+	response.HttpPort = os.Getenv("HTTP_PORT")
+	response.Region = os.Getenv("REGION")
+	response.VPNPort = os.Getenv("WG_ENDPOINT_PORT")
+
+	var privateip string
+	addrs, _ := net.InterfaceAddrs()
+
+	for _, address := range addrs {
+		// check the address type and if it is not a loopback the display it
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				privateip = ipnet.IP.String() + ","
+			}
+		}
+	}
+	response.PrivateIP = privateip
+
+	return response, nil
+}
+
+//success response message
+func MakeSucessResponse(status int64, message string, server *model.Server, client *model.Client, clients []*model.Client) *model.Response {
+	return &model.Response{
+		Status:  status,
+		Message: message,
+		Server:  server,
+		Client:  client,
+		Clients: clients,
+		Sucess:  true,
+		Error:   "",
+	}
+}
+
+//error response message
+func MakeErrorResponse(status int64, err string, server *model.Server, client *model.Client, clients []*model.Client) *model.Response {
+	return &model.Response{
+		Status:  status,
+		Message: "",
+		Server:  server,
+		Client:  client,
+		Clients: clients,
+		Sucess:  false,
+		Error:   err,
+	}
+
 }

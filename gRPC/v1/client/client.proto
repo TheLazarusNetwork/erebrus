@@ -1,0 +1,39 @@
+syntax="proto3";
+
+
+package client;
+
+import "model/model.proto";
+
+
+message ClientRequest{
+    string UUID=1;
+}
+
+message Empty{
+
+}
+
+message Config{
+    bytes Config=1;
+}
+
+message UpdateRequest{
+    string UUID=1;
+    model.Client client=2;
+}
+
+
+
+service ClientService{
+    
+    rpc GetClientInformation(ClientRequest) returns (model.Response);
+    rpc GetClientConfiguration(ClientRequest) returns (Config);
+    rpc EmailClientConfiguration(ClientRequest) returns (model.Response);
+    rpc CreateClient(model.Client) returns (model.Response);
+    rpc UpdateClient(UpdateRequest) returns (model.Response);
+    rpc DeleteClient(ClientRequest) returns (model.Response);
+    rpc GetClients(Empty) returns (model.Response);
+    
+}
+

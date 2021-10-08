@@ -2,12 +2,15 @@ package main
 
 import (
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/TheLazarusNetwork/erebrus/api"
 	"github.com/TheLazarusNetwork/erebrus/core"
+	grpc "github.com/TheLazarusNetwork/erebrus/gRPC"
 	"github.com/TheLazarusNetwork/erebrus/util"
 
 	helmet "github.com/danielkov/gin-helmet"
@@ -18,6 +21,8 @@ import (
 	"github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 )
+
+var wg sync.WaitGroup
 
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
@@ -44,7 +49,32 @@ func init() {
 	}
 }
 
+func RungRPCServer() {
+	grpc_server := grpc.Initialize()
+
+	port := os.Getenv("GRPC_PORT")
+
+	log.WithFields(util.StandardFields).Info("Starting gRPC Api, Listening on Port :", port)
+
+	listener, err := net.Listen("tcp", ":"+port)
+	if err != nil {
+		wg.Done()
+		log.Fatal("Unable to listen on port", port)
+
+	}
+
+	//Server GRPC
+	if err := grpc_server.Serve(listener); err != nil {
+		wg.Done()
+		log.Fatal("Faied to create GRPC server!")
+
+	}
+	wg.Done()
+
+}
+
 func main() {
+
 	log.WithFields(util.StandardFields).Infof("Starting Lazarus Network - Erebrus Version: %s", util.Version)
 
 	// check directories or create it
@@ -93,6 +123,11 @@ func main() {
 	err := core.UpdateServerConfigWg()
 	util.CheckError("Error while creating WireGuard config file: ", err)
 
+	//Add gRPC routine to wait group
+	wg.Add(1)
+	//run gRPC server
+	go RungRPCServer()
+
 	// creates a gin router with default middleware: logger and recovery (crash-free) middleware
 	ginApp := gin.Default()
 
@@ -124,5 +159,6 @@ func main() {
 	err = ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
 	util.CheckError("Failed to Start HTTP Server: ", err)
 
-	// Add gRPC route
+	//wait untill all servers are stopped
+	wg.Wait()
 }

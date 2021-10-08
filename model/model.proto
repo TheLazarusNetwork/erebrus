@@ -1,0 +1,66 @@
+syntax="proto3";
+
+package model;
+
+message Response{
+    int64 status=1;
+    bool sucess=2;
+    string message=3;
+    string error=4;
+    Client client=5;
+    Server server=6;
+    repeated Client clients=7;
+
+}
+
+message Client{
+    string UUID=1;
+    string Name=2;
+    repeated string Tags=3;
+    string Email=4;
+    bool Enable =5;
+    bool IgnorePersistentKeepalive=6;
+    string PresharedKey=7;
+    repeated string AllowedIPs=8;
+    repeated string Address=9;
+    string PrivateKey=10;
+    string PublicKey=11;
+    string CreatedBy=12;
+    string UpdatedBy=13;
+    int64 Created=14;
+    int64 Updated=15;
+}
+
+
+message Server{
+    repeated string Address=1;
+    int64 ListenPort=2;
+    int64 Mtu =3;
+    string PrivateKey=4;
+    string PublicKey=5;
+    string Endpoint=6;
+    int64 PersistentKeepalive=7;
+    repeated string DNS=8;
+    repeated string AllowedIPs=9;
+    string PreUp=10;
+    string PostUp=11;
+    string PreDown=12;
+    string PostDown=13;
+    string UpdatedBy=14;
+    int64 Created=15;
+    int64 Updated=16; 
+}
+
+
+message Status{
+    string Version=1;
+    string Hostname=2;
+    string Domain=3;
+    string PublicIP=4;
+    string gRPCPort=5;
+    string PrivateIP=6;
+    string HttpPort=7;
+    string Region=8;
+    string VPNPort=9;
+
+}

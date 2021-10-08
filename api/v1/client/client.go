@@ -32,7 +32,9 @@ func createClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to bind")
-		c.AbortWithStatus(http.StatusUnprocessableEntity)
+
+		response := core.MakeErrorResponse(400, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
@@ -41,11 +43,15 @@ func createClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to create client")
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, client)
+	response := core.MakeSucessResponse(201, "client created", nil, client, nil)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func readClient(c *gin.Context) {
@@ -56,11 +62,15 @@ func readClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to read client")
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, client)
+	response := core.MakeSucessResponse(200, "client details", nil, client, nil)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func updateClient(c *gin.Context) {
@@ -71,7 +81,9 @@ func updateClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to bind")
-		c.AbortWithStatus(http.StatusUnprocessableEntity)
+
+		response := core.MakeErrorResponse(400, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusUnprocessableEntity, response)
 		return
 	}
 
@@ -80,11 +92,15 @@ func updateClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to update client")
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, client)
+	response := core.MakeSucessResponse(200, "client updated", nil, client, nil)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func deleteClient(c *gin.Context) {
@@ -95,11 +111,15 @@ func deleteClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to remove client")
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+	response := core.MakeSucessResponse(200, "client deleted", nil, nil, nil)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func readClients(c *gin.Context) {
@@ -108,11 +128,15 @@ func readClients(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to list clients")
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, clients)
+	response := core.MakeSucessResponse(200, "clients details", nil, nil, clients)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func configClient(c *gin.Context) {
@@ -153,9 +177,13 @@ func emailClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to send email to client")
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{})
+	response := core.MakeSucessResponse(200, "client configuration emailed", nil, nil, nil)
+
+	c.JSON(http.StatusOK, response)
 }

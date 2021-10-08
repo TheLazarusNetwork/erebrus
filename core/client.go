@@ -68,7 +68,7 @@ func CreateClient(client *model.Client) (*model.Client, error) {
 		ips = append(ips, ip)
 	}
 	client.Address = ips
-	client.Created = time.Now().UTC()
+	client.Created = int64(time.Now().Nanosecond())
 	client.Updated = client.Created
 
 	err = storage.Serialize(client.UUID, client)
@@ -123,7 +123,7 @@ func UpdateClient(UUID string, client *model.Client) (*model.Client, error) {
 	// keep keys
 	client.PrivateKey = current.PrivateKey
 	client.PublicKey = current.PublicKey
-	client.Updated = time.Now().UTC()
+	client.Updated = int64(time.Now().Nanosecond()) //Need to verify
 
 	err = storage.Serialize(client.UUID, client)
 	if err != nil {
@@ -142,7 +142,7 @@ func UpdateClient(UUID string, client *model.Client) (*model.Client, error) {
 
 // DeleteClient from disk
 func DeleteClient(id string) error {
-	path := filepath.Join(os.Getenv("WG_CONF_DIR"), id)
+	path := filepath.Join(os.Getenv("WG_CLIENTS_DIR"), id)
 	err := os.Remove(path)
 	if err != nil {
 		return err
@@ -156,7 +156,7 @@ func DeleteClient(id string) error {
 func ReadClients() ([]*model.Client, error) {
 	clients := make([]*model.Client, 0)
 
-	files, err := ioutil.ReadDir(filepath.Join(os.Getenv("WG_CONF_DIR")))
+	files, err := ioutil.ReadDir(filepath.Join(os.Getenv("WG_CLIENTS_DIR")))
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +178,7 @@ func ReadClients() ([]*model.Client, error) {
 	}
 
 	sort.Slice(clients, func(i, j int) bool {
-		return clients[i].Created.After(clients[j].Created)
+		return clients[i].Created < (clients[j].Created)
 	})
 
 	return clients, nil

@@ -2,13 +2,12 @@ package model
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/TheLazarusNetwork/erebrus/util"
 )
 
 // Client structure
-type Client struct {
+/*type Client struct {
 	UUID                      string    `json:"uuid"`
 	Name                      string    `json:"name"`
 	Tags                      []string  `json:"tags"`
@@ -22,9 +21,9 @@ type Client struct {
 	PublicKey                 string    `json:"publicKey"`
 	CreatedBy                 string    `json:"createdBy"`
 	UpdatedBy                 string    `json:"updatedBy"`
-	Created                   time.Time `json:"created"`
-	Updated                   time.Time `json:"updated"`
-}
+	Created                   int64 `json:"created"`
+	Updated                   int64 `json:"updated"`
+}*/
 
 // IsValid check if model is valid
 func (a Client) IsValid() []error {

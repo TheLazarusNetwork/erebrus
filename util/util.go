@@ -15,6 +15,9 @@ import (
 // Erebrus Version
 var Version = "1.0"
 
+//Hostname
+var hostname, _ = os.Hostname()
+
 var (
 	// RegexpEmail check valid email
 	RegexpEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
@@ -24,6 +27,12 @@ var (
 var StandardFields = log.Fields{
 	"hostname": "host-server",
 	"appname":  "erebrus",
+}
+
+var StandardFieldsGRPC = log.Fields{
+	"hostname": hostname,
+	"appname":  "erebrus",
+	"service":  "gRPC",
 }
 
 // CheckError for checking any errors

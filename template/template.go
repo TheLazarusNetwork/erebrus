@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
+	"time"
 
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/TheLazarusNetwork/erebrus/util"
@@ -118,7 +119,7 @@ var (
                                                                     <td class="h4 pb20" style="color:#ffffff; font-family:'Muli', Arial,sans-serif; font-size:20px; line-height:28px; text-align:left; padding-bottom:20px;">Hello</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">Here is your requested Erebrus Client Configuration - <strong>{{.Client.Name}}</strong> created on <strong>{{.Client.Created.Format "Monday, 02 January 06 15:04:05 MST"}}</strong>. Scan the Qrcode or open attached configuration file in WireGuard VPN Client App to Anonymize Your Digital Footprint.</td>
+                                                                    <td class="text pb20" style="color:#ffffff; font-family:Arial,sans-serif; font-size:14px; line-height:26px; text-align:left; padding-bottom:20px;">Here is your requested Erebrus Client Configuration - <strong>{{.Client.Name}}</strong> created on {{format .Client.Created}} <strong></strong>. Scan the Qrcode or open attached configuration file in WireGuard VPN Client App to Anonymize Your Digital Footprint.</td>
                                                                 </tr>
                                                             </table>
                                                         </th>
@@ -287,7 +288,7 @@ func DumpServerWg(clients []*model.Client, server *model.Server) ([]byte, error)
 
 // DumpEmail dump server wg config with go template
 func DumpEmail(client *model.Client, qrcodePngName string) ([]byte, error) {
-	t, err := template.New("email").Parse(emailTpl)
+	t, err := template.New("email").Funcs(template.FuncMap{"format": FormatTime}).Parse(emailTpl)
 	if err != nil {
 		return nil, err
 	}
@@ -310,4 +311,10 @@ func dump(tpl *template.Template, data interface{}) ([]byte, error) {
 	}
 
 	return tplBuff.Bytes(), nil
+}
+
+func FormatTime(t int64) string {
+	result := time.Unix(0, t)
+	return result.Format("Monday, 02 January 06 15:04:05 MST")
+
 }

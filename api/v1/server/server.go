@@ -19,7 +19,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.GET("", readServer)
 		g.PATCH("", updateServer)
 		g.GET("/config", configServer)
-		g.GET("/version", versionStr)
+		g.GET("/status", GetStatus)
 	}
 }
 
@@ -27,11 +27,14 @@ func readServer(c *gin.Context) {
 	server, err := core.ReadServer()
 	if err != nil {
 		log.WithFields(util.StandardFields).Error("Failure in reading server")
-		c.AbortWithStatus(http.StatusInternalServerError)
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, server)
+	response := core.MakeSucessResponse(200, "server details", server, nil, nil)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func updateServer(c *gin.Context) {
@@ -39,18 +42,22 @@ func updateServer(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		log.WithFields(util.StandardFields).Error("failed to bind")
-		c.AbortWithStatus(http.StatusUnprocessableEntity)
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	server, err := core.UpdateServer(&data)
 	if err != nil {
 		log.WithFields(util.StandardFields).Error("failed to update server")
-		c.AbortWithStatus(http.StatusInternalServerError)
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
-	c.JSON(http.StatusOK, server)
+	response := core.MakeSucessResponse(200, "server updated", server, nil, nil)
+
+	c.JSON(http.StatusOK, response)
 }
 
 func configServer(c *gin.Context) {
@@ -66,8 +73,14 @@ func configServer(c *gin.Context) {
 	c.Data(http.StatusOK, "application/config", configData)
 }
 
-func versionStr(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"version": util.Version,
-	})
+func GetStatus(c *gin.Context) {
+	status_data, err := core.GetServerStatus()
+	if err != nil {
+		log.WithFields(util.StandardFields).Error("Failed to get server status")
+		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusInternalServerError, response)
+		return
+	}
+
+	c.JSON(http.StatusOK, status_data)
 }

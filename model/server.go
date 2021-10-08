@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/TheLazarusNetwork/erebrus/util"
 
@@ -11,14 +10,14 @@ import (
 )
 
 // Server structure
-type Server struct {
+/*type Server struct {
 	Address             []string  `json:"address"`
-	ListenPort          int       `json:"listenPort"`
-	Mtu                 int       `json:"mtu"`
+	ListenPort          int64     `json:"listenPort"`
+	Mtu                 int64     `json:"mtu"`
 	PrivateKey          string    `json:"privateKey"`
 	PublicKey           string    `json:"publicKey"`
 	Endpoint            string    `json:"endpoint"`
-	PersistentKeepalive int       `json:"persistentKeepalive"`
+	PersistentKeepalive int64     `json:"persistentKeepalive"`
 	DNS                 []string  `json:"dns"`
 	AllowedIPs          []string  `json:"allowedips"`
 	PreUp               string    `json:"preUp"`
@@ -28,7 +27,19 @@ type Server struct {
 	UpdatedBy           string    `json:"updatedBy"`
 	Created             time.Time `json:"created"`
 	Updated             time.Time `json:"updated"`
-}
+}*/
+
+/*type Status struct {
+	Version   string `json:"version"`
+	HostName  string`json:"hostname"`
+	Domain    string `json:"domain"`
+	PublicIP  string `json:"publicIP"`
+	gRPCPort  string`json:"grpcport"`
+	PrivateIP string`json:"private"`
+	HttpPort  string`json:"httpport"`
+	Region    string
+	VPNPort   string
+}*/
 
 // WireGuardServer supports both Kernel and Userland implementations of WireGuard.
 type WireGuardServer struct {
