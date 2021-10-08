@@ -123,42 +123,48 @@ func main() {
 	err := core.UpdateServerConfigWg()
 	util.CheckError("Error while creating WireGuard config file: ", err)
 
-	//Add gRPC routine to wait group
-	wg.Add(1)
-	//run gRPC server
-	go RungRPCServer()
+	if os.Getenv("GRPC_PORT") != "" {
+		//Add gRPC routine to wait group
+		wg.Add(1)
+		//run gRPC server
+		go RungRPCServer()
 
-	// creates a gin router with default middleware: logger and recovery (crash-free) middleware
-	ginApp := gin.Default()
+	}
 
-	// cors middleware
-	config := cors.DefaultConfig()
-	config.AllowAllOrigins = true
-	ginApp.Use(cors.New(config))
+	if os.Getenv("HTTP_PORT") != "" {
+		// creates a gin router with default middleware: logger and recovery (crash-free) middleware
+		ginApp := gin.Default()
 
-	// protection middleware
-	ginApp.Use(helmet.Default())
+		// cors middleware
+		config := cors.DefaultConfig()
+		config.AllowAllOrigins = true
+		ginApp.Use(cors.New(config))
 
-	// add cache storage to gin ginApp
-	ginApp.Use(func(ctx *gin.Context) {
-		ctx.Set("cache", cache.New(60*time.Minute, 10*time.Minute))
-		ctx.Next()
-	})
+		// protection middleware
+		ginApp.Use(helmet.Default())
 
-	// serve static files
-	ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
+		// add cache storage to gin ginApp
+		ginApp.Use(func(ctx *gin.Context) {
+			ctx.Set("cache", cache.New(60*time.Minute, 10*time.Minute))
+			ctx.Next()
+		})
 
-	// no route redirect to frontend app
-	ginApp.NoRoute(func(c *gin.Context) {
-		c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})
-	})
+		// serve static files
+		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
 
-	// Apply API Routes
-	api.ApplyRoutes(ginApp)
+		// no route redirect to frontend app
+		ginApp.NoRoute(func(c *gin.Context) {
+			c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})
+		})
 
-	err = ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
-	util.CheckError("Failed to Start HTTP Server: ", err)
+		// Apply API Routes
+		api.ApplyRoutes(ginApp)
 
+		err = ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
+		util.CheckError("Failed to Start HTTP Server: ", err)
+
+	}
 	//wait untill all servers are stopped
 	wg.Wait()
+
 }
