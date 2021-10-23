@@ -314,7 +314,7 @@ func dump(tpl *template.Template, data interface{}) ([]byte, error) {
 }
 
 func FormatTime(t int64) string {
-	result := time.Unix(0, t)
+	result := time.Unix(0, t*int64(time.Millisecond))
 	return result.Format("Monday, 02 January 06 15:04:05 MST")
 
 }

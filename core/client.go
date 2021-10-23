@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"sort"
 	"strconv"
-	"time"
 
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/TheLazarusNetwork/erebrus/storage"
@@ -17,6 +16,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/skip2/go-qrcode"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/gomail.v2"
 )
 
@@ -68,7 +68,8 @@ func CreateClient(client *model.Client) (*model.Client, error) {
 		ips = append(ips, ip)
 	}
 	client.Address = ips
-	client.Created = int64(time.Now().Nanosecond())
+	client.Created = timestamppb.Now().AsTime().UnixMilli()
+
 	client.Updated = client.Created
 
 	err = storage.Serialize(client.UUID, client)
@@ -123,7 +124,7 @@ func UpdateClient(UUID string, client *model.Client) (*model.Client, error) {
 	// keep keys
 	client.PrivateKey = current.PrivateKey
 	client.PublicKey = current.PublicKey
-	client.Updated = int64(time.Now().Nanosecond()) //Need to verify
+	client.Updated = timestamppb.Now().AsTime().UnixMilli()
 
 	err = storage.Serialize(client.UUID, client)
 	if err != nil {
