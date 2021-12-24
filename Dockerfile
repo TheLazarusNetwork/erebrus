@@ -3,11 +3,15 @@
 FROM golang:alpine AS build-app
 RUN apk update && apk add --no-cache git
 WORKDIR /app
+COPY go.sum .
+COPY go.mod .
+RUN go mod download
 COPY . .
 RUN go build -o erebrus .
 
 FROM alpine:latest
 WORKDIR /app
+COPY --from=build-app /app/start.sh .
 COPY --from=build-app /app/erebrus .
 COPY --from=build-app /app/webapp ./webapp
 COPY wg-watcher.sh .
@@ -19,10 +23,4 @@ ENV WG_ENDPOINT_HOST=$WG_ENDPOINT_HOST WG_ENDPOINT_PORT=$WG_ENDPOINT_PORT WG_IPv
 ENV WG_DNS=$WG_DNS WG_ALLOWED_IP_1=$WG_ALLOWED_IP_1 WG_ALLOWED_IP_2=$WG_ALLOWED_IP_2
 ENV WG_PRE_UP=$WG_PRE_UP WG_POST_UP=$WG_POST_UP WG_PRE_DOWN=$WG_PRE_DOWN WG_POST_DOWN=$WG_POST_DOWN
 ENV SMTP_HOST=$SMTP_HOST SMTP_PORT=$SMTP_PORT SMTP_USERNAME=$SMTP_USERNAME SMTP_PASSWORD=$SMTP_PASSWORD SMTP_FROM=$SMTP_FROM
-RUN echo $'#!/usr/bin/env bash\n\
-set -eo pipefail\n\
-mkdir -p $WG_KEYS_DIR\n\
-/app/erebrus &\n\
-./wg-watcher.sh\n\
-sleep infinity' > /app/start.sh && chmod +x /app/start.sh
 ENTRYPOINT ["/app/start.sh"]
