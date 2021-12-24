@@ -74,7 +74,39 @@ func RungRPCServer() {
 }
 
 func main() {
+	if os.Getenv("HTTP_PORT") != "" {
+		// creates a gin router with default middleware: logger and recovery (crash-free) middleware
+		ginApp := gin.Default()
 
+		// cors middleware
+		config := cors.DefaultConfig()
+		config.AllowAllOrigins = true
+		ginApp.Use(cors.New(config))
+
+		// protection middleware
+		ginApp.Use(helmet.Default())
+
+		// add cache storage to gin ginApp
+		ginApp.Use(func(ctx *gin.Context) {
+			ctx.Set("cache", cache.New(60*time.Minute, 10*time.Minute))
+			ctx.Next()
+		})
+
+		// serve static files
+		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
+
+		// no route redirect to frontend app
+		ginApp.NoRoute(func(c *gin.Context) {
+			c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})
+		})
+
+		// Apply API Routes
+		api.ApplyRoutes(ginApp)
+		fmt.Printf("data -- %s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT"))
+		err := ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
+		util.CheckError("Failed to Start HTTP Server: ", err)
+
+	}
 	log.WithFields(util.StandardFields).Infof("Starting Lazarus Network - Erebrus Version: %s", util.Version)
 
 	// check directories or create it
@@ -131,39 +163,6 @@ func main() {
 
 	}
 
-	if os.Getenv("HTTP_PORT") != "" {
-		// creates a gin router with default middleware: logger and recovery (crash-free) middleware
-		ginApp := gin.Default()
-
-		// cors middleware
-		config := cors.DefaultConfig()
-		config.AllowAllOrigins = true
-		ginApp.Use(cors.New(config))
-
-		// protection middleware
-		ginApp.Use(helmet.Default())
-
-		// add cache storage to gin ginApp
-		ginApp.Use(func(ctx *gin.Context) {
-			ctx.Set("cache", cache.New(60*time.Minute, 10*time.Minute))
-			ctx.Next()
-		})
-
-		// serve static files
-		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
-
-		// no route redirect to frontend app
-		ginApp.NoRoute(func(c *gin.Context) {
-			c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})
-		})
-
-		// Apply API Routes
-		api.ApplyRoutes(ginApp)
-
-		err = ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
-		util.CheckError("Failed to Start HTTP Server: ", err)
-
-	}
 	//wait untill all servers are stopped
 	wg.Wait()
 
