@@ -11,4 +11,5 @@ services:
     privileged: true
     volumes:
       - /lib/modules:/lib/modules
+      - /etc/wireguard:/etc/wireguard
 
