@@ -1,0 +1,750 @@
+basePath: /api/v1.0
+consumes:
+- application/json
+- application/x-protobuf
+definitions:
+  Client:
+    properties:
+      address:
+        description: Address range client must will assigned
+        example:
+        - 10.0.0.2/32
+        items:
+          type: string
+        type: array
+        x-go-name: Address
+      allowedIPs:
+        description: IP addresses allowed to connect
+        example:
+        - 0.0.0.0/0
+        - ::/0
+        items:
+          type: string
+        type: array
+        x-go-name: AllowedIPs
+      created:
+        description: Time the client is created
+        example: 1642409076544
+        format: int64
+        type: integer
+        x-go-name: Created
+      createdBy:
+        description: Denoting person creates the client
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: CreatedBy
+      email:
+        description: Email that the client device belongs
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: Email
+      enable:
+        description: Status signal for client
+        example: true
+        type: boolean
+        x-go-name: Enable
+      ignorePersistentKeepalive:
+        example: true
+        type: boolean
+        x-go-name: IgnorePersistentKeepalive
+      name:
+        description: Name of the client
+        example: jon snow
+        type: string
+        x-go-name: Name
+      presharedKey:
+        description: Preshared key for the client
+        example: twDZk0lehYtst3Zclb+SRniVfoHnug9N6gjxuaipcvc=
+        type: string
+        x-go-name: PresharedKey
+      privateKey:
+        description: Private key for the client
+        example: KFOyCoR9Eq+LpqT9VzJCilXYmFwhMFw7UDkdRRxoWVg=
+        type: string
+        x-go-name: PrivateKey
+      publicKey:
+        description: Public key for the client
+        example: YeT/lG9L4AeYOHNrkohnmXfljx3/JgThulskllayxi4=
+        type: string
+        x-go-name: PublicKey
+      tags:
+        description: Tags for client device
+        example:
+        - laptop
+        - PC
+        items:
+          type: string
+        type: array
+        x-go-name: Tags
+      updated:
+        description: Time the client is last updated
+        example: 1642409076544
+        format: int64
+        type: integer
+        x-go-name: Updated
+      updatedBy:
+        description: Denoting person updates the client
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: UpdatedBy
+      uuid:
+        description: Client identifier
+        example: 6c8ff96f-ce8a-4c64-a76d-07e9af0b75ab
+        type: string
+        x-go-name: UUID
+    type: object
+    x-go-package: _/home/sambath/Golang/Revotic-Engineering/erebrus/api/v1/client
+  ClientReq:
+    properties:
+      address:
+        description: Address range client must will assigned
+        example:
+        - 10.0.0.0/24
+        items:
+          type: string
+        type: array
+        x-go-name: Address
+      allowedIPs:
+        description: IP addresses allowed to connect
+        example:
+        - 0.0.0.0/0
+        - ::/0
+        items:
+          type: string
+        type: array
+        x-go-name: AllowedIPs
+      createdBy:
+        description: Denoting person creates the client
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: CreatedBy
+      email:
+        description: Email that the client device belongs
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: Email
+      enable:
+        description: Status signal for client
+        example: true
+        type: boolean
+        x-go-name: Enable
+      name:
+        example: jon snow
+        type: string
+        x-go-name: Name
+      tags:
+        description: Tags for client device
+        example:
+        - laptop
+        - PC
+        items:
+          type: string
+        type: array
+        x-go-name: Tags
+      updatedBy:
+        description: Denoting person updates the client
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: UpdatedBy
+    required:
+    - name
+    - tags
+    - email
+    - enable
+    - allowedIPs
+    - address
+    - createdBy
+    - updatedBy
+    type: object
+    x-go-package: _/home/sambath/Golang/Revotic-Engineering/erebrus/api/v1/client
+  ClientUpdateReq:
+    properties:
+      address:
+        description: IP addresses allowed to connect
+        example:
+        - 10.0.0.2/32
+        items:
+          type: string
+        type: array
+        x-go-name: Address
+      allowedIPs:
+        description: IP addresses allowed to connect
+        example:
+        - 0.0.0.0/0
+        - ::/0
+        items:
+          type: string
+        type: array
+        x-go-name: AllowedIPs
+      created:
+        description: Time the client is created
+        example: 1642409076544
+        format: int64
+        type: integer
+        x-go-name: Created
+      createdBy:
+        description: Denoting person creates the client
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: CreatedBy
+      email:
+        description: Email that the client device belongs
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: Email
+      enable:
+        description: Status signal for client
+        example: true
+        type: boolean
+        x-go-name: Enable
+      ignorePersistentKeepalive:
+        example: true
+        type: boolean
+        x-go-name: IgnorePersistentKeepalive
+      name:
+        description: Name of the client
+        example: jon snow
+        type: string
+        x-go-name: Name
+      presharedKey:
+        description: Preshared key for the client
+        example: twDZk0lehYtst3Zclb+SRniVfoHnug9N6gjxuaipcvc=
+        type: string
+        x-go-name: PresharedKey
+      privateKey:
+        description: Private key for the client
+        example: KFOyCoR9Eq+LpqT9VzJCilXYmFwhMFw7UDkdRRxoWVg=
+        type: string
+        x-go-name: PrivateKey
+      publicKey:
+        description: Public key for the client
+        example: YeT/lG9L4AeYOHNrkohnmXfljx3/JgThulskllayxi4=
+        type: string
+        x-go-name: PublicKey
+      tags:
+        description: Tags for client device
+        example:
+        - laptop
+        - PC
+        items:
+          type: string
+        type: array
+        x-go-name: Tags
+      updated:
+        description: Time the client is last updated
+        example: 1642409076544
+        format: int64
+        type: integer
+        x-go-name: Updated
+      updatedBy:
+        description: Denoting person updates the client
+        example: jonsnow@mail.com
+        type: string
+        x-go-name: UpdatedBy
+      uuid:
+        description: Client identifier
+        example: 6c8ff96f-ce8a-4c64-a76d-07e9af0b75ab
+        type: string
+        x-go-name: UUID
+    required:
+    - uuid
+    - name
+    - tags
+    - email
+    - enable
+    - allowedIPs
+    - address
+    - updatedBy
+    type: object
+    x-go-package: _/home/sambath/Golang/Revotic-Engineering/erebrus/api/v1/client
+  Server:
+    properties:
+      address:
+        description: Server address
+        example:
+        - 10.0.0.1/24
+        items:
+          type: string
+        type: array
+        x-go-name: Address
+      allowedips:
+        description: IP addresses allowed to connect
+        example:
+        - 0.0.0.0/0
+        - ::/0
+        items:
+          type: string
+        type: array
+        x-go-name: AllowedIPs
+      created:
+        description: Time when server is created
+        example: 26103870
+        format: int64
+        type: integer
+        x-go-name: Created
+      dns:
+        description: DNS of the VPN server
+        example:
+        - 1.1.1.1
+        items:
+          type: string
+        type: array
+        x-go-name: DNS
+      endpoint:
+        description: Endpoint of the server
+        example: region.example.com
+        type: string
+        x-go-name: Endpoint
+      listenPort:
+        description: Port the server listens
+        example: 51280
+        format: int64
+        type: integer
+        x-go-name: ListenPort
+      mtu:
+        format: int64
+        type: integer
+        x-go-name: Mtu
+      persistentKeepalive:
+        description: Persistent keep alive for server
+        example: 16
+        format: int64
+        type: integer
+        x-go-name: PersistentKeepalive
+      postDown:
+        description: Post down command
+        example: iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j
+          ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+        type: string
+        x-go-name: PostDown
+      postUp:
+        description: Post up command
+        example: iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j
+          ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+        type: string
+        x-go-name: PostUp
+      preDown:
+        description: Pre down command
+        example: echo WireGuard PreDown
+        type: string
+        x-go-name: PreDown
+      preUp:
+        description: Pre up command
+        example: echo WireGuard PreUp
+        type: string
+        x-go-name: PreUp
+      privateKey:
+        description: Private key for the server
+        example: UFWsgb/Ax5B8zZGx0YtHBAuQVRrOHrxKz2zS2p1LuUE=
+        type: string
+        x-go-name: PrivateKey
+      publicKey:
+        description: Public key for the server
+        example: T5ZMOnik3YuaRhZgAhcxXrmn2+C0B7qFaqnCypMMcks=
+        type: string
+        x-go-name: PublicKey
+      updated:
+        description: Time when server is created
+        example: 26103870
+        format: int64
+        type: integer
+        x-go-name: Updated
+      updatedBy:
+        description: Updater email address
+        example: admin@mail.com
+        type: string
+        x-go-name: UpdatedBy
+    type: object
+    x-go-package: _/home/sambath/Golang/Revotic-Engineering/erebrus/api/v1/server
+  Status:
+    properties:
+      Domain:
+        description: Domain which server is running
+        example: vpn.example.com
+        type: string
+      Hostname:
+        description: Server Hostname
+        example: ubuntu
+        type: string
+      HttpPort:
+        description: Port which HTTP service is running
+        example: "4000"
+        type: string
+      PrivateIP:
+        description: Private IP of server host
+        example: 10.0.1.5
+        type: string
+      PublicIP:
+        description: Server's public IP
+        example: 14.10.35.65
+        type: string
+      Region:
+        description: Region where server running
+        example: India/Banglore
+        type: string
+      VPNPort:
+        description: VPN port
+        example: "5128"
+        type: string
+      Version:
+        description: Server version
+        example: "1.0"
+        type: string
+      gRPCPort:
+        description: Port which gRPC service is running
+        example: "5000"
+        type: string
+        x-go-name: GRPCPort
+    type: object
+    x-go-package: _/home/sambath/Golang/Revotic-Engineering/erebrus/api/v1/server
+host: localhost
+info:
+  contact:
+    email: sachindra.spidey@gmail.com
+    name: sachindra
+  description: |-
+    The api is used to create,update,delete,retrive clients and
+    get client configiration and email them. It also provides
+    server operations like get, update, status and server configuration.
+
+    This should demonstrate all the possible comment annotations
+    that are available to turn go code into a fully compliant swagger 2.0 spec
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  title: Erebrus
+  version: 1.0.0
+paths:
+  /client:
+    post:
+      description: Create client based on the given client model.
+      operationId: createClient
+      parameters:
+      - description: Requestbody  used for create and update client operations.
+        in: body
+        name: client
+        schema:
+          $ref: '#/definitions/ClientReq'
+        x-go-name: Body
+      responses:
+        "201":
+          $ref: '#/responses/clientSucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Create client
+      tags:
+      - Client
+  /client/{id}:
+    delete:
+      description: Delete client based on the given uuid.
+      operationId: deleteClient
+      parameters:
+      - description: The Identifier of the Client
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/sucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Delete client
+      tags:
+      - Client
+    get:
+      description: Return client based on the given uuid.
+      operationId: readClient
+      parameters:
+      - description: The Identifier of the Client
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/clientSucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Read client
+      tags:
+      - Client
+    patch:
+      description: Update client based on the given uuid and client model.
+      operationId: updateClient
+      parameters:
+      - description: The Identifier of the Client
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      - description: Requestbody  used for create and update client operations.
+        in: body
+        name: client
+        schema:
+          $ref: '#/definitions/ClientUpdateReq'
+        x-go-name: Body
+      responses:
+        "200":
+          $ref: '#/responses/clientSucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Update client
+      tags:
+      - Client
+  /client/{id}/config:
+    get:
+      description: Return client configuration file in byte format based on the given
+        uuid.
+      operationId: configClient
+      parameters:
+      - description: The Identifier of the Client
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      produces:
+      - application/octet-stream
+      - application/json
+      responses:
+        "200":
+          $ref: '#/responses/streamResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Get client configuration
+      tags:
+      - Client
+  /client/{id}/email:
+    get:
+      description: Email the configuration file of the client to the email associated
+        with client.
+      operationId: emailClient
+      parameters:
+      - description: The Identifier of the Client
+        in: path
+        name: id
+        required: true
+        type: string
+        x-go-name: Id
+      responses:
+        "200":
+          $ref: '#/responses/sucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Email client Configuration
+      tags:
+      - Client
+  /server:
+    get:
+      description: Retrieves the server details.
+      operationId: readServer
+      responses:
+        "200":
+          $ref: '#/responses/serverSucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Read Server
+      tags:
+      - Server
+    patch:
+      description: Update the server with given details.
+      operationId: updateServer
+      parameters:
+      - description: Requestbody  used for update server operations.
+        in: body
+        name: server
+        schema:
+          $ref: '#/definitions/Server'
+        x-go-name: Body
+      responses:
+        "200":
+          $ref: '#/responses/serverSucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Update Server
+      tags:
+      - Server
+  /server/config:
+    get:
+      description: |-
+        Get Server Configuration
+        Retrieves the server configuration details.
+      operationId: configServer
+      responses:
+        "200":
+          $ref: '#/responses/configResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      tags:
+      - Server
+  /server/status:
+    get:
+      description: Retrieves the server  status details.
+      operationId: statusServer
+      responses:
+        "200":
+          $ref: '#/responses/serverStatusResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "502":
+          $ref: '#/responses/badGatewayResponse'
+      summary: Get Server status
+      tags:
+      - Server
+produces:
+- application/json
+- application/x-protobuf
+responses:
+  badGatewayResponse:
+    description: ""
+    schema:
+      properties:
+        Error:
+          example: error message
+          type: string
+        Status:
+          example: 502
+          format: int64
+          type: integer
+        Sucess:
+          example: false
+          type: boolean
+      type: object
+  badRequestResponse:
+    description: ""
+    schema:
+      properties:
+        Error:
+          example: error message
+          type: string
+        Status:
+          example: 400
+          format: int64
+          type: integer
+        Sucess:
+          example: false
+          type: boolean
+      type: object
+  clientSucessResponse:
+    description: ""
+    schema:
+      properties:
+        Message:
+          example: sucess message
+          type: string
+        Status:
+          example: 201
+          format: int64
+          type: integer
+        Sucess:
+          example: true
+          type: boolean
+        client:
+          $ref: '#/definitions/Client'
+      type: object
+  configResponse:
+    description: ""
+  serverStatusResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/Status'
+  serverSucessResponse:
+    description: ""
+    schema:
+      properties:
+        Message:
+          example: sucess message
+          type: string
+        Status:
+          example: 201
+          format: int64
+          type: integer
+        Sucess:
+          example: true
+          type: boolean
+        server:
+          $ref: '#/definitions/Server'
+      type: object
+  streamResponse:
+    description: ""
+    schema:
+      items:
+        format: uint8
+        type: integer
+      type: array
+  sucessResponse:
+    description: ""
+    schema:
+      properties:
+        Message:
+          example: sucess message
+          type: string
+        Status:
+          example: 200
+          format: int64
+          type: integer
+        Sucess:
+          example: true
+          type: boolean
+      type: object
+  unauthorizedResponse:
+    description: ""
+    schema:
+      properties:
+        Error:
+          example: error message
+          type: string
+        Status:
+          example: 401
+          format: int64
+          type: integer
+        Sucess:
+          example: false
+          type: boolean
+      type: object
+schemes:
+- http
+- https
+swagger: "2.0"

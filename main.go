@@ -12,6 +12,7 @@ import (
 	"github.com/TheLazarusNetwork/erebrus/core"
 	grpc "github.com/TheLazarusNetwork/erebrus/gRPC"
 	"github.com/TheLazarusNetwork/erebrus/util"
+	openapimiddleware "github.com/go-openapi/runtime/middleware"
 
 	helmet "github.com/danielkov/gin-helmet"
 	"github.com/gin-contrib/cors"
@@ -151,7 +152,12 @@ func main() {
 
 		// serve static files
 		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
+		ginApp.Use(static.Serve("/docs", static.LocalFile("./docs", false)))
 
+		opt := openapimiddleware.RedocOpts{SpecURL: "/docs/swagger.yml"}
+		hander := openapimiddleware.Redoc(opt, nil)
+
+		ginApp.Handle("GET", "/docs", gin.WrapH(hander))
 		// no route redirect to frontend app
 		ginApp.NoRoute(func(c *gin.Context) {
 			c.JSON(404, gin.H{"status": 404, "message": "Invalid Endpoint Request"})

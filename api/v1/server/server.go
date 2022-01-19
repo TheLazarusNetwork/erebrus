@@ -23,6 +23,16 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	}
 }
 
+// swagger:route GET /server Server readServer
+//
+// Read Server
+//
+// Retrieves the server details.
+// responses:
+//  200: serverSucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func readServer(c *gin.Context) {
 	server, err := core.ReadServer()
 	if err != nil {
@@ -37,6 +47,16 @@ func readServer(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route PATCH /server Server updateServer
+//
+// Update Server
+//
+// Update the server with given details.
+// responses:
+//  200: serverSucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func updateServer(c *gin.Context) {
 	var data model.Server
 
@@ -60,6 +80,15 @@ func updateServer(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route GET /server/config Server configServer
+//
+// Get Server Configuration
+// Retrieves the server configuration details.
+// responses:
+//  200: configResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func configServer(c *gin.Context) {
 	configData, err := core.ReadWgConfigFile()
 	if err != nil {
@@ -73,6 +102,16 @@ func configServer(c *gin.Context) {
 	c.Data(http.StatusOK, "application/config", configData)
 }
 
+// swagger:route GET /server/status Server statusServer
+//
+// Get Server status
+//
+// Retrieves the server  status details.
+// responses:
+//  200: serverStatusResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func GetStatus(c *gin.Context) {
 	status_data, err := core.GetServerStatus()
 	if err != nil {

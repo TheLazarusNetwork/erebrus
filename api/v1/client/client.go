@@ -25,6 +25,17 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	}
 }
 
+// swagger:route POST /client Client createClient
+//
+// Create client
+//
+// Create client based on the given client model.
+// responses:
+//  201: clientSucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
+
 func createClient(c *gin.Context) {
 	var data model.Client
 
@@ -54,6 +65,16 @@ func createClient(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route GET /client/{id} Client readClient
+//
+// Read client
+//
+// Return client based on the given uuid.
+// responses:
+//  200: clientSucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func readClient(c *gin.Context) {
 	id := c.Param("id")
 
@@ -73,6 +94,16 @@ func readClient(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route PATCH /client/{id} Client updateClient
+//
+// Update client
+//
+// Update client based on the given uuid and client model.
+// responses:
+//  200: clientSucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func updateClient(c *gin.Context) {
 	var data model.Client
 	id := c.Param("id")
@@ -103,6 +134,16 @@ func updateClient(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route DELETE /client/{id} Client deleteClient
+//
+// Delete client
+//
+// Delete client based on the given uuid.
+// responses:
+//  200: sucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func deleteClient(c *gin.Context) {
 	id := c.Param("id")
 
@@ -139,6 +180,19 @@ func readClients(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route GET /client/{id}/config Client configClient
+//
+// Get client configuration
+//
+// Return client configuration file in byte format based on the given uuid.
+// produces:
+//  - application/octet-stream
+//	- application/json
+// responses:
+//  200: streamResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func configClient(c *gin.Context) {
 	configData, err := core.ReadClientConfig(c.Param("id"))
 	if err != nil {
@@ -166,9 +220,19 @@ func configClient(c *gin.Context) {
 		return
 	}
 	c.Data(http.StatusOK, "image/png", png)
-	return
+
 }
 
+// swagger:route GET /client/{id}/email Client emailClient
+//
+// Email client Configuration
+//
+// Email the configuration file of the client to the email associated with client.
+// responses:
+//  200: sucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  502: badGatewayResponse
 func emailClient(c *gin.Context) {
 	id := c.Param("id")
 
