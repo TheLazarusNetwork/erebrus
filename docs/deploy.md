@@ -15,7 +15,7 @@
     -e WG_CONF_DIR='/etc/wireguard' \
     -e WG_KEYS_DIR='/etc/wireguard/keys' \
     -e WG_INTERFACE_NAME='wg0.conf' \
-    -e WG_ENDPOINT_HOST='region.lazarus.network' \
+    -e WG_ENDPOINT_HOST='your endpoint' \
     -e WG_ENDPOINT_PORT='51820' \
     -e WG_IPv4_SUBNET='10.0.0.1/24' \
     -e WG_IPv6_SUBNET='fd9f:0000::10:0:0:1/64' \
@@ -27,10 +27,10 @@
     -e WG_PRE_DOWN='echo WireGuard PreDown' \
     -e WG_POST_DOWN='iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE' \
     -e SMTP_HOST='smtp.mail-domain.com' \
-    -e SMTP_PORT='465' \
-    -e SMTP_USERNAME='erebrus@lazarus.network' \
-    -e SMTP_PASSWORD='erebrus' \
-    -e SMTP_FROM='Lazarus Network - Erebrus <erebrus@lazarus.network>' \
+    -e SMTP_PORT='smtp port' \
+    -e SMTP_USERNAME='username' \
+    -e SMTP_PASSWORD='password' \
+    -e SMTP_FROM='from' \
     --restart unless-stopped \
     --name erebrus-region \
     erebrus
