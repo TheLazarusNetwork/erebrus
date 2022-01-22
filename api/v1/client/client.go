@@ -34,7 +34,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 //  201: clientSucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 
 func createClient(c *gin.Context) {
 	var data model.Client
@@ -74,7 +74,7 @@ func createClient(c *gin.Context) {
 //  200: clientSucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func readClient(c *gin.Context) {
 	id := c.Param("id")
 
@@ -103,7 +103,7 @@ func readClient(c *gin.Context) {
 //  200: clientSucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func updateClient(c *gin.Context) {
 	var data model.Client
 	id := c.Param("id")
@@ -143,7 +143,7 @@ func updateClient(c *gin.Context) {
 //  200: sucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func deleteClient(c *gin.Context) {
 	id := c.Param("id")
 
@@ -163,6 +163,16 @@ func deleteClient(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// swagger:route GET /client Client readClients
+//
+// Read All Clients
+//
+// Get all clients in the server.
+// responses:
+//  200: clientsSucessResponse
+//  400: badRequestResponse
+//	401: unauthorizedResponse
+//  500: serverErrorResponse
 func readClients(c *gin.Context) {
 	clients, err := core.ReadClients()
 	if err != nil {
@@ -189,10 +199,10 @@ func readClients(c *gin.Context) {
 //  - application/octet-stream
 //	- application/json
 // responses:
-//  200: streamResponse
+//  200: configResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func configClient(c *gin.Context) {
 	configData, err := core.ReadClientConfig(c.Param("id"))
 	if err != nil {
@@ -232,7 +242,7 @@ func configClient(c *gin.Context) {
 //  200: sucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func emailClient(c *gin.Context) {
 	id := c.Param("id")
 

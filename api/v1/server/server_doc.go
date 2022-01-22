@@ -22,14 +22,6 @@ type ServerStatusResponse struct {
 	Body Status
 }
 
-// swagger:response configResponse
-// Response for Server configuration.
-type ConfigResponse struct {
-	// in: body
-	// example: # Updated: 26103870 / Created: 26103870 [Interface] \n Address = 10.0.0.1/24
-	Body string
-}
-
 // swagger:parameters updateServer
 type ServerUpdateReqparam struct {
 	// Requestbody  used for update server operations.

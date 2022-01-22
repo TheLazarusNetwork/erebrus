@@ -400,22 +400,37 @@ definitions:
 host: localhost
 info:
   contact:
-    email: sachindra.spidey@gmail.com
-    name: sachindra
+    email: sachinmugu@gmail.com
+    name: Sambath Kumar
   description: |-
-    The api is used to create,update,delete,retrive clients and
-    get client configiration and email them. It also provides
-    server operations like get, update, status and server configuration.
+    Erebrus is an open source VPN solution from The Lazarus Network, that helps to deploy your own VPN solution in
+    minutes.The vision of Erebrus is to deliver Cyber security to everyone .
 
-    This should demonstrate all the possible comment annotations
-    that are available to turn go code into a fully compliant swagger 2.0 spec
+    Features of Erebrus were, Easy Client and Server management, Supports REST and gRPC, Email VPN configuration to clients easily.
+
+    This documentation guides you, How to use Erebrus endpoints and It's Request and Response briefly.
   license:
-    name: MIT
-    url: http://opensource.org/licenses/MIT
+    name: GPL-3.0
+    url: https://opensource.org/licenses/GPL-3.0
   title: Erebrus
   version: 1.0.0
 paths:
   /client:
+    get:
+      description: Get all clients in the server.
+      operationId: readClients
+      responses:
+        "200":
+          $ref: '#/responses/clientsSucessResponse'
+        "400":
+          $ref: '#/responses/badRequestResponse'
+        "401":
+          $ref: '#/responses/unauthorizedResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
+      summary: Read All Clients
+      tags:
+      - Client
     post:
       description: Create client based on the given client model.
       operationId: createClient
@@ -433,8 +448,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Create client
       tags:
       - Client
@@ -456,8 +471,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Delete client
       tags:
       - Client
@@ -478,8 +493,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Read client
       tags:
       - Client
@@ -506,8 +521,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Update client
       tags:
       - Client
@@ -528,13 +543,13 @@ paths:
       - application/json
       responses:
         "200":
-          $ref: '#/responses/streamResponse'
+          $ref: '#/responses/configResponse'
         "400":
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Get client configuration
       tags:
       - Client
@@ -557,8 +572,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Email client Configuration
       tags:
       - Client
@@ -573,8 +588,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Read Server
       tags:
       - Server
@@ -595,8 +610,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Update Server
       tags:
       - Server
@@ -613,8 +628,8 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       tags:
       - Server
   /server/status:
@@ -628,30 +643,16 @@ paths:
           $ref: '#/responses/badRequestResponse'
         "401":
           $ref: '#/responses/unauthorizedResponse'
-        "502":
-          $ref: '#/responses/badGatewayResponse'
+        "500":
+          $ref: '#/responses/serverErrorResponse'
       summary: Get Server status
       tags:
       - Server
 produces:
 - application/json
 - application/x-protobuf
+- application/config
 responses:
-  badGatewayResponse:
-    description: ""
-    schema:
-      properties:
-        Error:
-          example: error message
-          type: string
-        Status:
-          example: 502
-          format: int64
-          type: integer
-        Sucess:
-          example: false
-          type: boolean
-      type: object
   badRequestResponse:
     description: ""
     schema:
@@ -684,8 +685,50 @@ responses:
         client:
           $ref: '#/definitions/Client'
       type: object
+  clientsSucessResponse:
+    description: ""
+    schema:
+      properties:
+        Message:
+          example: sucess message
+          type: string
+        Status:
+          example: 201
+          format: int64
+          type: integer
+        Sucess:
+          example: true
+          type: boolean
+        clients:
+          items:
+            $ref: '#/definitions/Client'
+          type: array
+          x-go-name: Body
+      type: object
   configResponse:
     description: ""
+    schema:
+      properties:
+        content:
+          example: File Download
+          type: string
+          x-go-name: Data
+      type: object
+  serverErrorResponse:
+    description: ""
+    schema:
+      properties:
+        Error:
+          example: error message
+          type: string
+        Status:
+          example: 500
+          format: int64
+          type: integer
+        Sucess:
+          example: false
+          type: boolean
+      type: object
   serverStatusResponse:
     description: ""
     schema:
@@ -707,13 +750,6 @@ responses:
         server:
           $ref: '#/definitions/Server'
       type: object
-  streamResponse:
-    description: ""
-    schema:
-      items:
-        format: uint8
-        type: integer
-      type: array
   sucessResponse:
     description: ""
     schema:

@@ -185,8 +185,14 @@ func ReadWgConfigFile() ([]byte, error) {
 //Method to get the server status
 func GetServerStatus() (*model.Status, error) {
 	var response = &model.Status{}
-	resp, _ := http.Get("https://api.ipify.org/?format=text")
-	ip, _ := ioutil.ReadAll(resp.Body)
+	resp, err := http.Get("https://ipinfo.io/ip")
+	if err != nil {
+		return nil, err
+	}
+	ip, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
 	response.PublicIP = string(ip)
 	hostname, _ := os.Hostname()
 	response.Hostname = hostname

@@ -1,22 +1,18 @@
 // Erebrus
 //
-// The api is used to create,update,delete,retrive clients and
-// get client configiration and email them. It also provides
-// server operations like get, update, status and server configuration.
+// Erebrus is an open source VPN solution from The Lazarus Network, that helps to deploy your own VPN solution in
+// minutes.The vision of Erebrus is to deliver Cyber security to everyone .
 //
-// This should demonstrate all the possible comment annotations
-// that are available to turn go code into a fully compliant swagger 2.0 spec
+// Features of Erebrus were, Easy Client and Server management, Supports REST and gRPC, Email VPN configuration to clients easily.
 //
-//
-//
-//
+// This documentation guides you, How to use Erebrus endpoints and It's Request and Response briefly.
 //
 //     Schemes: http, https
 //     Host: localhost
 //     BasePath: /api/v1.0
 //     Version: 1.0.0
-//     License: MIT http://opensource.org/licenses/MIT
-//     Contact: sachindra<sachindra.spidey@gmail.com>
+//     License: GPL-3.0 https://opensource.org/licenses/GPL-3.0
+//     Contact: Sambath Kumar <sachinmugu@gmail.com>
 //
 //     Consumes:
 //     - application/json
@@ -25,6 +21,7 @@
 //     Produces:
 //     - application/json
 //     - application/x-protobuf
+//	   - application/config
 //
 //
 //

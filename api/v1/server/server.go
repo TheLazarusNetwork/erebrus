@@ -32,7 +32,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 //  200: serverSucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func readServer(c *gin.Context) {
 	server, err := core.ReadServer()
 	if err != nil {
@@ -56,7 +56,7 @@ func readServer(c *gin.Context) {
 //  200: serverSucessResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func updateServer(c *gin.Context) {
 	var data model.Server
 
@@ -88,7 +88,7 @@ func updateServer(c *gin.Context) {
 //  200: configResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func configServer(c *gin.Context) {
 	configData, err := core.ReadWgConfigFile()
 	if err != nil {
@@ -111,7 +111,7 @@ func configServer(c *gin.Context) {
 //  200: serverStatusResponse
 //  400: badRequestResponse
 //	401: unauthorizedResponse
-//  502: badGatewayResponse
+//  500: serverErrorResponse
 func GetStatus(c *gin.Context) {
 	status_data, err := core.GetServerStatus()
 	if err != nil {

@@ -1,0 +1,956 @@
+{
+	"info": {
+		"_postman_id": "287fffc4-bf3c-4930-a257-484d317d1107",
+		"name": "Erebrus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Read Client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client",
+								"681e13e3-c07f-4a4b-8949-57cc17f6f8fb"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Read Client",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client",
+										"681e13e3-c07f-4a4b-8949-57cc17f6f8fb"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"client details\",\n    \"client\": {\n        \"UUID\": \"681e13e3-c07f-4a4b-8949-57cc17f6f8fb\",\n        \"Name\": \"jon snow\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"1mKT+5X/1THA0mgl8ecQdN+cULVpIDIc1odTpplfU2M=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.3/32\"\n        ],\n        \"PrivateKey\": \"0CZgS3p5hJxeuMipQ0U5SMDqLW/8jKZjkxRhaXST+W4=\",\n        \"PublicKey\": \"d/cU8479v1Y7R5q47xxMlhCQgJSOBz32XUnTwl+/LCc=\",\n        \"CreatedBy\": \"jonsnow@gmail.com\",\n        \"Created\": 1642831493472,\n        \"Updated\": 1642831493472\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Client Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb/config",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client",
+								"681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+								"config"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get client config",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb/config",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client",
+										"681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+										"config"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "raw",
+							"header": [
+								{
+									"key": "Content-Disposition",
+									"value": "attachment; filename=681e13e3-c07f-4a4b-8949-57cc17f6f8fb.conf"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/config"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:11:39 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "325"
+								}
+							],
+							"cookie": [],
+							"body": "[Interface]\nAddress = 10.0.0.3/32\nPrivateKey = 0CZgS3p5hJxeuMipQ0U5SMDqLW/8jKZjkxRhaXST+W4=\nDNS = 1.1.1.1\n\n[Peer]\nPublicKey = T5ZMOnik3YuaRhZgAhcxXrmn2+C0B7qFaqnCypMMcks=\nPresharedKey = 1mKT+5X/1THA0mgl8ecQdN+cULVpIDIc1odTpplfU2M=\nAllowedIPs = 0.0.0.0/0, ::/0\nEndpoint = region.lazarus.network:51820\nPersistentKeepalive = 16\n"
+						}
+					]
+				},
+				{
+					"name": "Email Client Configuration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client",
+								"681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+								"email"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Email Client configuration",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb/email",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client",
+										"681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+										"email"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:32:53 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "69"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"client configuration emailed\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Read all Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Read all Clients",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:35:00 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "983"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"clients details\",\n    \"clients\": [\n        {\n            \"UUID\": \"6c8ff96f-ce8a-4c64-a76d-07e9af0b75ab\",\n            \"Name\": \"Sambath-MAC1\",\n            \"Tags\": [\n                \"laptop\",\n                \"PC\"\n            ],\n            \"Email\": \"sachinmugu@gmail.com\",\n            \"Enable\": true,\n            \"PresharedKey\": \"twDZk0lehYtst3Zclb+SRniVfoHnug9N6gjxuaipcvc=\",\n            \"AllowedIPs\": [\n                \"0.0.0.0/0\",\n                \"::/0\"\n            ],\n            \"Address\": [\n                \"10.0.0.2/32\"\n            ],\n            \"PrivateKey\": \"KFOyCoR9Eq+LpqT9VzJCilXYmFwhMFw7UDkdRRxoWVg=\",\n            \"PublicKey\": \"YeT/lG9L4AeYOHNrkohnmXfljx3/JgThulskllayxi4=\",\n            \"CreatedBy\": \"sachinmugu@gmail.com\",\n            \"Created\": 1642409076544,\n            \"Updated\": 1642409076544\n        },\n        {\n            \"UUID\": \"681e13e3-c07f-4a4b-8949-57cc17f6f8fb\",\n            \"Name\": \"jon snow\",\n            \"Tags\": [\n                \"laptop\",\n                \"PC\"\n            ],\n            \"Email\": \"johnsnow@gmail.com\",\n            \"Enable\": true,\n            \"PresharedKey\": \"1mKT+5X/1THA0mgl8ecQdN+cULVpIDIc1odTpplfU2M=\",\n            \"AllowedIPs\": [\n                \"0.0.0.0/0\",\n                \"::/0\"\n            ],\n            \"Address\": [\n                \"10.0.0.3/32\"\n            ],\n            \"PrivateKey\": \"0CZgS3p5hJxeuMipQ0U5SMDqLW/8jKZjkxRhaXST+W4=\",\n            \"PublicKey\": \"d/cU8479v1Y7R5q47xxMlhCQgJSOBz32XUnTwl+/LCc=\",\n            \"CreatedBy\": \"jonsnow@gmail.com\",\n            \"Created\": 1642831493472,\n            \"Updated\": 1642831493472\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Client",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"UUID\":\"681e13e3-c07f-4a4b-8949-57cc17f6f8fb\",\n        \"Name\": \"jon snow updated\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"TwOplBZS7q8tXSqt6Q1YyGzjXwaCXAzwX7QqkJQ5Jmg=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.0/24\"\n        ],\n    \"createdBy\": \"jonsnow@gmail.com\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client",
+								"681e13e3-c07f-4a4b-8949-57cc17f6f8fb"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Client",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"UUID\":\"681e13e3-c07f-4a4b-8949-57cc17f6f8fb\",\n        \"Name\": \"jon snow updated\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"TwOplBZS7q8tXSqt6Q1YyGzjXwaCXAzwX7QqkJQ5Jmg=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.0/24\"\n        ],\n    \"createdBy\": \"jonsnow@gmail.com\"\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client",
+										"681e13e3-c07f-4a4b-8949-57cc17f6f8fb"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:37:22 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "501"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"client updated\",\n    \"client\": {\n        \"UUID\": \"681e13e3-c07f-4a4b-8949-57cc17f6f8fb\",\n        \"Name\": \"jon snow updated\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"TwOplBZS7q8tXSqt6Q1YyGzjXwaCXAzwX7QqkJQ5Jmg=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.0/24\"\n        ],\n        \"PrivateKey\": \"0CZgS3p5hJxeuMipQ0U5SMDqLW/8jKZjkxRhaXST+W4=\",\n        \"PublicKey\": \"d/cU8479v1Y7R5q47xxMlhCQgJSOBz32XUnTwl+/LCc=\",\n        \"CreatedBy\": \"jonsnow@gmail.com\",\n        \"Updated\": 1642833442898\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Client",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client",
+								"681e13e3-c07f-4a4b-8949-57cc17f6f8fb"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete Client",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client/681e13e3-c07f-4a4b-8949-57cc17f6f8fb",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client",
+										"681e13e3-c07f-4a4b-8949-57cc17f6f8fb"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:38:14 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "55"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"client deleted\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \n        \"Name\": \"jon snow\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"TwOplBZS7q8tXSqt6Q1YyGzjXwaCXAzwX7QqkJQ5Jmg=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.0/24\"\n        ],\n    \"createdBy\": \"jonsnow@gmail.com\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/client",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"client"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create Client",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n     \n        \"Name\": \"jon snow\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"TwOplBZS7q8tXSqt6Q1YyGzjXwaCXAzwX7QqkJQ5Jmg=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.0/24\"\n        ],\n    \"createdBy\": \"jonsnow@gmail.com\"\n    \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/client",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"client"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\n    \"status\": 201,\n    \"sucess\": true,\n    \"message\": \"client created\",\n    \"client\": {\n        \"UUID\": \"681e13e3-c07f-4a4b-8949-57cc17f6f8fb\",\n        \"Name\": \"jon snow\",\n        \"Tags\": [\n            \"laptop\",\n            \"PC\"\n        ],\n        \"Email\": \"johnsnow@gmail.com\",\n        \"Enable\": true,\n        \"PresharedKey\": \"1mKT+5X/1THA0mgl8ecQdN+cULVpIDIc1odTpplfU2M=\",\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"Address\": [\n            \"10.0.0.3/32\"\n        ],\n        \"PrivateKey\": \"0CZgS3p5hJxeuMipQ0U5SMDqLW/8jKZjkxRhaXST+W4=\",\n        \"PublicKey\": \"d/cU8479v1Y7R5q47xxMlhCQgJSOBz32XUnTwl+/LCc=\",\n        \"CreatedBy\": \"jonsnow@gmail.com\",\n        \"Created\": 1642831493472,\n        \"Updated\": 1642831493472\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Server",
+			"item": [
+				{
+					"name": "Get Server Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/server",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"server"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Server Info",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/server",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"server"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:42:53 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "725"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"server details\",\n    \"server\": {\n        \"Address\": [\n            \"10.0.0.1/24\"\n        ],\n        \"ListenPort\": 51820,\n        \"PrivateKey\": \"UFWsgb/Ax5B8zZGx0YtHBAuQVRrOHrxKz2zS2p1LuUE=\",\n        \"PublicKey\": \"T5ZMOnik3YuaRhZgAhcxXrmn2+C0B7qFaqnCypMMcks=\",\n        \"Endpoint\": \"region.lazarus.network\",\n        \"PersistentKeepalive\": 16,\n        \"DNS\": [\n            \"1.1.1.1\"\n        ],\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"PreUp\": \"echo WireGuard PreUp\",\n        \"PostUp\": \"iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\",\n        \"PreDown\": \"echo WireGuard PreDown\",\n        \"PostDown\": \"iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\",\n        \"Created\": 26103870,\n        \"Updated\": 26103870\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Server Configuration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/server/config",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"server",
+								"config"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Server Configuration",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/server/config",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"server",
+										"config"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "raw",
+							"header": [
+								{
+									"key": "Content-Disposition",
+									"value": "attachment; filename=wg0.conf"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/config"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:43:09 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "756"
+								}
+							],
+							"cookie": [],
+							"body": "# Updated: 26103870 / Created: 26103870\n[Interface]\nAddress = 10.0.0.1/24\nListenPort = 51820\nPrivateKey = UFWsgb/Ax5B8zZGx0YtHBAuQVRrOHrxKz2zS2p1LuUE=\n\nPreUp = echo WireGuard PreUp\nPostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\nPreDown = echo WireGuard PreDown\nPostDown = iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\n# Sambath-MAC1 / sachinmugu@gmail.com / Updated: 1642409076544 / Created: 1642409076544\n# friendly_name = Sambath-MAC1\n[Peer]\nPublicKey = YeT/lG9L4AeYOHNrkohnmXfljx3/JgThulskllayxi4=\nPresharedKey = twDZk0lehYtst3Zclb+SRniVfoHnug9N6gjxuaipcvc=\nAllowedIPs = 10.0.0.2/32\n"
+						}
+					]
+				},
+				{
+					"name": "Get Server Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/server/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"server",
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Server Status",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/server/status",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"server",
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:50:46 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "198"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"Version\": \"1.0\",\n    \"Hostname\": \"sambath-WS\",\n    \"Domain\": \"eu01.lazarus.network\",\n    \"PublicIP\": \"118.246.197.100\",\n    \"gRPCPort\": \"9090\",\n    \"PrivateIP\": \"172.20.0.1,\",\n    \"HttpPort\": \"9080\",\n    \"Region\": \"eu01\",\n    \"VPNPort\": \"51820\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Server",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"Address\": [\n            \"10.0.0.1/24\"\n        ],\n        \"ListenPort\": 51822,\n        \"PrivateKey\": \"oKgGti0Kv3tacXGc+X6evdhVm0ILjmlVXHVPdzuCqEQ=\",\n        \"PublicKey\": \"0iG5xe5wp7lGQSYr9qxL8lQ0Ce3CHVMSvW12ziY5TUA=\",\n        \"Endpoint\": \"region.lazarus.network\",\n        \"PersistentKeepalive\": 16,\n        \"DNS\": [\n            \"1.1.1.1\"\n        ],\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"PreUp\": \"echo WireGuard PreUp\",\n        \"PostUp\": \"iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\",\n        \"PreDown\": \"echo WireGuard PreDown\",\n        \"PostDown\": \"iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\",\n        \"Created\": 704810668,\n        \"Updated\": 122649583\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9080/api/v1.0/server",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9080",
+							"path": [
+								"api",
+								"v1.0",
+								"server"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Update Server",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n        \"Address\": [\n            \"10.0.0.1/24\"\n        ],\n        \"ListenPort\": 51822,\n        \"PrivateKey\": \"oKgGti0Kv3tacXGc+X6evdhVm0ILjmlVXHVPdzuCqEQ=\",\n        \"PublicKey\": \"0iG5xe5wp7lGQSYr9qxL8lQ0Ce3CHVMSvW12ziY5TUA=\",\n        \"Endpoint\": \"region.lazarus.network\",\n        \"PersistentKeepalive\": 16,\n        \"DNS\": [\n            \"1.1.1.1\"\n        ],\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"PreUp\": \"echo WireGuard PreUp\",\n        \"PostUp\": \"iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\",\n        \"PreDown\": \"echo WireGuard PreDown\",\n        \"PostDown\": \"iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\",\n        \"Created\": 704810668,\n        \"Updated\": 122649583\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9080/api/v1.0/server",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9080",
+									"path": [
+										"api",
+										"v1.0",
+										"server"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=5184000; includeSubDomains"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Dns-Prefetch-Control",
+									"value": "off"
+								},
+								{
+									"key": "X-Download-Options",
+									"value": "noopen"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Xss-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 22 Jan 2022 06:53:23 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "727"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 200,\n    \"sucess\": true,\n    \"message\": \"server updated\",\n    \"server\": {\n        \"Address\": [\n            \"10.0.0.1/24\"\n        ],\n        \"ListenPort\": 51822,\n        \"PrivateKey\": \"UFWsgb/Ax5B8zZGx0YtHBAuQVRrOHrxKz2zS2p1LuUE=\",\n        \"PublicKey\": \"T5ZMOnik3YuaRhZgAhcxXrmn2+C0B7qFaqnCypMMcks=\",\n        \"Endpoint\": \"region.lazarus.network\",\n        \"PersistentKeepalive\": 16,\n        \"DNS\": [\n            \"1.1.1.1\"\n        ],\n        \"AllowedIPs\": [\n            \"0.0.0.0/0\",\n            \"::/0\"\n        ],\n        \"PreUp\": \"echo WireGuard PreUp\",\n        \"PostUp\": \"iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\",\n        \"PreDown\": \"echo WireGuard PreDown\",\n        \"PostDown\": \"iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE\",\n        \"Created\": 704810668,\n        \"Updated\": 582391761\n    }\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}

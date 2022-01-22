@@ -2,12 +2,12 @@
 
 
 # Erebrus
-The api is used to create,update,delete,retrive clients and
-get client configiration and email them. It also provides
-server operations like get, update, status and server configuration.
+Erebrus is an open source VPN solution from The Lazarus Network, that helps to deploy your own VPN solution in
+minutes.The vision of Erebrus is to deliver Cyber security to everyone .
 
-This should demonstrate all the possible comment annotations
-that are available to turn go code into a fully compliant swagger 2.0 spec
+Features of Erebrus were, Easy Client and Server management, Supports REST and gRPC, Email VPN configuration to clients easily.
+
+This documentation guides you, How to use Erebrus endpoints and It's Request and Response briefly.
   
 
 ## Informations
@@ -18,11 +18,11 @@ that are available to turn go code into a fully compliant swagger 2.0 spec
 
 ### License
 
-[MIT](http://opensource.org/licenses/MIT)
+[GPL-3.0](https://opensource.org/licenses/GPL-3.0)
 
 ### Contact
 
-sachindra sachindra.spidey@gmail.com 
+Sambath Kumar sachinmugu@gmail.com 
 
 ## Content negotiation
 
@@ -35,6 +35,7 @@ sachindra sachindra.spidey@gmail.com
   * application/x-protobuf
 
 ### Produces
+  * application/config
   * application/octet-stream
   * application/json
   * application/x-protobuf
@@ -50,6 +51,7 @@ sachindra sachindra.spidey@gmail.com
 | DELETE | /api/v1.0/client/{id} | [delete client](#delete-client) | Delete client |
 | GET | /api/v1.0/client/{id}/email | [email client](#email-client) | Email client Configuration |
 | GET | /api/v1.0/client/{id} | [read client](#read-client) | Read client |
+| GET | /api/v1.0/client | [read clients](#read-clients) | Read All Clients |
 | PATCH | /api/v1.0/client/{id} | [update client](#update-client) | Update client |
   
 
@@ -91,7 +93,7 @@ Return client configuration file in byte format based on the given uuid.
 | [200](#config-client-200) | OK |  |  | [schema](#config-client-200-schema) |
 | [400](#config-client-400) | Bad Request |  |  | [schema](#config-client-400-schema) |
 | [401](#config-client-401) | Unauthorized |  |  | [schema](#config-client-401-schema) |
-| [502](#config-client-502) | Bad Gateway |  |  | [schema](#config-client-502-schema) |
+| [500](#config-client-500) | Internal Server Error |  |  | [schema](#config-client-500-schema) |
 
 #### Responses
 
@@ -103,7 +105,7 @@ Status: OK
    
   
 
-[]uint8 (formatted integer)
+[ConfigClientOKBody](#config-client-o-k-body)
 
 ##### <span id="config-client-400"></span> 400
 Status: Bad Request
@@ -123,33 +125,16 @@ Status: Unauthorized
 
 [ConfigClientUnauthorizedBody](#config-client-unauthorized-body)
 
-##### <span id="config-client-502"></span> 502
-Status: Bad Gateway
+##### <span id="config-client-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="config-client-502-schema"></span> Schema
+###### <span id="config-client-500-schema"></span> Schema
    
   
 
-[ConfigClientBadGatewayBody](#config-client-bad-gateway-body)
+[ConfigClientInternalServerErrorBody](#config-client-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="config-client-bad-gateway-body"></span> ConfigClientBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="config-client-bad-request-body"></span> ConfigClientBadRequestBody**
 
@@ -165,6 +150,38 @@ Status: Bad Gateway
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
 | Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="config-client-internal-server-error-body"></span> ConfigClientInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="config-client-o-k-body"></span> ConfigClientOKBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Data | string| `string` |  | |  | `File Download` |
 
 
 
@@ -200,7 +217,7 @@ Retrieves the server configuration details.
 | [200](#config-server-200) | OK |  |  | [schema](#config-server-200-schema) |
 | [400](#config-server-400) | Bad Request |  |  | [schema](#config-server-400-schema) |
 | [401](#config-server-401) | Unauthorized |  |  | [schema](#config-server-401-schema) |
-| [502](#config-server-502) | Bad Gateway |  |  | [schema](#config-server-502-schema) |
+| [500](#config-server-500) | Internal Server Error |  |  | [schema](#config-server-500-schema) |
 
 #### Responses
 
@@ -209,6 +226,10 @@ Retrieves the server configuration details.
 Status: OK
 
 ###### <span id="config-server-200-schema"></span> Schema
+   
+  
+
+[ConfigServerOKBody](#config-server-o-k-body)
 
 ##### <span id="config-server-400"></span> 400
 Status: Bad Request
@@ -228,33 +249,16 @@ Status: Unauthorized
 
 [ConfigServerUnauthorizedBody](#config-server-unauthorized-body)
 
-##### <span id="config-server-502"></span> 502
-Status: Bad Gateway
+##### <span id="config-server-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="config-server-502-schema"></span> Schema
+###### <span id="config-server-500-schema"></span> Schema
    
   
 
-[ConfigServerBadGatewayBody](#config-server-bad-gateway-body)
+[ConfigServerInternalServerErrorBody](#config-server-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="config-server-bad-gateway-body"></span> ConfigServerBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="config-server-bad-request-body"></span> ConfigServerBadRequestBody**
 
@@ -270,6 +274,38 @@ Status: Bad Gateway
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
 | Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="config-server-internal-server-error-body"></span> ConfigServerInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="config-server-o-k-body"></span> ConfigServerOKBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Data | string| `string` |  | |  | `File Download` |
 
 
 
@@ -310,7 +346,7 @@ Create client based on the given client model.
 | [201](#create-client-201) | Created |  |  | [schema](#create-client-201-schema) |
 | [400](#create-client-400) | Bad Request |  |  | [schema](#create-client-400-schema) |
 | [401](#create-client-401) | Unauthorized |  |  | [schema](#create-client-401-schema) |
-| [502](#create-client-502) | Bad Gateway |  |  | [schema](#create-client-502-schema) |
+| [500](#create-client-500) | Internal Server Error |  |  | [schema](#create-client-500-schema) |
 
 #### Responses
 
@@ -342,33 +378,16 @@ Status: Unauthorized
 
 [CreateClientUnauthorizedBody](#create-client-unauthorized-body)
 
-##### <span id="create-client-502"></span> 502
-Status: Bad Gateway
+##### <span id="create-client-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="create-client-502-schema"></span> Schema
+###### <span id="create-client-500-schema"></span> Schema
    
   
 
-[CreateClientBadGatewayBody](#create-client-bad-gateway-body)
+[CreateClientInternalServerErrorBody](#create-client-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="create-client-bad-gateway-body"></span> CreateClientBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="create-client-bad-request-body"></span> CreateClientBadRequestBody**
 
@@ -402,6 +421,23 @@ Status: Bad Gateway
 | Status | int64 (formatted integer)| `int64` |  | |  | `201` |
 | Sucess | boolean| `bool` |  | |  | `true` |
 | client | [Client](#client)| `models.Client` |  | |  |  |
+
+
+
+**<span id="create-client-internal-server-error-body"></span> CreateClientInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
+| Sucess | boolean| `bool` |  | |  | `false` |
 
 
 
@@ -442,7 +478,7 @@ Delete client based on the given uuid.
 | [200](#delete-client-200) | OK |  |  | [schema](#delete-client-200-schema) |
 | [400](#delete-client-400) | Bad Request |  |  | [schema](#delete-client-400-schema) |
 | [401](#delete-client-401) | Unauthorized |  |  | [schema](#delete-client-401-schema) |
-| [502](#delete-client-502) | Bad Gateway |  |  | [schema](#delete-client-502-schema) |
+| [500](#delete-client-500) | Internal Server Error |  |  | [schema](#delete-client-500-schema) |
 
 #### Responses
 
@@ -474,33 +510,16 @@ Status: Unauthorized
 
 [DeleteClientUnauthorizedBody](#delete-client-unauthorized-body)
 
-##### <span id="delete-client-502"></span> 502
-Status: Bad Gateway
+##### <span id="delete-client-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="delete-client-502-schema"></span> Schema
+###### <span id="delete-client-500-schema"></span> Schema
    
   
 
-[DeleteClientBadGatewayBody](#delete-client-bad-gateway-body)
+[DeleteClientInternalServerErrorBody](#delete-client-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="delete-client-bad-gateway-body"></span> DeleteClientBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="delete-client-bad-request-body"></span> DeleteClientBadRequestBody**
 
@@ -515,6 +534,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="delete-client-internal-server-error-body"></span> DeleteClientInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 
@@ -573,7 +609,7 @@ Email the configuration file of the client to the email associated with client.
 | [200](#email-client-200) | OK |  |  | [schema](#email-client-200-schema) |
 | [400](#email-client-400) | Bad Request |  |  | [schema](#email-client-400-schema) |
 | [401](#email-client-401) | Unauthorized |  |  | [schema](#email-client-401-schema) |
-| [502](#email-client-502) | Bad Gateway |  |  | [schema](#email-client-502-schema) |
+| [500](#email-client-500) | Internal Server Error |  |  | [schema](#email-client-500-schema) |
 
 #### Responses
 
@@ -605,33 +641,16 @@ Status: Unauthorized
 
 [EmailClientUnauthorizedBody](#email-client-unauthorized-body)
 
-##### <span id="email-client-502"></span> 502
-Status: Bad Gateway
+##### <span id="email-client-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="email-client-502-schema"></span> Schema
+###### <span id="email-client-500-schema"></span> Schema
    
   
 
-[EmailClientBadGatewayBody](#email-client-bad-gateway-body)
+[EmailClientInternalServerErrorBody](#email-client-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="email-client-bad-gateway-body"></span> EmailClientBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="email-client-bad-request-body"></span> EmailClientBadRequestBody**
 
@@ -646,6 +665,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="email-client-internal-server-error-body"></span> EmailClientInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 
@@ -704,7 +740,7 @@ Return client based on the given uuid.
 | [200](#read-client-200) | OK |  |  | [schema](#read-client-200-schema) |
 | [400](#read-client-400) | Bad Request |  |  | [schema](#read-client-400-schema) |
 | [401](#read-client-401) | Unauthorized |  |  | [schema](#read-client-401-schema) |
-| [502](#read-client-502) | Bad Gateway |  |  | [schema](#read-client-502-schema) |
+| [500](#read-client-500) | Internal Server Error |  |  | [schema](#read-client-500-schema) |
 
 #### Responses
 
@@ -736,33 +772,16 @@ Status: Unauthorized
 
 [ReadClientUnauthorizedBody](#read-client-unauthorized-body)
 
-##### <span id="read-client-502"></span> 502
-Status: Bad Gateway
+##### <span id="read-client-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="read-client-502-schema"></span> Schema
+###### <span id="read-client-500-schema"></span> Schema
    
   
 
-[ReadClientBadGatewayBody](#read-client-bad-gateway-body)
+[ReadClientInternalServerErrorBody](#read-client-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="read-client-bad-gateway-body"></span> ReadClientBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="read-client-bad-request-body"></span> ReadClientBadRequestBody**
 
@@ -777,6 +796,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="read-client-internal-server-error-body"></span> ReadClientInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 
@@ -816,6 +852,132 @@ Status: Bad Gateway
 
 
 
+### <span id="read-clients"></span> Read All Clients (*readClients*)
+
+```
+GET /api/v1.0/client
+```
+
+Get all clients in the server.
+
+#### All responses
+| Code | Status | Description | Has headers | Schema |
+|------|--------|-------------|:-----------:|--------|
+| [200](#read-clients-200) | OK |  |  | [schema](#read-clients-200-schema) |
+| [400](#read-clients-400) | Bad Request |  |  | [schema](#read-clients-400-schema) |
+| [401](#read-clients-401) | Unauthorized |  |  | [schema](#read-clients-401-schema) |
+| [500](#read-clients-500) | Internal Server Error |  |  | [schema](#read-clients-500-schema) |
+
+#### Responses
+
+
+##### <span id="read-clients-200"></span> 200
+Status: OK
+
+###### <span id="read-clients-200-schema"></span> Schema
+   
+  
+
+[ReadClientsOKBody](#read-clients-o-k-body)
+
+##### <span id="read-clients-400"></span> 400
+Status: Bad Request
+
+###### <span id="read-clients-400-schema"></span> Schema
+   
+  
+
+[ReadClientsBadRequestBody](#read-clients-bad-request-body)
+
+##### <span id="read-clients-401"></span> 401
+Status: Unauthorized
+
+###### <span id="read-clients-401-schema"></span> Schema
+   
+  
+
+[ReadClientsUnauthorizedBody](#read-clients-unauthorized-body)
+
+##### <span id="read-clients-500"></span> 500
+Status: Internal Server Error
+
+###### <span id="read-clients-500-schema"></span> Schema
+   
+  
+
+[ReadClientsInternalServerErrorBody](#read-clients-internal-server-error-body)
+
+###### Inlined models
+
+**<span id="read-clients-bad-request-body"></span> ReadClientsBadRequestBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="read-clients-internal-server-error-body"></span> ReadClientsInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="read-clients-o-k-body"></span> ReadClientsOKBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Body | [][Client](#client)| `[]*models.Client` |  | |  |  |
+| Message | string| `string` |  | |  | `sucess message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `201` |
+| Sucess | boolean| `bool` |  | |  | `true` |
+
+
+
+**<span id="read-clients-unauthorized-body"></span> ReadClientsUnauthorizedBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `401` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
 ### <span id="read-server"></span> Read Server (*readServer*)
 
 ```
@@ -830,7 +992,7 @@ Retrieves the server details.
 | [200](#read-server-200) | OK |  |  | [schema](#read-server-200-schema) |
 | [400](#read-server-400) | Bad Request |  |  | [schema](#read-server-400-schema) |
 | [401](#read-server-401) | Unauthorized |  |  | [schema](#read-server-401-schema) |
-| [502](#read-server-502) | Bad Gateway |  |  | [schema](#read-server-502-schema) |
+| [500](#read-server-500) | Internal Server Error |  |  | [schema](#read-server-500-schema) |
 
 #### Responses
 
@@ -862,33 +1024,16 @@ Status: Unauthorized
 
 [ReadServerUnauthorizedBody](#read-server-unauthorized-body)
 
-##### <span id="read-server-502"></span> 502
-Status: Bad Gateway
+##### <span id="read-server-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="read-server-502-schema"></span> Schema
+###### <span id="read-server-500-schema"></span> Schema
    
   
 
-[ReadServerBadGatewayBody](#read-server-bad-gateway-body)
+[ReadServerInternalServerErrorBody](#read-server-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="read-server-bad-gateway-body"></span> ReadServerBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="read-server-bad-request-body"></span> ReadServerBadRequestBody**
 
@@ -903,6 +1048,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="read-server-internal-server-error-body"></span> ReadServerInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 
@@ -956,7 +1118,7 @@ Retrieves the server  status details.
 | [200](#status-server-200) | OK |  |  | [schema](#status-server-200-schema) |
 | [400](#status-server-400) | Bad Request |  |  | [schema](#status-server-400-schema) |
 | [401](#status-server-401) | Unauthorized |  |  | [schema](#status-server-401-schema) |
-| [502](#status-server-502) | Bad Gateway |  |  | [schema](#status-server-502-schema) |
+| [500](#status-server-500) | Internal Server Error |  |  | [schema](#status-server-500-schema) |
 
 #### Responses
 
@@ -988,33 +1150,16 @@ Status: Unauthorized
 
 [StatusServerUnauthorizedBody](#status-server-unauthorized-body)
 
-##### <span id="status-server-502"></span> 502
-Status: Bad Gateway
+##### <span id="status-server-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="status-server-502-schema"></span> Schema
+###### <span id="status-server-500-schema"></span> Schema
    
   
 
-[StatusServerBadGatewayBody](#status-server-bad-gateway-body)
+[StatusServerInternalServerErrorBody](#status-server-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="status-server-bad-gateway-body"></span> StatusServerBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="status-server-bad-request-body"></span> StatusServerBadRequestBody**
 
@@ -1029,6 +1174,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="status-server-internal-server-error-body"></span> StatusServerInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 
@@ -1071,7 +1233,7 @@ Update client based on the given uuid and client model.
 | [200](#update-client-200) | OK |  |  | [schema](#update-client-200-schema) |
 | [400](#update-client-400) | Bad Request |  |  | [schema](#update-client-400-schema) |
 | [401](#update-client-401) | Unauthorized |  |  | [schema](#update-client-401-schema) |
-| [502](#update-client-502) | Bad Gateway |  |  | [schema](#update-client-502-schema) |
+| [500](#update-client-500) | Internal Server Error |  |  | [schema](#update-client-500-schema) |
 
 #### Responses
 
@@ -1103,33 +1265,16 @@ Status: Unauthorized
 
 [UpdateClientUnauthorizedBody](#update-client-unauthorized-body)
 
-##### <span id="update-client-502"></span> 502
-Status: Bad Gateway
+##### <span id="update-client-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="update-client-502-schema"></span> Schema
+###### <span id="update-client-500-schema"></span> Schema
    
   
 
-[UpdateClientBadGatewayBody](#update-client-bad-gateway-body)
+[UpdateClientInternalServerErrorBody](#update-client-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="update-client-bad-gateway-body"></span> UpdateClientBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="update-client-bad-request-body"></span> UpdateClientBadRequestBody**
 
@@ -1144,6 +1289,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="update-client-internal-server-error-body"></span> UpdateClientInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 
@@ -1203,7 +1365,7 @@ Update the server with given details.
 | [200](#update-server-200) | OK |  |  | [schema](#update-server-200-schema) |
 | [400](#update-server-400) | Bad Request |  |  | [schema](#update-server-400-schema) |
 | [401](#update-server-401) | Unauthorized |  |  | [schema](#update-server-401-schema) |
-| [502](#update-server-502) | Bad Gateway |  |  | [schema](#update-server-502-schema) |
+| [500](#update-server-500) | Internal Server Error |  |  | [schema](#update-server-500-schema) |
 
 #### Responses
 
@@ -1235,33 +1397,16 @@ Status: Unauthorized
 
 [UpdateServerUnauthorizedBody](#update-server-unauthorized-body)
 
-##### <span id="update-server-502"></span> 502
-Status: Bad Gateway
+##### <span id="update-server-500"></span> 500
+Status: Internal Server Error
 
-###### <span id="update-server-502-schema"></span> Schema
+###### <span id="update-server-500-schema"></span> Schema
    
   
 
-[UpdateServerBadGatewayBody](#update-server-bad-gateway-body)
+[UpdateServerInternalServerErrorBody](#update-server-internal-server-error-body)
 
 ###### Inlined models
-
-**<span id="update-server-bad-gateway-body"></span> UpdateServerBadGatewayBody**
-
-
-  
-
-
-
-**Properties**
-
-| Name | Type | Go type | Required | Default | Description | Example |
-|------|------|---------|:--------:| ------- |-------------|---------|
-| Error | string| `string` |  | |  | `error message` |
-| Status | int64 (formatted integer)| `int64` |  | |  | `502` |
-| Sucess | boolean| `bool` |  | |  | `false` |
-
-
 
 **<span id="update-server-bad-request-body"></span> UpdateServerBadRequestBody**
 
@@ -1276,6 +1421,23 @@ Status: Bad Gateway
 |------|------|---------|:--------:| ------- |-------------|---------|
 | Error | string| `string` |  | |  | `error message` |
 | Status | int64 (formatted integer)| `int64` |  | |  | `400` |
+| Sucess | boolean| `bool` |  | |  | `false` |
+
+
+
+**<span id="update-server-internal-server-error-body"></span> UpdateServerInternalServerErrorBody**
+
+
+  
+
+
+
+**Properties**
+
+| Name | Type | Go type | Required | Default | Description | Example |
+|------|------|---------|:--------:| ------- |-------------|---------|
+| Error | string| `string` |  | |  | `error message` |
+| Status | int64 (formatted integer)| `int64` |  | |  | `500` |
 | Sucess | boolean| `bool` |  | |  | `false` |
 
 

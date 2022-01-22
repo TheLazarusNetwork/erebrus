@@ -15,6 +15,21 @@ type ClientSucessResponse struct {
 	}
 }
 
+// swagger:response clientsSucessResponse
+// Response for read all clients.
+type ClientsSucessResponse struct {
+	// in: body
+	Body struct {
+		// example: 201
+		Status int64
+		// example: true
+		Sucess bool
+		// example: sucess message
+		Message string
+		Body    []Client `json:"clients"`
+	}
+}
+
 // swagger:response sucessResponse
 // Response when the operation suceeds.
 type SucessResponse struct {
@@ -57,12 +72,12 @@ type UnauthorizedResponse struct {
 	}
 }
 
-// swagger:response badGatewayResponse
-// Response when the operation failed with Bad Request.
-type BadGatewayResponse struct {
+// swagger:response serverErrorResponse
+// Response when the operation failed with Server Error.
+type serverErrorResponse struct {
 	// in:body
 	Body struct {
-		// example: 502
+		// example: 500
 		Status int64
 		// example: false
 		Sucess bool
@@ -71,11 +86,14 @@ type BadGatewayResponse struct {
 	}
 }
 
-// swagger:response streamResponse
+// swagger:response configResponse
 // Response type for configuration file.
-type StreamResponse struct {
+type configResponse struct {
 	// in:body
-	Body []byte
+	Body struct {
+		// example: File Download
+		Data string `json:"content"`
+	}
 }
 
 // swagger:parameters readClient updateClient deleteClient configClient emailClient
