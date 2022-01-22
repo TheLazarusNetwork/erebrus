@@ -1,12 +1,21 @@
 # Erebrus Deployment Docs
 
+## Install and Deploy using binary
+
+1. Make sure all setup were done
+2. Download the suitable binary for your operating system from [here](https://github.com/TheLazarusNetwork/erebrus/releases/)
+3. create a .env file in same directory and define the environment for erebrus . you can use template from [.sample-env](https://github.com/TheLazarusNetwork/erebrus/blob/main/.sample-env)
+4. Run
+
 ## Install and Deploy using Docker
 
-
-### docker-cli
-
-1. ```docker build -t erebrus .```
-2. ```
+1. Make sure all setup were done
+2. Pull the ererbus docker image
+    ```
+    docker pull lazarusnetwork/erebrus:latest
+    ```
+3. Run the Image
+    ```
     docker run -d -p 9080:9080/tcp -p 51820:51820/udp --cap-add=NET_ADMIN --cap-add=SYS_MODULE --sysctl="net.ipv4.conf.all.src_valid_mark=1" --sysctl="net.ipv6.conf.all.forwarding=1" \
     -e LOAD_CONFIG_FILE="FALSE" \
     -e RUNTYPE='debug' \
@@ -35,7 +44,16 @@
     --name erebrus-region \
     erebrus
     ```
-3. ```docker exec -it erebrus bash```
-4. ```sudo netstat -pna | grep 51820```
-5. ```sudo lsof -i -P -n | grep 51820```
-6. ```docker rm -f $(docker ps -aq)```
+4. Use the following commands   
+    ```
+    docker exec -it erebrus bash
+    ```
+    ```
+    sudo netstat -pna | grep 51820
+    ```
+    ```
+    sudo lsof -i -P -n | grep 51820
+    ```
+    ```
+    docker rm -f $(docker ps -aq)
+    ```
