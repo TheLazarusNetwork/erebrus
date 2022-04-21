@@ -74,7 +74,6 @@ func RungRPCServer() {
 }
 
 func main() {
-
 	log.WithFields(util.StandardFields).Infof("Starting Lazarus Network - Erebrus Version: %s", util.Version)
 
 	// check directories or create it
@@ -122,6 +121,10 @@ func main() {
 	// dump wg config file
 	err := core.UpdateServerConfigWg()
 	util.CheckError("Error while creating WireGuard config file: ", err)
+
+	//running updater
+	wg.Add(1)
+	go core.UpdateEndpointDetails()
 
 	if os.Getenv("GRPC_PORT") != "" {
 		//Add gRPC routine to wait group
