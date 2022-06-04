@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"strconv"
 
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/TheLazarusNetwork/erebrus/storage"
@@ -17,7 +16,6 @@ import (
 	"github.com/skip2/go-qrcode"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 	"google.golang.org/protobuf/types/known/timestamppb"
-	"gopkg.in/gomail.v2"
 )
 
 // CreateClient client with all necessary data
@@ -206,27 +204,27 @@ func ReadClientConfig(id string) ([]byte, error) {
 }
 
 // EmailClient send email to client
-func EmailClient(id string) error {
+func EmailClient(id string) (string, error) {
 	client, err := ReadClient(id)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	configData, err := ReadClientConfig(id)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// conf as .conf file
 	tmpfileCfg, err := ioutil.TempFile("", "erebrus-*.conf") //Append region name
 	if err != nil {
-		return err
+		return "", err
 	}
 	if _, err := tmpfileCfg.Write(configData); err != nil {
-		return err
+		return "", err
 	}
 	if err := tmpfileCfg.Close(); err != nil {
-		return err
+		return "", err
 	}
 
 	//Rename the file after operations are completed
@@ -238,50 +236,25 @@ func EmailClient(id string) error {
 	// conf as png image
 	png, err := qrcode.Encode(string(configData), qrcode.Medium, 280)
 	if err != nil {
-		return err
+		return "", err
 	}
 	tmpfilePng, err := ioutil.TempFile("", "qrcode-*.png")
 	if err != nil {
-		return err
+		return "", err
 	}
 	if _, err := tmpfilePng.Write(png); err != nil {
-		return err
+		return "", err
 	}
 	if err := tmpfilePng.Close(); err != nil {
-		return err
+		return "", err
 	}
 	defer os.Remove(tmpfilePng.Name()) // clean up
 
 	// get email body
 	emailBody, err := template.DumpEmail(client, filepath.Base(tmpfilePng.Name()))
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	// port to int
-	port, err := strconv.Atoi(os.Getenv("SMTP_PORT"))
-	if err != nil {
-		return err
-	}
-
-	d := gomail.NewDialer(os.Getenv("SMTP_HOST"), port, os.Getenv("SMTP_USERNAME"), os.Getenv("SMTP_PASSWORD"))
-	s, err := d.Dial()
-	if err != nil {
-		return err
-	}
-	m := gomail.NewMessage()
-
-	m.SetHeader("From", os.Getenv("SMTP_FROM"))
-	m.SetAddressHeader("To", client.Email, client.Name)
-	m.SetHeader("Subject", "Lazarus Network - Erebrus Client Configuration")
-	m.SetBody("text/html", string(emailBody))
-	m.Attach(new_name)
-	m.Embed(tmpfilePng.Name())
-
-	err = gomail.Send(s, m)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return string(emailBody), nil
 }

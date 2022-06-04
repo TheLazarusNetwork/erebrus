@@ -4,10 +4,10 @@ package client
 
 import (
 	context "context"
-	model "github.com/TheLazarusNetwork/erebrus/model"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	model"github.com/TheLazarusNetwork/erebrus/model"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ClientServiceClient interface {
 	GetClientInformation(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*model.Response, error)
 	GetClientConfiguration(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*Config, error)
-	EmailClientConfiguration(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*model.Response, error)
+	EmailClientConfiguration(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*Config, error)
 	CreateClient(ctx context.Context, in *model.Client, opts ...grpc.CallOption) (*model.Response, error)
 	UpdateClient(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*model.Response, error)
 	DeleteClient(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*model.Response, error)
@@ -54,8 +54,8 @@ func (c *clientServiceClient) GetClientConfiguration(ctx context.Context, in *Cl
 	return out, nil
 }
 
-func (c *clientServiceClient) EmailClientConfiguration(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*model.Response, error) {
-	out := new(model.Response)
+func (c *clientServiceClient) EmailClientConfiguration(ctx context.Context, in *ClientRequest, opts ...grpc.CallOption) (*Config, error) {
+	out := new(Config)
 	err := c.cc.Invoke(ctx, "/client.ClientService/EmailClientConfiguration", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -105,7 +105,7 @@ func (c *clientServiceClient) GetClients(ctx context.Context, in *Empty, opts ..
 type ClientServiceServer interface {
 	GetClientInformation(context.Context, *ClientRequest) (*model.Response, error)
 	GetClientConfiguration(context.Context, *ClientRequest) (*Config, error)
-	EmailClientConfiguration(context.Context, *ClientRequest) (*model.Response, error)
+	EmailClientConfiguration(context.Context, *ClientRequest) (*Config, error)
 	CreateClient(context.Context, *model.Client) (*model.Response, error)
 	UpdateClient(context.Context, *UpdateRequest) (*model.Response, error)
 	DeleteClient(context.Context, *ClientRequest) (*model.Response, error)
@@ -123,7 +123,7 @@ func (UnimplementedClientServiceServer) GetClientInformation(context.Context, *C
 func (UnimplementedClientServiceServer) GetClientConfiguration(context.Context, *ClientRequest) (*Config, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetClientConfiguration not implemented")
 }
-func (UnimplementedClientServiceServer) EmailClientConfiguration(context.Context, *ClientRequest) (*model.Response, error) {
+func (UnimplementedClientServiceServer) EmailClientConfiguration(context.Context, *ClientRequest) (*Config, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method EmailClientConfiguration not implemented")
 }
 func (UnimplementedClientServiceServer) CreateClient(context.Context, *model.Client) (*model.Response, error) {

@@ -48,20 +48,18 @@ func (cs *ClientService) GetClientConfiguration(ctx context.Context, request *Cl
 }
 
 // Method to email client the configuration file
-func (cs *ClientService) EmailClientConfiguration(ctx context.Context, request *ClientRequest) (*model.Response, error) {
+func (cs *ClientService) EmailClientConfiguration(ctx context.Context, request *ClientRequest) (*Config, error) {
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Email Client Configuration Request ,for:", id)
-	err := core.EmailClient(id)
+	template, err := core.EmailClient(id)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("unable to read client")
-		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
-		return response, err
+		return nil, err
 	}
 
-	response := core.MakeSucessResponse(200, "Client Configuration Emailed", nil, nil, nil)
-	return response, nil
+	return &Config{Config: []byte(template)}, nil
 }
 
 //Method to create client

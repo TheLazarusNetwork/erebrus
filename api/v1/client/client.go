@@ -246,7 +246,7 @@ func configClient(c *gin.Context) {
 func emailClient(c *gin.Context) {
 	id := c.Param("id")
 
-	err := core.EmailClient(id)
+	template, err := core.EmailClient(id)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -257,7 +257,5 @@ func emailClient(c *gin.Context) {
 		return
 	}
 
-	response := core.MakeSucessResponse(200, "client configuration emailed", nil, nil, nil)
-
-	c.JSON(http.StatusOK, response)
+	c.JSON(http.StatusOK, map[string]string{"status": "200", "template": template})
 }

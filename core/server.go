@@ -248,15 +248,15 @@ func MakeErrorResponse(status int64, err string, server *model.Server, client *m
 
 }
 
-func UpdateEndpointDetails() error {
+func UpdateEndpointDetails() {
 	for {
 		resp, err := http.Get("https://ipinfo.io/ip")
 		if err != nil {
-			return err
+			log.WithFields(util.StandardFields).Fatal(err)
 		}
 		ip, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return err
+			log.WithFields(util.StandardFields).Fatal(err)
 
 		}
 		var data model.RegionEndpoint
@@ -270,8 +270,9 @@ func UpdateEndpointDetails() error {
 		request, _ := http.NewRequest(http.MethodPatch, os.Getenv("MASTERNODE_URL")+"/api/v1.0/regupdate", bytes.NewBuffer(js))
 		_, err = client.Do(request)
 		if err != nil {
-			return err
+			log.WithFields(util.StandardFields).Fatal(err)
 		}
+		log.WithFields(util.StandardFields).Debug("Region Endpoint updation sucess")
 		time.Sleep(3 * time.Hour)
 	}
 

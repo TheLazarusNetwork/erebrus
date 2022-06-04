@@ -29,7 +29,7 @@ service ClientService{
     
     rpc GetClientInformation(ClientRequest) returns (model.Response);
     rpc GetClientConfiguration(ClientRequest) returns (Config);
-    rpc EmailClientConfiguration(ClientRequest) returns (model.Response);
+    rpc EmailClientConfiguration(ClientRequest) returns (Config);
     rpc CreateClient(model.Client) returns (model.Response);
     rpc UpdateClient(UpdateRequest) returns (model.Response);
     rpc DeleteClient(ClientRequest) returns (model.Response);
