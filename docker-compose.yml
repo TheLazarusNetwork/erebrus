@@ -3,13 +3,17 @@ services:
   anonymousnetwork:
     build: .
     container_name: LazarusVPN
+    privileged: true
     environment: 
       LOAD_CONFIG_FILE: "TRUE"
       RUNTYPE: "RUNTYPE"
       SERVER: "0.0.0.0"
       PORT: "9080"
+      HTTP_PORT: "8080"
       WG_CONF_DIR: "/etc/wireguard"
+      MASTERNODE_URL: <url>
       WG_KEYS_DIR: "/etc/wireguard/keys"
+      WG_CLIENTS_DIR: "/etc/wireguard/clients"
       WG_INTERFACE_NAME: "wg0.conf"
       WG_ENDPOINT_HOST: "region.lazarus.network"
       WG_ENDPOINT_PORT: "51820"
@@ -29,4 +33,8 @@ services:
       SMTP_FROM: "Lazarus Network Support <support@lazarus.network>"
     ports:
       - '9080:9080/tcp'
-      - '51820:51820/udp'
+      - '8080:8080/tcp'
+    volumes:
+      - /etc/erebrus/wireguard:/etc/wireguard
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
