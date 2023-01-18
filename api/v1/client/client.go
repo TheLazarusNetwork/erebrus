@@ -21,7 +21,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.DELETE("/:id", deleteClient)
 		g.GET("", readClients)
 		g.GET("/:id/config", configClient)
-		g.GET("/:id/email", emailClient)
 	}
 }
 
@@ -67,14 +66,15 @@ func createClient(c *gin.Context) {
 
 // swagger:route GET /client/{id} Client readClient
 //
-// Read client
+// # Read client
 //
 // Return client based on the given uuid.
 // responses:
-//  200: clientSucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: clientSucessResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func readClient(c *gin.Context) {
 	id := c.Param("id")
 
@@ -96,14 +96,15 @@ func readClient(c *gin.Context) {
 
 // swagger:route PATCH /client/{id} Client updateClient
 //
-// Update client
+// # Update client
 //
 // Update client based on the given uuid and client model.
 // responses:
-//  200: clientSucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: clientSucessResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func updateClient(c *gin.Context) {
 	var data model.Client
 	id := c.Param("id")
@@ -136,14 +137,15 @@ func updateClient(c *gin.Context) {
 
 // swagger:route DELETE /client/{id} Client deleteClient
 //
-// Delete client
+// # Delete client
 //
 // Delete client based on the given uuid.
 // responses:
-//  200: sucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: sucessResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func deleteClient(c *gin.Context) {
 	id := c.Param("id")
 
@@ -165,14 +167,15 @@ func deleteClient(c *gin.Context) {
 
 // swagger:route GET /client Client readClients
 //
-// Read All Clients
+// # Read All Clients
 //
 // Get all clients in the server.
 // responses:
-//  200: clientsSucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: clientsSucessResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func readClients(c *gin.Context) {
 	clients, err := core.ReadClients()
 	if err != nil {
@@ -192,17 +195,19 @@ func readClients(c *gin.Context) {
 
 // swagger:route GET /client/{id}/config Client configClient
 //
-// Get client configuration
+// # Get client configuration
 //
 // Return client configuration file in byte format based on the given uuid.
 // produces:
-//  - application/octet-stream
-//	- application/json
+//   - application/octet-stream
+//   - application/json
+//
 // responses:
-//  200: configResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: configResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func configClient(c *gin.Context) {
 	configData, err := core.ReadClientConfig(c.Param("id"))
 	if err != nil {
@@ -231,31 +236,4 @@ func configClient(c *gin.Context) {
 	}
 	c.Data(http.StatusOK, "image/png", png)
 
-}
-
-// swagger:route GET /client/{id}/email Client emailClient
-//
-// Email client Configuration
-//
-// Email the configuration file of the client to the email associated with client.
-// responses:
-//  200: sucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
-func emailClient(c *gin.Context) {
-	id := c.Param("id")
-
-	template, err := core.EmailClient(id)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("failed to send email to client")
-
-		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
-		c.JSON(http.StatusInternalServerError, response)
-		return
-	}
-
-	c.JSON(http.StatusOK, map[string]string{"status": "200", "template": template})
 }

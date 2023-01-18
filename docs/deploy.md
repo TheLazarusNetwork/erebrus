@@ -35,11 +35,6 @@
     -e WG_POST_UP='iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE' \
     -e WG_PRE_DOWN='echo WireGuard PreDown' \
     -e WG_POST_DOWN='iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE' \
-    -e SMTP_HOST='smtp.mail-domain.com' \
-    -e SMTP_PORT='smtp port' \
-    -e SMTP_USERNAME='username' \
-    -e SMTP_PASSWORD='password' \
-    -e SMTP_FROM='from' \
     --restart unless-stopped \
     --name erebrus-region \
     erebrus

@@ -9,12 +9,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-//gRPC client service struct
+// gRPC client service struct
 type ClientService struct {
 	UnimplementedClientServiceServer
 }
 
-//Method to get Client information
+// Method to get Client information
 func (cs *ClientService) GetClientInformation(ctx context.Context, request *ClientRequest) (*model.Response, error) {
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Information Request ,for:", id)
@@ -32,7 +32,7 @@ func (cs *ClientService) GetClientInformation(ctx context.Context, request *Clie
 	return response, nil
 }
 
-//Method to get client config data
+// Method to get client config data
 func (cs *ClientService) GetClientConfiguration(ctx context.Context, request *ClientRequest) (*Config, error) {
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Configuration Request ,for:", id)
@@ -47,22 +47,7 @@ func (cs *ClientService) GetClientConfiguration(ctx context.Context, request *Cl
 	return &Config{Config: configData}, nil
 }
 
-// Method to email client the configuration file
-func (cs *ClientService) EmailClientConfiguration(ctx context.Context, request *ClientRequest) (*Config, error) {
-	id := request.UUID
-	log.WithFields(util.StandardFieldsGRPC).Info("Email Client Configuration Request ,for:", id)
-	template, err := core.EmailClient(id)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("unable to read client")
-		return nil, err
-	}
-
-	return &Config{Config: []byte(template)}, nil
-}
-
-//Method to create client
+// Method to create client
 func (cs *ClientService) CreateClient(ctx context.Context, request *model.Client) (*model.Response, error) {
 	client, err := core.CreateClient(request)
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Creation Request")
@@ -78,7 +63,7 @@ func (cs *ClientService) CreateClient(ctx context.Context, request *model.Client
 	return response, nil
 }
 
-//Method to update client
+// Method to update client
 func (cs *ClientService) UpdateClient(ctx context.Context, request *UpdateRequest) (*model.Response, error) {
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Update Request ,for:", id)
@@ -95,7 +80,7 @@ func (cs *ClientService) UpdateClient(ctx context.Context, request *UpdateReques
 	return response, nil
 }
 
-//Method to delete client
+// Method to delete client
 func (cs *ClientService) DeleteClient(ctx context.Context, request *ClientRequest) (*model.Response, error) {
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Delete Client Request ,for:", id)
@@ -112,7 +97,7 @@ func (cs *ClientService) DeleteClient(ctx context.Context, request *ClientReques
 	return response, nil
 }
 
-//Method to get all clients
+// Method to get all clients
 func (cs *ClientService) GetClients(ctx context.Context, request *Empty) (*model.Response, error) {
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Get All Clients")
 	clients, err := core.ReadClients()

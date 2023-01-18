@@ -4,8 +4,8 @@ SERVER = "0.0.0.0"
 HTTP_PORT = "9080"
 GRPC_PORT = "9090"
 REGION="eu01"
-DOMAIN="domain"
-
+DOMAIN="region.erebrus.io"
+MASTERNODE_URL: "https://masternode.erebrus.io"
 
 # Wireguard Specifications
 WG_CONF_DIR = "/etc/wireguard"
@@ -22,10 +22,3 @@ WG_PRE_UP = "echo WireGuard PreUp"
 WG_POST_UP = "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
 WG_PRE_DOWN = "echo WireGuard PreDown"
 WG_POST_DOWN = "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE"
-
-# SMTP Details
-SMTP_HOST = "your smtp host"
-SMTP_PORT = "smtp port"
-SMTP_USERNAME = "smtp username"
-SMTP_PASSWORD = "smtp password"
-SMTP_FROM = " From details"

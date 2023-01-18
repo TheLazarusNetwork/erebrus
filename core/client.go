@@ -13,7 +13,6 @@ import (
 	"github.com/TheLazarusNetwork/erebrus/util"
 	uuid "github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
-	"github.com/skip2/go-qrcode"
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -201,60 +200,4 @@ func ReadClientConfig(id string) ([]byte, error) {
 	}
 
 	return configDataWg, nil
-}
-
-// EmailClient send email to client
-func EmailClient(id string) (string, error) {
-	client, err := ReadClient(id)
-	if err != nil {
-		return "", err
-	}
-
-	configData, err := ReadClientConfig(id)
-	if err != nil {
-		return "", err
-	}
-
-	// conf as .conf file
-	tmpfileCfg, err := ioutil.TempFile("", "erebrus-*.conf") //Append region name
-	if err != nil {
-		return "", err
-	}
-	if _, err := tmpfileCfg.Write(configData); err != nil {
-		return "", err
-	}
-	if err := tmpfileCfg.Close(); err != nil {
-		return "", err
-	}
-
-	//Rename the file after operations are completed
-	new_name := "erebrus-" + client.Name + "-" + os.Getenv("REGION") + ".conf"
-	os.Rename(tmpfileCfg.Name(), new_name)
-
-	defer os.Remove(new_name) // clean up
-
-	// conf as png image
-	png, err := qrcode.Encode(string(configData), qrcode.Medium, 280)
-	if err != nil {
-		return "", err
-	}
-	tmpfilePng, err := ioutil.TempFile("", "qrcode-*.png")
-	if err != nil {
-		return "", err
-	}
-	if _, err := tmpfilePng.Write(png); err != nil {
-		return "", err
-	}
-	if err := tmpfilePng.Close(); err != nil {
-		return "", err
-	}
-	defer os.Remove(tmpfilePng.Name()) // clean up
-
-	// get email body
-	emailBody, err := template.DumpEmail(client, filepath.Base(tmpfilePng.Name()))
-	if err != nil {
-		return "", err
-	}
-
-	return string(emailBody), nil
 }
