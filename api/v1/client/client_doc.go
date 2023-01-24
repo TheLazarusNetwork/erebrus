@@ -74,7 +74,7 @@ type UnauthorizedResponse struct {
 
 // swagger:response serverErrorResponse
 // Response when the operation failed with Server Error.
-type serverErrorResponse struct {
+type ServerErrorResponse struct {
 	// in:body
 	Body struct {
 		// example: 500
@@ -83,16 +83,6 @@ type serverErrorResponse struct {
 		Sucess bool
 		// example: error message
 		Error string
-	}
-}
-
-// swagger:response configResponse
-// Response type for configuration file.
-type configResponse struct {
-	// in:body
-	Body struct {
-		// example: File Download
-		Data string `json:"content"`
 	}
 }
 

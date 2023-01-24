@@ -7,7 +7,6 @@ import (
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
-	"github.com/skip2/go-qrcode"
 )
 
 // ApplyRoutes applies router to gin Router
@@ -20,7 +19,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.PATCH("/:id", updateClient)
 		g.DELETE("/:id", deleteClient)
 		g.GET("", readClients)
-		g.GET("/:id/config", configClient)
 	}
 }
 
@@ -191,49 +189,4 @@ func readClients(c *gin.Context) {
 	response := core.MakeSucessResponse(200, "clients details", nil, nil, clients)
 
 	c.JSON(http.StatusOK, response)
-}
-
-// swagger:route GET /client/{id}/config Client configClient
-//
-// # Get client configuration
-//
-// Return client configuration file in byte format based on the given uuid.
-// produces:
-//   - application/octet-stream
-//   - application/json
-//
-// responses:
-//
-//	 200: configResponse
-//	 400: badRequestResponse
-//		401: unauthorizedResponse
-//	 500: serverErrorResponse
-func configClient(c *gin.Context) {
-	configData, err := core.ReadClientConfig(c.Param("id"))
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("failed to read client config")
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-
-	formatQr := c.DefaultQuery("qrcode", "false")
-	if formatQr == "false" {
-		// return config as txt file
-		c.Header("Content-Disposition", "attachment; filename="+c.Param("id")+".conf")
-		c.Data(http.StatusOK, "application/config", configData)
-		return
-	}
-	// return config as png qrcode
-	png, err := qrcode.Encode(string(configData), qrcode.Medium, 250)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("failed to create qrcode")
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-	c.Data(http.StatusOK, "image/png", png)
-
 }

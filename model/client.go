@@ -8,21 +8,21 @@ import (
 
 // Client structure
 /*type Client struct {
-	UUID                      string    `json:"uuid"`
-	Name                      string    `json:"name"`
-	Tags                      []string  `json:"tags"`
-	Email                     string    `json:"email"`
-	Enable                    bool      `json:"enable"`
-	IgnorePersistentKeepalive bool      `json:"ignorePersistentKeepalive"`
-	PresharedKey              string    `json:"presharedKey"`
-	AllowedIPs                []string  `json:"allowedIPs"`
-	Address                   []string  `json:"address"`
-	PrivateKey                string    `json:"privateKey"`
-	PublicKey                 string    `json:"publicKey"`
-	CreatedBy                 string    `json:"createdBy"`
-	UpdatedBy                 string    `json:"updatedBy"`
-	Created                   int64 `json:"created"`
-	Updated                   int64 `json:"updated"`
+	UUID                      string   `json:"uuid"`
+	Name                      string   `json:"name"`
+	Tags                      []string `json:"tags"`
+	WalletAddress             string   `json:"walletAddress"`
+	Enable                    bool     `json:"enable"`
+	IgnorePersistentKeepalive bool     `json:"ignorePersistentKeepalive"`
+	PresharedKey              string   `json:"presharedKey"`
+	AllowedIPs                []string `json:"allowedIPs"`
+	Address                   []string `json:"address"`
+	PrivateKey                string   `json:"privateKey"`
+	PublicKey                 string   `json:"publicKey"`
+	CreatedBy                 string   `json:"createdBy"`
+	UpdatedBy                 string   `json:"updatedBy"`
+	Created                   int64    `json:"created"`
+	Updated                   int64    `json:"updated"`
 }*/
 
 // IsValid check if model is valid
