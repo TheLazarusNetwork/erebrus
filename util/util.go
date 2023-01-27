@@ -19,9 +19,11 @@ var Version = "1.0"
 var hostname, _ = os.Hostname()
 
 var (
-	// RegexpEmail check valid email
-	RegexpEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+	// RegexpWalletEth check valid Eth Wallet Address
+	RegexpWalletEth = regexp.MustCompile("^0x[a-fA-F0-9]{40}$")
 )
+
+//add wallet regex
 
 // StandardFields for logger
 var StandardFields = log.Fields{

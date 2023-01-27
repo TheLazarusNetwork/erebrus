@@ -37,7 +37,7 @@ func CreateClient(client *model.Client) (*model.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	client.PrivateKey = key.String()
+	// client.PrivateKey = key.String()
 	client.PublicKey = key.PublicKey().String()
 
 	presharedKey, err := wgtypes.GenerateKey()
@@ -65,9 +65,9 @@ func CreateClient(client *model.Client) (*model.Client, error) {
 		ips = append(ips, ip)
 	}
 	client.Address = ips
-	client.Created = timestamppb.Now().AsTime().UnixMilli()
+	client.CreatedAt = timestamppb.Now().AsTime().UnixMilli()
 
-	client.Updated = client.Created
+	client.UpdatedAt = client.CreatedAt
 
 	err = storage.Serialize(client.UUID, client)
 	if err != nil {
@@ -119,9 +119,9 @@ func UpdateClient(UUID string, client *model.Client) (*model.Client, error) {
 	}
 
 	// keep keys
-	client.PrivateKey = current.PrivateKey
+	// client.PrivateKey = current.PrivateKey
 	client.PublicKey = current.PublicKey
-	client.Updated = timestamppb.Now().AsTime().UnixMilli()
+	client.UpdatedAt = timestamppb.Now().AsTime().UnixMilli()
 
 	err = storage.Serialize(client.UUID, client)
 	if err != nil {
@@ -176,7 +176,7 @@ func ReadClients() ([]*model.Client, error) {
 	}
 
 	sort.Slice(clients, func(i, j int) bool {
-		return clients[i].Created < (clients[j].Created)
+		return clients[i].CreatedAt < (clients[j].CreatedAt)
 	})
 
 	return clients, nil

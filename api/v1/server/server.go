@@ -41,9 +41,7 @@ func readServer(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
-
 	response := core.MakeSucessResponse(200, "server details", server, nil, nil)
-
 	c.JSON(http.StatusOK, response)
 }
 

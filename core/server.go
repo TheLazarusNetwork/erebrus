@@ -56,8 +56,8 @@ func ReadServer() (*model.Server, error) {
 		server.PostUp = os.Getenv("WG_POST_UP")     //	"echo WireGuard PostUp"
 		server.PreDown = os.Getenv("WG_PRE_DOWN")   //	"echo WireGuard PreDown"
 		server.PostDown = os.Getenv("WG_POST_DOWN") //	"echo WireGuard PostDown"
-		server.Created = int64(time.Now().Nanosecond())
-		server.Updated = server.Created
+		server.CreatedAt = int64(time.Now().Nanosecond())
+		server.UpdatedAt = server.CreatedAt
 
 		err = storage.Serialize("server.json", server)
 		if err != nil {
@@ -100,7 +100,7 @@ func UpdateServer(server *model.Server) (*model.Server, error) {
 	server.PrivateKey = current.(*model.Server).PrivateKey
 	server.PublicKey = current.(*model.Server).PublicKey
 	//server.PresharedKey = current.(*model.Server).PresharedKey
-	server.Updated = int64(time.Now().Nanosecond())
+	server.UpdatedAt = int64(time.Now().Nanosecond())
 
 	err = storage.Serialize("server.json", server)
 	if err != nil {
@@ -229,7 +229,7 @@ func MakeSucessResponse(status int64, message string, server *model.Server, clie
 		Server:  server,
 		Client:  client,
 		Clients: clients,
-		Sucess:  true,
+		Success: true,
 		Error:   "",
 	}
 }
@@ -242,7 +242,7 @@ func MakeErrorResponse(status int64, err string, server *model.Server, client *m
 		Server:  server,
 		Client:  client,
 		Clients: clients,
-		Sucess:  false,
+		Success: false,
 		Error:   err,
 	}
 

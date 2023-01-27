@@ -18,9 +18,12 @@ env:
 
 
 jobs:
+
   build:
 
+    name: Deploy to GitHub Container Registry
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -92,7 +95,7 @@ jobs:
 
   main:
   
-    name: Build Image and deploy to Docker Hub
+    name: Deploy to Docker Hub
     runs-on: ubuntu-latest
 
     steps:
