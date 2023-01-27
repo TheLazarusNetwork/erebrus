@@ -19,6 +19,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		g.PATCH("/:id", updateClient)
 		g.DELETE("/:id", deleteClient)
 		g.GET("", readClients)
+		g.POST("/:id", ConfigureClient)
 	}
 }
 
