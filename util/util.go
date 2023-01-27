@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net"
 	"os"
-	"regexp"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -18,10 +17,12 @@ var Version = "1.0"
 //Hostname
 var hostname, _ = os.Hostname()
 
-var (
-	// RegexpEmail check valid email
-	RegexpEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-)
+// var (
+// 	// RegexpEmail check valid email
+// 	RegexpEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+// )
+
+//add wallet regex 
 
 // StandardFields for logger
 var StandardFields = log.Fields{

@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/TheLazarusNetwork/erebrus/core"
@@ -13,7 +14,6 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/client")
 	{
-
 		g.POST("", createClient)
 		g.GET("/:id", readClient)
 		g.PATCH("/:id", updateClient)
@@ -188,5 +188,20 @@ func readClients(c *gin.Context) {
 
 	response := core.MakeSucessResponse(200, "clients details", nil, nil, clients)
 
+	c.JSON(http.StatusOK, response)
+}
+
+func ConfigureClient(c *gin.Context) {
+	configData, err := core.ReadClientConfig(c.Param("id"))
+	if err != nil {
+		log.WithFields(log.Fields{
+			"err": err,
+		}).Error("failed to read client config")
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	var responsevalue model.Response
+	json.Unmarshal(configData, &responsevalue)
+	response := core.MakeSucessResponse(200, "Client Successfully Created", responsevalue.Server, responsevalue.Client, nil)
 	c.JSON(http.StatusOK, response)
 }

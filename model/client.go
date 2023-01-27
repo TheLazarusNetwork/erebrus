@@ -38,10 +38,13 @@ func (a Client) IsValid() []error {
 		errs = append(errs, fmt.Errorf("name field must be between 2-40 chars"))
 	}
 	// email is not required, but if provided must match regex
-	if a.Email != "" {
-		if !util.RegexpEmail.MatchString(a.Email) {
-			errs = append(errs, fmt.Errorf("email %s is invalid", a.Email))
-		}
+	if a.WalletAddress != "" {
+		// if !util.RegexpEmail.MatchString(a.Email) {
+		// 	errs = append(errs, fmt.Errorf("email %s is invalid", a.Email))
+		// }
+
+		//addition of regex for wallets!
+		errs = append(errs, fmt.Errorf("wallet Address cannot be null"))
 	}
 	// check if the allowedIPs empty
 	if len(a.AllowedIPs) == 0 {

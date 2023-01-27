@@ -13,7 +13,7 @@ func TestCreateClient(t *testing.T) {
 	data.Name = "sambath kumar"
 	data.Tags = []string{"home"}
 	data.CreatedBy = "sambath@mail.com"
-	data.Email = "sambath@mail.com"
+	data.WalletAddress = "0xqwertyuioASDFGHJ"
 	data.Enable = true
 	data.AllowedIPs = []string{"0.0.0.0/0", "::/0"}
 	data.Address = []string{"10.0.0.1/24"}
