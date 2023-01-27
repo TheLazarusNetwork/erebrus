@@ -9,7 +9,6 @@ import (
 
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/TheLazarusNetwork/erebrus/storage"
-	"github.com/TheLazarusNetwork/erebrus/template"
 	"github.com/TheLazarusNetwork/erebrus/util"
 	uuid "github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
@@ -17,8 +16,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// CreateClient client with all necessary data
-func CreateClient(client *model.Client) (*model.Client, error) {
+// RegisterClient client with all necessary data
+func RegisterClient(client *model.Client) (*model.Client, error) {
 	// check if client is valid
 	errs := client.IsValid()
 	if len(errs) != 0 {
@@ -32,13 +31,6 @@ func CreateClient(client *model.Client) (*model.Client, error) {
 
 	u, err := uuid.NewRandom()
 	client.UUID = u.String()
-
-	key, err := wgtypes.GeneratePrivateKey()
-	if err != nil {
-		return nil, err
-	}
-	// client.PrivateKey = key.String()
-	client.PublicKey = key.PublicKey().String()
 
 	presharedKey, err := wgtypes.GenerateKey()
 	if err != nil {
@@ -118,9 +110,9 @@ func UpdateClient(UUID string, client *model.Client) (*model.Client, error) {
 		return nil, errors.New("failed to validate client")
 	}
 
-	// keep keys
-	// client.PrivateKey = current.PrivateKey
+	// Keep Keys
 	client.PublicKey = current.PublicKey
+	client.PresharedKey = current.PresharedKey
 	client.UpdatedAt = timestamppb.Now().AsTime().UnixMilli()
 
 	err = storage.Serialize(client.UUID, client)
@@ -180,24 +172,4 @@ func ReadClients() ([]*model.Client, error) {
 	})
 
 	return clients, nil
-}
-
-// ReadClientConfig in wg format
-func ReadClientConfig(id string) ([]byte, error) {
-	client, err := ReadClient(id)
-	if err != nil {
-		return nil, err
-	}
-
-	server, err := ReadServer()
-	if err != nil {
-		return nil, err
-	}
-
-	configDataWg, err := template.DumpClientWg(client, server)
-	if err != nil {
-		return nil, err
-	}
-
-	return configDataWg, nil
 }

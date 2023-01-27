@@ -32,24 +32,9 @@ func (cs *ClientService) GetClientInformation(ctx context.Context, request *Clie
 	return response, nil
 }
 
-// Method to get client config data
-func (cs *ClientService) GetClientConfiguration(ctx context.Context, request *ClientRequest) (*Config, error) {
-	id := request.UUID
-	log.WithFields(util.StandardFieldsGRPC).Info("Client Configuration Request ,for:", id)
-	configData, err := core.ReadClientConfig(id)
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("unable to read client config")
-		return nil, err
-	}
-
-	return &Config{Config: configData}, nil
-}
-
 // Method to create client
 func (cs *ClientService) CreateClient(ctx context.Context, request *model.Client) (*model.Response, error) {
-	client, err := core.CreateClient(request)
+	client, err := core.RegisterClient(request)
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Creation Request")
 	if err != nil {
 		log.WithFields(log.Fields{

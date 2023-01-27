@@ -13,26 +13,7 @@ import (
 )
 
 var (
-	clientTpl = `[Interface]
-Address = {{ StringsJoin .Client.Address ", " }}
-PrivateKey = {{ .Client.PrivateKey }}
-{{ if ne (len .Server.DNS) 0 -}}
-DNS = {{ StringsJoin .Server.DNS ", " }}
-{{- end }}
-{{ if ne .Server.Mtu 0 -}}
-MTU = {{.Server.Mtu}}
-{{- end}}
-[Peer]
-PublicKey = {{ .Server.PublicKey }}
-PresharedKey = {{ .Client.PresharedKey }}
-AllowedIPs = {{ StringsJoin .Client.AllowedIPs ", " }}
-Endpoint = {{ .Server.Endpoint }}:{{ .Server.ListenPort }}
-{{ if and (ne .Server.PersistentKeepalive 0) (not .Client.IgnorePersistentKeepalive) -}}
-PersistentKeepalive = {{.Server.PersistentKeepalive}}
-{{- end}}
-`
-
-	wgTpl = `# Updated: {{ .Server.Updated }} / Created: {{ .Server.Created }}
+	wgTpl = `# Updated: {{ .Server.UpdatedAt }} / Created: {{ .Server.CreatedAt }}
 [Interface]
 {{- range .Server.Address }}
 Address = {{ . }}
@@ -48,7 +29,7 @@ PreDown = {{ .Server.PreDown }}
 PostDown = {{ .Server.PostDown }}
 {{- range .Clients }}
 {{ if .Enable -}}
-# {{.Name}} / {{.Email}} / Updated: {{.Updated}} / Created: {{.Created}}
+# {{.Name}} / {{.Email}} / Updated: {{.UpdatedAt}} / Created: {{.CreatedAt}}
 # friendly_name = {{.Name}}
 [Peer]
 PublicKey = {{ .PublicKey }}
@@ -57,22 +38,6 @@ AllowedIPs = {{ StringsJoin .Address ", " }}
 {{- end }}
 {{ end }}`
 )
-
-// DumpClientWg dump client wg config with go template
-func DumpClientWg(client *model.Client, server *model.Server) ([]byte, error) {
-	t, err := template.New("client").Funcs(template.FuncMap{"StringsJoin": strings.Join}).Parse(clientTpl)
-	if err != nil {
-		return nil, err
-	}
-
-	return dump(t, struct {
-		Client *model.Client
-		Server *model.Server
-	}{
-		Client: client,
-		Server: server,
-	})
-}
 
 // DumpServerWg dump server wg config with go template, write it to file and return bytes
 func DumpServerWg(clients []*model.Client, server *model.Server) ([]byte, error) {

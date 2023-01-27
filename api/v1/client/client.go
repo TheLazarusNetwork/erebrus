@@ -1,7 +1,6 @@
 package client
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/TheLazarusNetwork/erebrus/core"
@@ -14,12 +13,11 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/client")
 	{
-		g.POST("", createClient)
+		g.POST("", registerClient)
 		g.GET("/:id", readClient)
 		g.PATCH("/:id", updateClient)
 		g.DELETE("/:id", deleteClient)
 		g.GET("", readClients)
-		g.POST("/:id", ConfigureClient)
 	}
 }
 
@@ -34,7 +32,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 //	401: unauthorizedResponse
 //  500: serverErrorResponse
 
-func createClient(c *gin.Context) {
+func registerClient(c *gin.Context) {
 	var data model.Client
 
 	if err := c.ShouldBindJSON(&data); err != nil {
@@ -47,7 +45,7 @@ func createClient(c *gin.Context) {
 		return
 	}
 
-	client, err := core.CreateClient(&data)
+	client, err := core.RegisterClient(&data)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -189,20 +187,5 @@ func readClients(c *gin.Context) {
 
 	response := core.MakeSucessResponse(200, "clients details", nil, nil, clients)
 
-	c.JSON(http.StatusOK, response)
-}
-
-func ConfigureClient(c *gin.Context) {
-	configData, err := core.ReadClientConfig(c.Param("id"))
-	if err != nil {
-		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("failed to read client config")
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-	var responsevalue model.Response
-	json.Unmarshal(configData, &responsevalue)
-	response := core.MakeSucessResponse(200, "Client Successfully Created", responsevalue.Server, responsevalue.Client, nil)
 	c.JSON(http.StatusOK, response)
 }
