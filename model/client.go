@@ -39,12 +39,9 @@ func (a Client) IsValid() []error {
 	}
 	// email is not required, but if provided must match regex
 	if a.WalletAddress != "" {
-		// if !util.RegexpEmail.MatchString(a.Email) {
-		// 	errs = append(errs, fmt.Errorf("email %s is invalid", a.Email))
-		// }
-
-		//addition of regex for wallets!
-		errs = append(errs, fmt.Errorf("wallet Address cannot be null"))
+		if !util.RegexpWalletEth.MatchString(a.WalletAddress) {
+			errs = append(errs, fmt.Errorf("wallet address  %s is invalid", a.WalletAddress))
+		}
 	}
 	// check if the allowedIPs empty
 	if len(a.AllowedIPs) == 0 {
