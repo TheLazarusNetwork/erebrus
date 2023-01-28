@@ -29,7 +29,7 @@ PreDown = {{ .Server.PreDown }}
 PostDown = {{ .Server.PostDown }}
 {{- range .Clients }}
 {{ if .Enable -}}
-# {{.Name}} / {{.Email}} / Updated: {{.UpdatedAt}} / Created: {{.CreatedAt}}
+# {{.Name}} / {{.WalletAddress}} / Updated: {{.UpdatedAt}} / Created: {{.CreatedAt}}
 # friendly_name = {{.Name}}
 [Peer]
 PublicKey = {{ .PublicKey }}
