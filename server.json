@@ -1,0 +1,23 @@
+{
+  "Address": [
+    "10.0.0.1/24"
+  ],
+  "ListenPort": 51820,
+  "PrivateKey": "cHt4HCu6I8cJCFFqMdDhm4lXmRuCoQjOKh0nBYalY3g=",
+  "PublicKey": "AF3qUOFST2mSzST33N/mUgwHyGaR9dHtXoS7ECbNz0c=",
+  "Endpoint": "endpoint",
+  "PersistentKeepalive": 16,
+  "DNS": [
+    "1.1.1.1"
+  ],
+  "AllowedIPs": [
+    "0.0.0.0/0",
+    "::/0"
+  ],
+  "PreUp": "echo WireGuard PreUp",
+  "PostUp": "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE",
+  "PreDown": "echo WireGuard PreDown",
+  "PostDown": "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE",
+  "CreatedAt": 858889900,
+  "UpdatedAt": 858889900
+}

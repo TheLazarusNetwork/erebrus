@@ -20,6 +20,8 @@ import (
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 )
 
+var PublicKey string
+
 // ReadServer object, create default one
 func ReadServer() (*model.Server, error) {
 	if !util.FileExists(filepath.Join(os.Getenv("WG_CONF_DIR"), "server.json")) {
@@ -31,7 +33,7 @@ func ReadServer() (*model.Server, error) {
 		}
 		server.PrivateKey = key.String()
 		server.PublicKey = key.PublicKey().String()
-
+		PublicKey = server.PublicKey
 		server.Endpoint = os.Getenv("WG_ENDPOINT_HOST")
 		listenPort, _ := strconv.ParseInt(os.Getenv("WG_ENDPOINT_PORT"), 10, 32)
 
@@ -205,6 +207,18 @@ func GetServerStatus() (*model.Status, error) {
 	response.Region = os.Getenv("REGION")
 	response.VPNPort = os.Getenv("WG_ENDPOINT_PORT")
 
+	serverStatus, err := storage.Deserialize("server.json")
+
+	if err != nil {
+		log.WithFields(util.StandardFields).Error(err)
+	} else {
+		var server model.Server
+		bodybytes, _ := json.Marshal(serverStatus)
+		json.Unmarshal(bodybytes, &server)
+		response.PublicKey = server.PublicKey
+		response.PersistentKeepalive = server.PersistentKeepalive
+		response.DNS = server.DNS
+	}
 	var privateip string
 	addrs, _ := net.InterfaceAddrs()
 

@@ -59,4 +59,6 @@ message Status{
     string Region=8;
     string VPNPort=9;
     string PublicKey=10;
+    int64 PersistentKeepalive=11;
+    repeated string DNS=12;
 }
