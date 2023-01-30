@@ -15,7 +15,6 @@ message Config{
 service ServerService{
     rpc GetServerInformation(Empty) returns (model.Response);
     rpc GetServerConfiguraion(Empty) returns(Config);
-    rpc GetStatus(Empty) returns (model.Status);
     rpc UpdateServer(model.Server) returns (model.Response);
     
 }
