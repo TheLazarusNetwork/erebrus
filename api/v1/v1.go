@@ -15,5 +15,6 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		client.ApplyRoutes(v1)
 		server.ApplyRoutes(v1)
 		status.ApplyRoutes(v1)
+		
 	}
 }

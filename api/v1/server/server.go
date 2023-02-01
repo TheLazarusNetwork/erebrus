@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/TheLazarusNetwork/erebrus/api/v1/paseto"
 	"github.com/TheLazarusNetwork/erebrus/core"
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/TheLazarusNetwork/erebrus/util"
@@ -16,10 +17,11 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/server")
 	{
+		g.Use(paseto.PASETO)
 		g.GET("", readServer)
 		g.PATCH("", updateServer)
 		g.GET("/config", configServer)
-		
+
 	}
 }
 

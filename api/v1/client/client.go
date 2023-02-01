@@ -3,6 +3,7 @@ package client
 import (
 	"net/http"
 
+	"github.com/TheLazarusNetwork/erebrus/api/v1/paseto"
 	"github.com/TheLazarusNetwork/erebrus/core"
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/client")
 	{
+		g.Use(paseto.PASETO)
 		g.POST("", registerClient)
 		g.GET("/:id", readClient)
 		g.PATCH("/:id", updateClient)
