@@ -6,8 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/TheLazarusNetwork/erebrus/api/v1/flowid"
-	"github.com/TheLazarusNetwork/erebrus/dbconfig"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -18,11 +16,7 @@ type CustomClaims struct {
 }
 
 func (c CustomClaims) Valid() error {
-	db := dbconfig.GetDb()
-	err := db.Model(&flowid.User{}).Where("wallet_address = ?", c.WalletAddress).First(&flowid.User{}).Error
-	if err != nil {
-		return err
-	}
+	// Fetch the Key iinterface pair for custom claim and get the expiration time alog with wallet address
 	return nil
 }
 

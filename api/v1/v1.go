@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate"
 	"github.com/TheLazarusNetwork/erebrus/api/v1/client"
 	"github.com/TheLazarusNetwork/erebrus/api/v1/server"
 	"github.com/TheLazarusNetwork/erebrus/api/v1/status"
@@ -15,6 +16,7 @@ func ApplyRoutes(r *gin.RouterGroup) {
 		client.ApplyRoutes(v1)
 		server.ApplyRoutes(v1)
 		status.ApplyRoutes(v1)
-		
+		authenticate.ApplyRoutes(v1)
+
 	}
 }

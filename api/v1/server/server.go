@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/TheLazarusNetwork/erebrus/api/v1/paseto"
+	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/paseto"
 	"github.com/TheLazarusNetwork/erebrus/core"
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/TheLazarusNetwork/erebrus/util"
@@ -27,14 +27,15 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 // swagger:route GET /server Server readServer
 //
-// Read Server
+// # Read Server
 //
 // Retrieves the server details.
 // responses:
-//  200: serverSucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: serverSucessResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func readServer(c *gin.Context) {
 	server, err := core.ReadServer()
 	if err != nil {
@@ -49,14 +50,15 @@ func readServer(c *gin.Context) {
 
 // swagger:route PATCH /server Server updateServer
 //
-// Update Server
+// # Update Server
 //
 // Update the server with given details.
 // responses:
-//  200: serverSucessResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: serverSucessResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func updateServer(c *gin.Context) {
 	var data model.Server
 
@@ -85,10 +87,11 @@ func updateServer(c *gin.Context) {
 // Get Server Configuration
 // Retrieves the server configuration details.
 // responses:
-//  200: configResponse
-//  400: badRequestResponse
-//	401: unauthorizedResponse
-//  500: serverErrorResponse
+//
+//	 200: configResponse
+//	 400: badRequestResponse
+//		401: unauthorizedResponse
+//	 500: serverErrorResponse
 func configServer(c *gin.Context) {
 	configData, err := core.ReadWgConfigFile()
 	if err != nil {

@@ -1,37 +1,43 @@
 package flowid
 
 import (
-	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/TheLazarusNetwork/erebrus/core"
-	"github.com/TheLazarusNetwork/erebrus/dbconfig"
+	"github.com/TheLazarusNetwork/erebrus/util"
+
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )
 
-type User struct {
-	Name          string   `json:"name,omitempty"`
-	WalletAddress string   `gorm:"primary_key" json:"walletAddress"`
-	FlowIds       []FlowId `gorm:"foreignkey:WalletAddress" json:"-"`
-}
+//	type User struct {
+//		Name          string   `json:"name,omitempty"`
+//		WalletAddress string   `gorm:"primary_key" json:"walletAddress"`
+//		FlowIds       []FlowId `gorm:"foreignkey:WalletAddress" json:"-"`
+//	}
 type FlowId struct {
 	WalletAddress string
 	FlowId        string `gorm:"primary_key"`
 	RelatedRoleId string
 }
+type Db struct {
+	WalletAddress string
+	Timestamp     time.Time
+}
+
+var data map[string]Db
 
 // ApplyRoutes applies router to gin Router
-func ApplyRoutes(r *gin.RouterGroup) {
-	g := r.Group("/flowid")
-	{
-		g.GET("", GetFlowId)
-	}
-}
+// func ApplyRoutes(r *gin.RouterGroup) {
+// 	g := r.Group("/flowid")
+// 	{
+// 		g.GET("", GetFlowId)
+// 	}
+// }
 
 func GetFlowId(c *gin.Context) {
 	walletAddress := c.Query("walletAddress")
@@ -52,7 +58,15 @@ func GetFlowId(c *gin.Context) {
 		}).Error("Wallet address (walletAddress) is not valid")
 
 		response := core.MakeErrorResponse(400, err.Error(), nil, nil, nil)
-		c.JSON(http.StatusInternalServerError, response)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	if !util.RegexpWalletEth.MatchString(walletAddress) {
+		log.WithFields(log.Fields{
+			"err": err,
+		}).Error("Wallet address (walletAddress) is not valid")
+		response := core.MakeErrorResponse(400, err.Error(), nil, nil, nil)
+		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 	flowId, err := GenerateFlowId(walletAddress, "")
@@ -60,10 +74,8 @@ func GetFlowId(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to create FlowId")
-
 		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
 		c.JSON(http.StatusInternalServerError, response)
-
 		return
 	}
 	userAuthEULA := os.Getenv("AUTH_EULA")
@@ -75,50 +87,13 @@ func GetFlowId(c *gin.Context) {
 }
 
 func GenerateFlowId(walletAddress string, relatedRoleId string) (string, error) {
-	db := dbconfig.GetDb()
+
 	flowId := uuid.NewString()
-	var update bool
-	update = true
-
-	findResult := db.Model(&User{}).Find(&User{}, &User{WalletAddress: walletAddress})
-
-	if err := findResult.Error; err != nil {
-		err = fmt.Errorf("while finding user error occured, %s", err)
-		logrus.Error(err)
-		return "", err
+	var dbdata Db
+	dbdata.WalletAddress = walletAddress
+	dbdata.Timestamp = time.Now()
+	data = map[string]Db{
+		flowId: dbdata,
 	}
-
-	rowsAffected := findResult.RowsAffected
-	if rowsAffected == 0 {
-		update = false
-	}
-	if update {
-		// User exist so update
-		association := db.Model(&User{
-			WalletAddress: walletAddress,
-		}).Association("FlowIds")
-		if err := association.Error; err != nil {
-			logrus.Error(err)
-			return "", err
-		}
-		err := association.Append(&FlowId{WalletAddress: walletAddress, FlowId: flowId, RelatedRoleId: relatedRoleId})
-		if err != nil {
-			return "", err
-		}
-	} else {
-		// User doesn't exist so create
-
-		newUser := &User{
-			WalletAddress: walletAddress,
-			FlowIds: []FlowId{{
-				WalletAddress: walletAddress, FlowId: flowId, RelatedRoleId: relatedRoleId,
-			}},
-		}
-		if err := db.Create(newUser).Error; err != nil {
-			return "", err
-		}
-
-	}
-
 	return flowId, nil
 }
