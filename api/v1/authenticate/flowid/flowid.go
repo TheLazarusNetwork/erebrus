@@ -29,7 +29,7 @@ type Db struct {
 	Timestamp     time.Time
 }
 
-var data map[string]Db
+var Data map[string]Db
 
 // ApplyRoutes applies router to gin Router
 // func ApplyRoutes(r *gin.RouterGroup) {
@@ -47,8 +47,8 @@ func GetFlowId(c *gin.Context) {
 			"err": "empty Wallet Address",
 		}).Error("failed to create client")
 
-		response := core.MakeErrorResponse(500, "Empty Wallet Address", nil, nil, nil)
-		c.JSON(http.StatusInternalServerError, response)
+		response := core.MakeErrorResponse(403, "Empty Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusForbidden, response)
 		return
 	}
 	_, err := hexutil.Decode(walletAddress)
@@ -92,7 +92,7 @@ func GenerateFlowId(walletAddress string, relatedRoleId string) (string, error) 
 	var dbdata Db
 	dbdata.WalletAddress = walletAddress
 	dbdata.Timestamp = time.Now()
-	data = map[string]Db{
+	Data = map[string]Db{
 		flowId: dbdata,
 	}
 	return flowId, nil

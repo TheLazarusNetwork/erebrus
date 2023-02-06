@@ -49,6 +49,16 @@ func authenticate(c *gin.Context) {
 
 	// 	return
 	// }
+	// localData, exists := flowid.Data[req.FlowId]
+	// if !exists {
+	// 	log.WithFields(log.Fields{
+	// 		"err": "Flow Id Not Found",
+	// 	}).Error("Flow Id Not found")
+
+	// 	response := core.MakeErrorResponse(404, "Flow Id Not Found", nil, nil, nil)
+	// 	c.JSON(http.StatusNotFound, response)
+	// }
+
 	userAuthEULA := os.Getenv("AUTH_EULA")
 	message := userAuthEULA + req.FlowId
 	walletAddress, isCorrect, err := cryptosign.CheckSign(req.Signature, req.FlowId, message)
@@ -78,16 +88,7 @@ func authenticate(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, "nil")
 			return
 		}
-		//deleete the flow id write
-		// err = db.Where("flow_id = ?", req.FlowId).Delete(&flowid.FlowId{}).Error
-		// if err != nil {
-		// 	log.WithFields(log.Fields{
-		// 		"err": err,
-		// 	}).Error("failed to delete flowId")
-
-		// 	c.JSON(http.StatusInternalServerError, "nil")
-		// 	return
-		// }
+		delete(flowid.Data, req.FlowId)
 		payload := AuthenticatePayload{
 			Token: pasetoToken,
 		}
