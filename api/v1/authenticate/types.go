@@ -6,5 +6,6 @@ type AuthenticateRequest struct {
 }
 
 type AuthenticatePayload struct {
-	Token string `json:"token"`
+	StatusDesc string `json:"statusdesc"`
+	Token      string `json:"token"`
 }

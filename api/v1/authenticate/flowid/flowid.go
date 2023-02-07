@@ -22,7 +22,6 @@ import (
 type FlowId struct {
 	WalletAddress string
 	FlowId        string `gorm:"primary_key"`
-	RelatedRoleId string
 }
 type Db struct {
 	WalletAddress string
@@ -69,7 +68,7 @@ func GetFlowId(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	flowId, err := GenerateFlowId(walletAddress, "")
+	challengeId, err := GenerateChallengeId(walletAddress)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -79,21 +78,21 @@ func GetFlowId(c *gin.Context) {
 		return
 	}
 	userAuthEULA := os.Getenv("AUTH_EULA")
-	payload := GetFlowIdPayload{
-		FlowId: flowId,
-		Eula:   userAuthEULA,
+	payload := GetChallengeIdPayload{
+		ChallengeId: challengeId,
+		Eula:        userAuthEULA,
 	}
 	c.JSON(200, payload)
 }
 
-func GenerateFlowId(walletAddress string, relatedRoleId string) (string, error) {
+func GenerateChallengeId(walletAddress string) (string, error) {
 
-	flowId := uuid.NewString()
+	challengeId := uuid.NewString()
 	var dbdata Db
 	dbdata.WalletAddress = walletAddress
 	dbdata.Timestamp = time.Now()
 	Data = map[string]Db{
-		flowId: dbdata,
+		challengeId: dbdata,
 	}
-	return flowId, nil
+	return challengeId, nil
 }

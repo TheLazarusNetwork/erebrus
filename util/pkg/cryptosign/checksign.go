@@ -37,7 +37,7 @@ func CheckSign(signature string, flowId string, message string) (string, bool, e
 
 	localData, exists := flowid.Data[flowId]
 	if !exists {
-		return "", false, errors.New("flow id not found")
+		return "", false, ErrFlowIdNotFound
 	}
 	if time.Now().Sub(localData.Timestamp) > 1*time.Hour {
 		return "", false, errors.New("flow id expired for the request")
