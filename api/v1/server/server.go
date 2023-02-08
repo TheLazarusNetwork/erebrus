@@ -37,6 +37,16 @@ func ApplyRoutes(r *gin.RouterGroup) {
 //		401: unauthorizedResponse
 //	 500: serverErrorResponse
 func readServer(c *gin.Context) {
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
+
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	server, err := core.ReadServer()
 	if err != nil {
 		log.WithFields(util.StandardFields).Error("Failure in reading server")
@@ -61,7 +71,16 @@ func readServer(c *gin.Context) {
 //	 500: serverErrorResponse
 func updateServer(c *gin.Context) {
 	var data model.Server
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
 
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		log.WithFields(util.StandardFields).Error("failed to bind")
 		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
@@ -93,6 +112,16 @@ func updateServer(c *gin.Context) {
 //		401: unauthorizedResponse
 //	 500: serverErrorResponse
 func configServer(c *gin.Context) {
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
+
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	configData, err := core.ReadWgConfigFile()
 	if err != nil {
 		log.WithFields(util.StandardFields).Error("Failed to read wireguard config file")

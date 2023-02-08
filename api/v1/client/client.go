@@ -1,13 +1,13 @@
 package client
 
 import (
-	"net/http"
-
 	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/paseto"
 	"github.com/TheLazarusNetwork/erebrus/core"
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+	"net/http"
+	"os"
 )
 
 // ApplyRoutes applies router to gin Router
@@ -15,11 +15,12 @@ func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/client")
 	{
 		g.Use(paseto.PASETO)
-		g.POST("", registerClient)
+		g.GET("", readClients)
 		g.GET("/:id", readClient)
+		g.POST("", registerClient)
 		g.PATCH("/:id", updateClient)
 		g.DELETE("/:id", deleteClient)
-		g.GET("", readClients)
+
 	}
 }
 
@@ -36,7 +37,16 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 func registerClient(c *gin.Context) {
 	var data model.Client
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
 
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -107,7 +117,16 @@ func readClient(c *gin.Context) {
 func updateClient(c *gin.Context) {
 	var data model.Client
 	id := c.Param("id")
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
 
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -147,7 +166,16 @@ func updateClient(c *gin.Context) {
 //	 500: serverErrorResponse
 func deleteClient(c *gin.Context) {
 	id := c.Param("id")
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
 
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	err := core.DeleteClient(id)
 	if err != nil {
 		log.WithFields(log.Fields{
