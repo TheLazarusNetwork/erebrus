@@ -1,4 +1,4 @@
-package flowid
+package challengeid
 
 type GetChallengeIdPayload struct {
 	Eula        string `json:"eula,omitempty"`

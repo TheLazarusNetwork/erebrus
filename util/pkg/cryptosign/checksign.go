@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/flowid"
+	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/challengeid"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/crypto"
 )
@@ -35,12 +35,12 @@ func CheckSign(signature string, flowId string, message string) (string, bool, e
 	//Get address from public key
 	walletAddress := crypto.PubkeyToAddress(*pubKey)
 
-	localData, exists := flowid.Data[flowId]
+	localData, exists := challengeid.Data[flowId]
 	if !exists {
 		return "", false, ErrFlowIdNotFound
 	}
-	if time.Now().Sub(localData.Timestamp) > 1*time.Hour {
-		return "", false, errors.New("flow id expired for the request")
+	if time.Since(localData.Timestamp) > 1*time.Hour {
+		return "", false, errors.New("challenge id expired for the request")
 	}
 	if strings.EqualFold(localData.WalletAddress, walletAddress.String()) {
 		return localData.WalletAddress, true, nil

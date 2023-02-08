@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/flowid"
+	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/challengeid"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/auth"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/claims"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/cryptosign"
+
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
@@ -16,7 +17,7 @@ import (
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/authenticate")
 	{
-		g.GET("", flowid.GetFlowId)
+		g.GET("", challengeid.GetChallengeId)
 		g.POST("", authenticate)
 
 	}
@@ -67,7 +68,7 @@ func authenticate(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, errResponse)
 			return
 		}
-		delete(flowid.Data, req.FlowId)
+		delete(challengeid.Data, req.FlowId)
 		payload := AuthenticatePayload{
 			StatusDesc: "Successfully Authenticated",
 			Token:      pasetoToken,

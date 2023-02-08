@@ -1,4 +1,4 @@
-package flowid
+package challengeid
 
 import (
 	"net/http"
@@ -38,7 +38,7 @@ var Data map[string]Db
 // 	}
 // }
 
-func GetFlowId(c *gin.Context) {
+func GetChallengeId(c *gin.Context) {
 	walletAddress := c.Query("walletAddress")
 
 	if walletAddress == "" {
