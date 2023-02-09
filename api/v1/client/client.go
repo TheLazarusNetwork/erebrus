@@ -2,12 +2,12 @@ package client
 
 import (
 	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/paseto"
+	"github.com/TheLazarusNetwork/erebrus/api/v1/middleware"
 	"github.com/TheLazarusNetwork/erebrus/core"
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"net/http"
-	"os"
 )
 
 // ApplyRoutes applies router to gin Router
@@ -38,7 +38,8 @@ func ApplyRoutes(r *gin.RouterGroup) {
 func registerClient(c *gin.Context) {
 	var data model.Client
 	requestedWalletAddress, _ := c.Get("walletAddress")
-	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")
@@ -118,7 +119,8 @@ func updateClient(c *gin.Context) {
 	var data model.Client
 	id := c.Param("id")
 	requestedWalletAddress, _ := c.Get("walletAddress")
-	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")
@@ -167,7 +169,8 @@ func updateClient(c *gin.Context) {
 func deleteClient(c *gin.Context) {
 	id := c.Param("id")
 	requestedWalletAddress, _ := c.Get("walletAddress")
-	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")

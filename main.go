@@ -126,7 +126,7 @@ func main() {
 
 	//running updater
 	wg.Add(1)
-	// go core.UpdateEndpointDetails()
+	//go core.UpdateEndpointDetails()
 
 	if os.Getenv("GRPC_PORT") != "" {
 		//Add gRPC routine to wait group

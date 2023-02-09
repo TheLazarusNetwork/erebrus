@@ -37,8 +37,8 @@ func authenticate(c *gin.Context) {
 		return
 	}
 	userAuthEULA := os.Getenv("AUTH_EULA")
-	message := userAuthEULA + req.FlowId
-	walletAddress, isCorrect, err := cryptosign.CheckSign(req.Signature, req.FlowId, message)
+	message := userAuthEULA + req.ChallengeId
+	walletAddress, isCorrect, err := cryptosign.CheckSign(req.Signature, req.ChallengeId, message)
 
 	if err == cryptosign.ErrFlowIdNotFound {
 		log.WithFields(log.Fields{
@@ -68,10 +68,12 @@ func authenticate(c *gin.Context) {
 			c.JSON(http.StatusInternalServerError, errResponse)
 			return
 		}
-		delete(challengeid.Data, req.FlowId)
+		delete(challengeid.Data, req.ChallengeId)
 		payload := AuthenticatePayload{
-			StatusDesc: "Successfully Authenticated",
-			Token:      pasetoToken,
+			Status:  200,
+			Success: true,
+			Message: "Successfully Authenticated",
+			Token:   pasetoToken,
 		}
 		c.JSON(http.StatusAccepted, payload)
 	} else {
@@ -83,7 +85,8 @@ func authenticate(c *gin.Context) {
 
 func ErrAuthenticate(errvalue string) AuthenticatePayload {
 	var payload AuthenticatePayload
-	payload.StatusDesc = errvalue
-	payload.Token = "nil"
+	payload.Success = false
+	payload.Status = 401
+	payload.Message = errvalue
 	return payload
 }

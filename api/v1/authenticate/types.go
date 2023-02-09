@@ -1,11 +1,13 @@
 package authenticate
 
 type AuthenticateRequest struct {
-	FlowId    string `json:"flowId" binding:"required"`
-	Signature string `json:"signature" binding:"required"`
+	ChallengeId string `json:"challengeId" binding:"required"`
+	Signature   string `json:"signature" binding:"required"`
 }
 
 type AuthenticatePayload struct {
-	StatusDesc string `json:"statusdesc"`
-	Token      string `json:"token"`
+	Status  int64  `json:"status"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+	Token   string `json:"token"`
 }

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/TheLazarusNetwork/erebrus/api/v1/middleware"
 	"net/http"
 	"os"
 
@@ -32,13 +33,14 @@ func ApplyRoutes(r *gin.RouterGroup) {
 // Retrieves the server details.
 // responses:
 //
-//	 200: serverSucessResponse
+//	 200: serverSuccessResponse
 //	 400: badRequestResponse
 //		401: unauthorizedResponse
 //	 500: serverErrorResponse
 func readServer(c *gin.Context) {
 	requestedWalletAddress, _ := c.Get("walletAddress")
-	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")
@@ -65,14 +67,15 @@ func readServer(c *gin.Context) {
 // Update the server with given details.
 // responses:
 //
-//	 200: serverSucessResponse
+//	 200: serverSuccessResponse
 //	 400: badRequestResponse
 //		401: unauthorizedResponse
 //	 500: serverErrorResponse
 func updateServer(c *gin.Context) {
 	var data model.Server
 	requestedWalletAddress, _ := c.Get("walletAddress")
-	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")
@@ -112,8 +115,10 @@ func updateServer(c *gin.Context) {
 //		401: unauthorizedResponse
 //	 500: serverErrorResponse
 func configServer(c *gin.Context) {
+
 	requestedWalletAddress, _ := c.Get("walletAddress")
-	if requestedWalletAddress != os.Getenv("ALLOWED_WALLET_ADDRESS") {
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")

@@ -22,17 +22,9 @@ WG_PRE_UP = "echo WireGuard PreUp"
 WG_POST_UP = "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
 WG_PRE_DOWN = "echo WireGuard PreDown"
 WG_POST_DOWN = "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE"
-
-//
 PASETO_EXPIRATION_IN_HOURS=168
-AUTH_EULA="I Accept the MyriadFlow Terms of Service https://myriadflow.com/terms.html for accessing the application. Challenge ID: "
-CREATOR_EULA="I Accept the MyriadFlow Terms of Service https://myriadflow.com/terms.html for getting the Creator Role. Challenge ID: "
-DB_HOST=localhost
-DB_USERNAME=lazarus
-DB_PASSWORD=lazarus
-DB_NAME=lazarus
-DB_PORT=5432
+AUTH_EULA="I Accept the Lazarus Network Terms of Service https://lazarus.network/terms.html for accessing the application. Challenge ID: "
 POLYGON_RPC=
-SIGNED_BY=MyriadFLow
-ALLOWED_WALLET_ADDRESS=*
-FOOTER=MyriadFlow 2023
+SIGNED_BY=Lazarus Network
+FOOTER=Lazarus Network 2023
+MASTERNODE_WALLET=
