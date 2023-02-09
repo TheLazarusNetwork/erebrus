@@ -12,10 +12,11 @@ import (
 	"github.com/TheLazarusNetwork/erebrus/core"
 	grpc "github.com/TheLazarusNetwork/erebrus/gRPC"
 	"github.com/TheLazarusNetwork/erebrus/util"
+	"github.com/TheLazarusNetwork/erebrus/util/pkg/auth"
+	"github.com/gin-contrib/static"
 
 	helmet "github.com/danielkov/gin-helmet"
 	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/patrickmn/go-cache"
@@ -47,6 +48,8 @@ func init() {
 			log.WithFields(util.StandardFields).Fatalf("Error in reading the config file: %v", err)
 		}
 	}
+
+	auth.Init()
 }
 
 func RungRPCServer() {
@@ -124,14 +127,13 @@ func main() {
 
 	//running updater
 	wg.Add(1)
-	go core.UpdateEndpointDetails()
+	//go core.UpdateEndpointDetails()
 
 	if os.Getenv("GRPC_PORT") != "" {
 		//Add gRPC routine to wait group
 		wg.Add(1)
 		//run gRPC server
 		go RungRPCServer()
-
 	}
 
 	if os.Getenv("HTTP_PORT") != "" {
@@ -151,7 +153,6 @@ func main() {
 			ctx.Set("cache", cache.New(60*time.Minute, 10*time.Minute))
 			ctx.Next()
 		})
-
 		// serve static files
 		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
 		//ginApp.Use(static.Serve("/docs", static.LocalFile("./docs", false)))
@@ -167,10 +168,8 @@ func main() {
 
 		// Apply API Routes
 		api.ApplyRoutes(ginApp)
-
 		err = ginApp.Run(fmt.Sprintf("%s:%s", os.Getenv("SERVER"), os.Getenv("HTTP_PORT")))
 		util.CheckError("Failed to Start HTTP Server: ", err)
-
 	}
 	//wait untill all servers are stopped
 	wg.Wait()

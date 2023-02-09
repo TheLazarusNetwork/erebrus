@@ -1,23 +1,26 @@
 package client
 
 import (
-	"net/http"
-
+	"github.com/TheLazarusNetwork/erebrus/api/v1/authenticate/paseto"
+	"github.com/TheLazarusNetwork/erebrus/api/v1/middleware"
 	"github.com/TheLazarusNetwork/erebrus/core"
 	"github.com/TheLazarusNetwork/erebrus/model"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
+	"net/http"
 )
 
 // ApplyRoutes applies router to gin Router
 func ApplyRoutes(r *gin.RouterGroup) {
 	g := r.Group("/client")
 	{
-		g.POST("", registerClient)
+		g.Use(paseto.PASETO)
+		g.GET("", readClients)
 		g.GET("/:id", readClient)
+		g.POST("", registerClient)
 		g.PATCH("/:id", updateClient)
 		g.DELETE("/:id", deleteClient)
-		g.GET("", readClients)
+
 	}
 }
 
@@ -34,7 +37,16 @@ func ApplyRoutes(r *gin.RouterGroup) {
 
 func registerClient(c *gin.Context) {
 	var data model.Client
-
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -105,7 +117,17 @@ func readClient(c *gin.Context) {
 func updateClient(c *gin.Context) {
 	var data model.Client
 	id := c.Param("id")
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
 
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
@@ -145,27 +167,33 @@ func updateClient(c *gin.Context) {
 //	 500: serverErrorResponse
 func deleteClient(c *gin.Context) {
 	id := c.Param("id")
-
+	requestedWalletAddress, _ := c.Get("walletAddress")
+	accept := middleware.CheckMasterNodeAccess(requestedWalletAddress)
+	if !accept {
+		log.WithFields(log.Fields{
+			"err": "Updates Not Allowed for the Following Wallet Address",
+		}).Error("Updates Not Allowed for the Following Wallet Address")
+		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
+		c.JSON(http.StatusUnauthorized, response)
+		return
+	}
 	err := core.DeleteClient(id)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to remove client")
-
 		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	response := core.MakeSucessResponse(200, "client deleted", nil, nil, nil)
-
 	c.JSON(http.StatusOK, response)
 }
 
 // swagger:route GET /client Client readClients
 //
 // # Read All Clients
-//
 // Get all clients in the server.
 // responses:
 //

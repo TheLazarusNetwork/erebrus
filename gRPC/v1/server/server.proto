@@ -16,5 +16,5 @@ service ServerService{
     rpc GetServerInformation(Empty) returns (model.Response);
     rpc GetServerConfiguraion(Empty) returns(Config);
     rpc UpdateServer(model.Server) returns (model.Response);
-    
+    rpc GetStatus(Empty) returns (model.Status);
 }

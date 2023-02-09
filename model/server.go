@@ -71,7 +71,7 @@ func NewServer(wg *wgctrl.Client, deviceName string) (*WireGuardServer, error) {
 // 		peers = append(peers, peer2rpc(peer))
 // 	}
 
-// 	// TODO(jc): pagination
+//  //TODO(jc): pagination
 
 // 	return &Client{
 // 		Peers: peers,
