@@ -13,6 +13,7 @@ import (
 	grpc "github.com/TheLazarusNetwork/erebrus/gRPC"
 	"github.com/TheLazarusNetwork/erebrus/util"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/auth"
+	"github.com/gin-contrib/static"
 
 	helmet "github.com/danielkov/gin-helmet"
 	"github.com/gin-contrib/cors"
@@ -153,7 +154,7 @@ func main() {
 			ctx.Next()
 		})
 		// serve static files
-		// ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
+		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
 		//ginApp.Use(static.Serve("/docs", static.LocalFile("./docs", false)))
 
 		/*opt := openapimiddleware.RedocOpts{SpecURL: "/docs/swagger.yml"}

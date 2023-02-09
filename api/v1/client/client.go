@@ -43,7 +43,6 @@ func registerClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")
-
 		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
 		c.JSON(http.StatusUnauthorized, response)
 		return
@@ -174,7 +173,6 @@ func deleteClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": "Updates Not Allowed for the Following Wallet Address",
 		}).Error("Updates Not Allowed for the Following Wallet Address")
-
 		response := core.MakeErrorResponse(401, "Updates Not Allowed for the Following Wallet Address", nil, nil, nil)
 		c.JSON(http.StatusUnauthorized, response)
 		return
@@ -184,21 +182,18 @@ func deleteClient(c *gin.Context) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to remove client")
-
 		response := core.MakeErrorResponse(500, err.Error(), nil, nil, nil)
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
 
 	response := core.MakeSucessResponse(200, "client deleted", nil, nil, nil)
-
 	c.JSON(http.StatusOK, response)
 }
 
 // swagger:route GET /client Client readClients
 //
 // # Read All Clients
-//
 // Get all clients in the server.
 // responses:
 //
