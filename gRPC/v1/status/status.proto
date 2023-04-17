@@ -1,0 +1,14 @@
+syntax="proto3";
+
+package status;
+
+option go_package = "github.com/TheLazarusNetwork/erebrus/status;status";
+
+import "model/model.proto";
+
+message Empty{
+}
+
+service StatusService {
+    rpc GetStatus(Empty) returns (model.Status);
+}

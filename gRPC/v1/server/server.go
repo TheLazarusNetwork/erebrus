@@ -14,7 +14,7 @@ type ServerService struct {
 	UnimplementedServerServiceServer
 }
 
-//Method to get server information
+// Method to get server information
 func (ss *ServerService) GetServerInformation(ctx context.Context, request *Empty) (*model.Response, error) {
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Sever Information")
 	server, err := core.ReadServer()
@@ -30,7 +30,7 @@ func (ss *ServerService) GetServerInformation(ctx context.Context, request *Empt
 	return response, nil
 }
 
-//method to get server configuration
+// method to get server configuration
 func (ss *ServerService) GetServerConfiguraion(ctx context.Context, request *Empty) (*Config, error) {
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Sever Configurtaion")
 	configData, err := core.ReadWgConfigFile()
@@ -45,18 +45,7 @@ func (ss *ServerService) GetServerConfiguraion(ctx context.Context, request *Emp
 	return &Config{Config: configData}, nil
 }
 
-//Method to get server status
-func (ss *ServerService) GetStatus(ctx context.Context, request *Empty) (*model.Status, error) {
-	log.WithFields(util.StandardFieldsGRPC).Info("Request For Sever Status")
-	status, err := core.GetServerStatus()
-	if err != nil {
-		log.WithFields(util.StandardFields).Error("Failed to get server status")
-		return nil, errors.New(err.Error())
-	}
-	return status, nil
-}
-
-//Method to update server
+// Method to update server
 func (ss *ServerService) UpdateServer(ctx context.Context, request *model.Server) (*model.Response, error) {
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Update Server")
 	server, err := core.UpdateServer(request)
