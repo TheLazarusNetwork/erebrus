@@ -9,19 +9,18 @@ import (
 	gopaseto "aidanwoods.dev/go-paseto"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/auth"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/claims"
-	authMiddleware "github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
 	log "github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
 
 func PASETO(ctx context.Context) (context.Context, error) {
-	token, err := authMiddleware.AuthFromMD(ctx, "bearer")
+	md, _ := metadata.FromIncomingContext(ctx)
+	token := md["authorization"][0]
 	if token == "" {
 		log.WithFields(log.Fields{
-			"err": err,
-		}).Error("Autherisation header is missing")
-		return nil, errors.New(err.Error())
+			"err": "Authorization header is missing",
+		}).Error("Authorization header is missing")
+		return nil, errors.New("authorization header is missing")
 	}
 	parser := gopaseto.NewParser()
 	parser.AddRule(gopaseto.NotExpired())
@@ -33,12 +32,11 @@ func PASETO(ctx context.Context) (context.Context, error) {
 			"err": err,
 		}).Error("failed to bindfailed to scan claims for paseto token")
 		return nil, errors.New(err.Error())
-	} else {
-		jsonvalue := parsedToken.ClaimsJSON()
-		ClaimsValue := claims.CustomClaims{}
-		json.Unmarshal(jsonvalue, &ClaimsValue)
-		header := metadata.Pairs("header-key", ClaimsValue.WalletAddress)
-		grpc.SendHeader(ctx, header)
 	}
-	return context.Context(ctx), nil
+	jsonvalue := parsedToken.ClaimsJSON()
+	ClaimsValue := claims.CustomClaims{}
+	json.Unmarshal(jsonvalue, &ClaimsValue)
+	new_ctx := context.WithValue(ctx, "walletAddress", ClaimsValue.WalletAddress)
+
+	return new_ctx, nil
 }
