@@ -20,7 +20,6 @@ func PASETO(ctx context.Context) (context.Context, error) {
 			"err": "Authorization header is missing",
 		}).Error("Authorization header is missing")
 		new_ctx := context.WithValue(ctx, "error", 1)
-		//return new_ctx, status.Error(codes.Unauthenticated, "Authorization header is missing")
 		return new_ctx, nil
 	}
 	parser := gopaseto.NewParser()
@@ -33,8 +32,6 @@ func PASETO(ctx context.Context) (context.Context, error) {
 			"err": err,
 		}).Error("failed to bindfailed to scan claims for paseto token")
 		new_ctx := context.WithValue(ctx, "error", 1)
-
-		//return new_ctx, status.Error(codes.Unauthenticated, "Authorization header is missing")
 		return new_ctx, nil
 	}
 	jsonvalue := parsedToken.ClaimsJSON()
