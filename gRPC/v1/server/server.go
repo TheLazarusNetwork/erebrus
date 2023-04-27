@@ -16,6 +16,10 @@ type ServerService struct {
 
 // Method to get server information
 func (ss *ServerService) GetServerInformation(ctx context.Context, request *Empty) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Sever Information")
 	server, err := core.ReadServer()
 	if err != nil {
@@ -32,6 +36,9 @@ func (ss *ServerService) GetServerInformation(ctx context.Context, request *Empt
 
 // method to get server configuration
 func (ss *ServerService) GetServerConfiguraion(ctx context.Context, request *Empty) (*Config, error) {
+	if ctx.Value("error") == 1 {
+		return nil, errors.New("bad token")
+	}
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Sever Configurtaion")
 	configData, err := core.ReadWgConfigFile()
 	if err != nil {
@@ -47,6 +54,10 @@ func (ss *ServerService) GetServerConfiguraion(ctx context.Context, request *Emp
 
 // Method to update server
 func (ss *ServerService) UpdateServer(ctx context.Context, request *model.Server) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Update Server")
 	server, err := core.UpdateServer(request)
 	if err != nil {

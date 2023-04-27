@@ -16,6 +16,10 @@ type ClientService struct {
 
 // Method to get Client information
 func (cs *ClientService) GetClientInformation(ctx context.Context, request *ClientRequest) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Information Request ,for:", id)
 	client, err := core.ReadClient(id)
@@ -34,6 +38,10 @@ func (cs *ClientService) GetClientInformation(ctx context.Context, request *Clie
 
 // Method to create client
 func (cs *ClientService) CreateClient(ctx context.Context, request *model.Client) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	client, err := core.RegisterClient(request)
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Creation Request")
 	if err != nil {
@@ -50,6 +58,10 @@ func (cs *ClientService) CreateClient(ctx context.Context, request *model.Client
 
 // Method to update client
 func (cs *ClientService) UpdateClient(ctx context.Context, request *UpdateRequest) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Client Update Request ,for:", id)
 	client, err := core.UpdateClient(id, request.Client)
@@ -67,6 +79,10 @@ func (cs *ClientService) UpdateClient(ctx context.Context, request *UpdateReques
 
 // Method to delete client
 func (cs *ClientService) DeleteClient(ctx context.Context, request *ClientRequest) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	id := request.UUID
 	log.WithFields(util.StandardFieldsGRPC).Info("Delete Client Request ,for:", id)
 	err := core.DeleteClient(id)
@@ -84,6 +100,10 @@ func (cs *ClientService) DeleteClient(ctx context.Context, request *ClientReques
 
 // Method to get all clients
 func (cs *ClientService) GetClients(ctx context.Context, request *Empty) (*model.Response, error) {
+	if ctx.Value("error") == 1 {
+		response := core.MakeErrorResponse(500, "Bad Token", nil, nil, nil)
+		return response, nil
+	}
 	log.WithFields(util.StandardFieldsGRPC).Info("Request For Get All Clients")
 	clients, err := core.ReadClients()
 	if err != nil {

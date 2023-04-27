@@ -3,7 +3,6 @@ package paseto
 import (
 	context "context"
 	"encoding/json"
-	"errors"
 	"fmt"
 
 	gopaseto "aidanwoods.dev/go-paseto"
@@ -20,7 +19,9 @@ func PASETO(ctx context.Context) (context.Context, error) {
 		log.WithFields(log.Fields{
 			"err": "Authorization header is missing",
 		}).Error("Authorization header is missing")
-		return nil, errors.New("authorization header is missing")
+		new_ctx := context.WithValue(ctx, "error", 1)
+		//return new_ctx, status.Error(codes.Unauthenticated, "Authorization header is missing")
+		return new_ctx, nil
 	}
 	parser := gopaseto.NewParser()
 	parser.AddRule(gopaseto.NotExpired())
@@ -31,7 +32,10 @@ func PASETO(ctx context.Context) (context.Context, error) {
 		log.WithFields(log.Fields{
 			"err": err,
 		}).Error("failed to bindfailed to scan claims for paseto token")
-		return nil, errors.New(err.Error())
+		new_ctx := context.WithValue(ctx, "error", 1)
+
+		//return new_ctx, status.Error(codes.Unauthenticated, "Authorization header is missing")
+		return new_ctx, nil
 	}
 	jsonvalue := parsedToken.ClaimsJSON()
 	ClaimsValue := claims.CustomClaims{}
