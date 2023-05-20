@@ -6,6 +6,13 @@ WORKDIR /app
 COPY . .
 RUN go build -o erebrus .
 
+FROM node:18.13.0-alpine AS build-web
+WORKDIR /app
+COPY webapp/package*.json ./
+RUN npm install
+COPY webapp/ ./
+RUN npm run build
+
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build-app /app/erebrus .
@@ -20,9 +27,9 @@ ENV WG_ENDPOINT_HOST=$WG_ENDPOINT_HOST WG_ENDPOINT_PORT=$WG_ENDPOINT_PORT WG_IPv
 ENV WG_DNS=$WG_DNS WG_ALLOWED_IP_1=$WG_ALLOWED_IP_1 WG_ALLOWED_IP_2=$WG_ALLOWED_IP_2
 ENV WG_PRE_UP=$WG_PRE_UP WG_POST_UP=$WG_POST_UP WG_PRE_DOWN=$WG_PRE_DOWN WG_POST_DOWN=$WG_POST_DOWN
 RUN echo $'#!/usr/bin/env bash\n\
-set -eo pipefail\n\
-mkdir -p $WG_KEYS_DIR\n\
-/app/erebrus &\n\
-./wg-watcher.sh\n\
-sleep infinity' > /app/start.sh && chmod +x /app/start.sh
+    set -eo pipefail\n\
+    mkdir -p $WG_KEYS_DIR\n\
+    /app/erebrus &\n\
+    ./wg-watcher.sh\n\
+    sleep infinity' > /app/start.sh && chmod +x /app/start.sh
 ENTRYPOINT ["/app/start.sh"]

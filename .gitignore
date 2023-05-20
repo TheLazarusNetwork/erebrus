@@ -34,3 +34,5 @@ erebrus-linux-x64
 
 # bin folder
 /bin
+
+/webapp/node_modules
