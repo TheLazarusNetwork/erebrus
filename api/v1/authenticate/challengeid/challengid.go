@@ -77,10 +77,12 @@ func GetChallengeId(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, response)
 		return
 	}
+	isAuthorized := walletAddress == os.Getenv("MASTERNODE_WALLET")
 	userAuthEULA := os.Getenv("AUTH_EULA")
 	payload := GetChallengeIdPayload{
-		ChallengeId: challengeId,
-		Eula:        userAuthEULA,
+		ChallengeId:  challengeId,
+		Eula:         userAuthEULA,
+		IsAuthorized: isAuthorized,
 	}
 	c.JSON(200, payload)
 }

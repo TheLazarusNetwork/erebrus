@@ -143,6 +143,7 @@ func main() {
 		// cors middleware
 		config := cors.DefaultConfig()
 		config.AllowAllOrigins = true
+		config.AllowHeaders = []string{"Authorization", "Content-Type"}
 		ginApp.Use(cors.New(config))
 
 		// protection middleware
