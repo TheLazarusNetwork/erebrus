@@ -21,7 +21,7 @@ const Footer = () => {
               href="/"
               className="text-2xl font-bold text-transparent bg-clip-text leading-12 bg-gradient-to-r from-blue-200 to-blue-400"
             >
-              Sotreus
+              Erebrus
             </a>
           </nav>
           <nav className="mb-4 flex flex-wrap justify-center gap-x-4 gap-y-2 md:justify-start md:gap-6">

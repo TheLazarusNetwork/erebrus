@@ -67,7 +67,7 @@ const Header = () => {
   const signMessage = async () => {
     const signature = await signMessageAsync({ message });
     setSignature(signature);
-    //make a post request to the sotreus server with the signature and challengeId
+    //make a post request to the EREBRUS server with the signature and challengeId
 
     const response = await getToken(signature, challengeId);
     if (response.data.token) {
@@ -94,7 +94,7 @@ const Header = () => {
             href="/"
             className="btn btn-ghost normal-case text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200 text-2xl md:text-3xl"
           >
-            Sotreus
+            Erebrus
           </a>
         </div>
         <div className="flex-none">

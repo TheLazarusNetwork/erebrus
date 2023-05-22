@@ -1,11 +1,17 @@
 // clientList.tsx
-import React, {useState} from 'react';
-import { Client } from './types';
-import { HiOutlineMail , HiDownload } from 'react-icons/hi';
-import { MdDelete } from 'react-icons/md';
-import ClientEdit from './clientEdit';
-import { emailClientConfig, getClientConfig, deleteClient, updateClient, getClientInfo } from '../../modules/api';
-import { saveAs } from 'file-saver';
+import React, { useState } from "react";
+import { Client } from "./types";
+import { HiOutlineMail, HiDownload } from "react-icons/hi";
+import { MdDelete } from "react-icons/md";
+import ClientEdit from "./clientEdit";
+import {
+  emailClientConfig,
+  getClientConfig,
+  deleteClient,
+  updateClient,
+  getClientInfo,
+} from "../../modules/api";
+import { saveAs } from "file-saver";
 import { IconContext } from "react-icons";
 
 interface ClientListProps {
@@ -17,40 +23,37 @@ export const ClientList: React.FC<ClientListProps> = ({ clients }) => {
     clients.reduce((acc: Record<string, boolean>, client) => {
       acc[client.UUID] = client.Enable;
       return acc;
-    }, {}),
+    }, {})
   );
 
-  const handleEmail = async (clientId:string) => {
+  const handleEmail = async (clientId: string) => {
     try {
-      const response = await emailClientConfig(clientId)
+      const response = await emailClientConfig(clientId);
       if (!response) {
       }
-    } catch (error) {
-    }
-  }
+    } catch (error) {}
+  };
 
-  const handleDelete = async (clientId:string) => {
+  const handleDelete = async (clientId: string) => {
     try {
-      const response = await deleteClient(clientId)
+      const response = await deleteClient(clientId);
       if (!response) {
       }
       window.location.reload();
-    } catch (error) {
-    }
-  }
-  
+    } catch (error) {}
+  };
+
   const handleDownload = async (clientId: string) => {
     try {
       const response = await getClientConfig(clientId);
-      
+
       if (!response) {
       }
-  
+
       const configText = response.data;
-      const blob = new Blob([configText], { type: 'text/plain;charset=utf-8' });
+      const blob = new Blob([configText], { type: "text/plain;charset=utf-8" });
       saveAs(blob, `${clientId}_config.conf`);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleClientAccess = async (clientId: string) => {
@@ -59,19 +62,17 @@ export const ClientList: React.FC<ClientListProps> = ({ clients }) => {
       return;
     }
     try {
-
       const response = await getClientInfo(clientId);
       if (!response) {
       }
 
       const clientData = response.data.client;
       clientData.Enable = !clientData.Enable;
-      
+
       const updateResponse = await updateClient(clientId, clientData);
       if (!updateResponse) {
       }
-    } catch (error) {
-    }
+    } catch (error) {}
 
     setEnabledClients((prev) => {
       const newEnabledClients = { ...prev, [clientId]: !prev[clientId] };
@@ -97,7 +98,14 @@ export const ClientList: React.FC<ClientListProps> = ({ clients }) => {
           </thead>
           <tbody>
             {clients.map((client, index) => (
-              <tr key={client.UUID} className={index % 2 === 0 ? 'bg-gradient-to-r from-black via-gray-800 to-black' : 'bg-gradient-to-r from-black via-gray-900 to-black'}>
+              <tr
+                key={client.UUID}
+                className={
+                  index % 2 === 0
+                    ? "bg-gradient-to-r from-black via-gray-800 to-black"
+                    : "bg-gradient-to-r from-black via-gray-900 to-black"
+                }
+              >
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium">{client.Name}</div>
                 </td>
@@ -105,18 +113,28 @@ export const ClientList: React.FC<ClientListProps> = ({ clients }) => {
                   <div className="text-sm">{client.Email}</div>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="text-sm">{client.Tags.join(', ')}</div>
+                  <div className="text-sm">{client.Tags.join(", ")}</div>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${enabledClients[client.UUID] ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {enabledClients[client.UUID] ? 'Enabled' : 'Disabled'}
-                </span>
+                  <span
+                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      enabledClients[client.UUID]
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {enabledClients[client.UUID] ? "Enabled" : "Disabled"}
+                  </span>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="text-sm">{new Date(client.Created).toLocaleDateString()}</div>
+                  <div className="text-sm">
+                    {new Date(client.CreatedAt).toLocaleDateString()}
+                  </div>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="text-sm">{new Date(client.Updated).toLocaleDateString()}</div>
+                  <div className="text-sm">
+                    {new Date(client.UpdatedAt).toLocaleDateString()}
+                  </div>
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="text-sm flex space-x-2">
@@ -132,11 +150,13 @@ export const ClientList: React.FC<ClientListProps> = ({ clients }) => {
 
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className="text-sm flex space-x-2">
-                    <IconContext.Provider value={{ className: "h-5 w-5 cursor-pointer" }}>
+                    <IconContext.Provider
+                      value={{ className: "h-5 w-5 cursor-pointer" }}
+                    >
                       <div onClick={() => handleEmail(client.UUID)}>
                         <HiOutlineMail />
                       </div>
-                      <ClientEdit client={client}/>
+                      <ClientEdit client={client} />
                       <div onClick={() => handleDownload(client.UUID)}>
                         <HiDownload />
                       </div>

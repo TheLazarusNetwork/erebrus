@@ -27,8 +27,9 @@ const LandingPage = () => {
                 <br />
               </h1>
               <p className="px-0 mb-8 text-xl text-gray-300 md:text-2xl lg:px-24">
-                Discover Sotreus, a reliable WireGuard VPN server, simplifying
-                client configurations for seamless online privacy.
+                Discover Erebrus, an Anonymous Virtual Private Network for
+                accessing internet in stealth mode bypassing filewalls and
+                filters client configurations for seamless online privacy
               </p>
               <div className="mb-4 space-x-0 md:space-x-2 md:mb-8">
                 <Link

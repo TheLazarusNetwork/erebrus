@@ -11,7 +11,7 @@ export interface Client {
     PrivateKey: string;
     PublicKey: string;
     CreatedBy: string;
-    Created: number;
-    Updated: number;
+    CreatedAt: number;
+    UpdatedAt: number;
   }
   

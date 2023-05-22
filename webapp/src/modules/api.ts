@@ -44,7 +44,7 @@ interface ChallengeidResponse {
 
 // ========================================( DASHBOARD APIs )==================================================== //
 
-async function callSotreusAPI(
+async function callErebrusAPI(
   endpoint: string,
   method: 'GET' | 'POST' | 'DELETE' | 'PATCH',
   payload?: CreateClientPayload | UpdateClientPayload | null,
@@ -90,11 +90,11 @@ export const updateServer = async (updatedConfig: any) => {
 };
 
 export async function getClientInfo(clientId: string): Promise<AxiosResponse<any>> {
-  return callSotreusAPI('/api/v1.0/client/:client_id', 'GET', null, clientId);
+  return callErebrusAPI('/api/v1.0/client/:client_id', 'GET', null, clientId);
 }
 
 export async function createClient(payload: CreateClientPayload): Promise<AxiosResponse<any>> {
-  return callSotreusAPI('/api/v1.0/client', 'POST', payload, );
+  return callErebrusAPI('/api/v1.0/client', 'POST', payload, );
 }
 
 export async function updateClient(clientId: string, payload: UpdateClientPayload): Promise<AxiosResponse<any>> {
@@ -116,11 +116,11 @@ export async function getClients(token: string | null): Promise<ClientResponse> 
 }
 
 export async function deleteClient(clientId: string): Promise<AxiosResponse<any>> {
-  return callSotreusAPI('/api/v1.0/client/:client_id', 'DELETE', null, clientId);
+  return callErebrusAPI('/api/v1.0/client/:client_id', 'DELETE', null, clientId);
 }
 
 export async function getClientConfig(clientId: string, qrcode?: boolean): Promise<AxiosResponse<any>> {
-  return callSotreusAPI('/api/v1.0/client/:client_id/config', 'GET', null, clientId, qrcode);
+  return callErebrusAPI('/api/v1.0/client/:client_id/config', 'GET', null, clientId, qrcode);
 }
 
 // =============================================( SERVER APIs )=================================================== //

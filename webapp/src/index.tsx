@@ -26,7 +26,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "Sotreus",
+  appName: "Erebrus",
   chains,
 });
 

@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Client } from "./types";
 import { motion } from "framer-motion";
-import QrCode from "./qrCode";
 import {
   emailClientConfig,
   getClientConfig,
@@ -116,13 +115,13 @@ export const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
             <div className="flex items-center mt-2">
               <HiOutlineCalendar className="mr-2" />
               <div>
-                Created: {new Date(client.Created).toLocaleDateString()}
+                Created: {new Date(client.CreatedAt).toLocaleDateString()}
               </div>
             </div>
             <div className="flex items-center mt-2">
               <HiOutlineRefresh className="mr-2" />
               <div>
-                Updated: {new Date(client.Updated).toLocaleDateString()}
+                Updated: {new Date(client.UpdatedAt).toLocaleDateString()}
               </div>
             </div>
           </div>
@@ -134,15 +133,6 @@ export const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
             >
               {enabledClients ? "Disable Client" : "Enable Client"}
             </button>
-            <button
-              onClick={() => handleEmail(client.UUID)}
-              className="bg-gradient-to-r from-blue-300 to-blue-500 text-gray-900 font-semibold rounded-lg p-2"
-            >
-              Email Client
-            </button>
-            <div className="bg-gradient-to-r from-blue-300 to-blue-500 text-gray-900 font-semibold rounded-lg p-2">
-              <QrCode clientId={client.UUID} />
-            </div>
             <button
               onClick={() => handleDownload(client.UUID)}
               className="bg-gradient-to-r from-blue-300 to-blue-500 text-gray-900 font-semibold rounded-lg p-2"
