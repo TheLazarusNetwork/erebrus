@@ -4,12 +4,11 @@ services:
     build: .
     container_name: erebrus
     privileged: true
-    environment: 
+    environment:
       LOAD_CONFIG_FILE: "TRUE"
       RUNTYPE: "RUNTYPE"
       SERVER: "0.0.0.0"
-      PORT: "9080"
-      HTTP_PORT: "8080"
+      HTTP_PORT: "9080"
       MASTERNODE_URL: "https://masternode.erebrus.io"
       WG_CONF_DIR: "/etc/wireguard"
       WG_KEYS_DIR: "/etc/wireguard/keys"
@@ -26,6 +25,11 @@ services:
       WG_POST_UP: "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
       WG_PRE_DOWN: "echo WireGuard PreDown"
       WG_POST_DOWN: "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE"
+      PASETO_EXPIRATION_IN_HOURS: "${PASETO_EXPIRATION_IN_HOURS}"
+      SIGNED_BY: "${SIGNED_BY}"
+      FOOTER: "${FOOTER}"
+      AUTH_EULA: "${AUTH_EULA}"
+      MASTERNODE_WALLET: "${MASTERNODE_WALLET}"
     ports:
       - '9080:9080/tcp'
       - '8080:8080/tcp'

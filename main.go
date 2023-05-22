@@ -155,7 +155,7 @@ func main() {
 			ctx.Next()
 		})
 		// serve static files
-		ginApp.Use(static.Serve("/", static.LocalFile("./webapp/build", false)))
+		ginApp.Use(static.Serve("/", static.LocalFile("./webapp", false)))
 		//ginApp.Static("/", "./webapp/build")
 		//ginApp.StaticFS("/", http.Dir("./webapp/build"))
 		//ginApp.Use(static.Serve("/docs", static.LocalFile("./docs", false)))
