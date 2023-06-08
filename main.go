@@ -13,6 +13,7 @@ import (
 	grpc "github.com/TheLazarusNetwork/erebrus/gRPC"
 	"github.com/TheLazarusNetwork/erebrus/util"
 	"github.com/TheLazarusNetwork/erebrus/util/pkg/auth"
+	"github.com/TheLazarusNetwork/erebrus/util/pkg/node"
 
 	helmet "github.com/danielkov/gin-helmet"
 	"github.com/gin-contrib/cors"
@@ -124,6 +125,8 @@ func main() {
 	// dump wg config file
 	err := core.UpdateServerConfigWg()
 	util.CheckError("Error while creating WireGuard config file: ", err)
+
+	node.Init()
 
 	//running updater
 	wg.Add(1)
