@@ -11,6 +11,7 @@ import (
 
 	"github.com/libp2p/go-libp2p"
 	dht "github.com/libp2p/go-libp2p-kad-dht"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/network"
@@ -35,11 +36,11 @@ func Init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	//ip, _ := multiaddr.NewMultiaddr("/ip4/127.0.0.1/tcp/9001/p2p/QmbEWWeazJZUxZ9L64W8xvdEjbEiGdXbejRazZPt9rbDem")
 	// Setup DHT with empty discovery peers so this will be a discovery peer for other
 	// peers. This peer should run with a public ip address, otherwise change "nil" to
 	// a list of peers to bootstrap with.
-	dht, err := NewDHT(context.TODO(), ha, nil)
+	dht, err := NewDHT(ctx, ha, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +48,52 @@ func Init() {
 	// Setup global peer discovery over DiscoveryServiceTag.
 	go Discover(context.TODO(), ha, dht, DiscoveryServiceTag)
 
-	startListener(ctx, ha)
+	//startListener(ctx, ha)
+
+	// Create a new PubSub service using the GossipSub router.
+	ps, err := pubsub.NewGossipSub(context.TODO(), ha)
+	if err != nil {
+		panic(err)
+	}
+
+	// Join a PubSub topic.
+	topicString := "UniversalPeer" // Change "UniversalPeer" to whatever you want!
+	topic, err := ps.Join(DiscoveryServiceTag + "/" + topicString)
+	if err != nil {
+		panic(err)
+	}
+
+	if err := topic.Publish(context.TODO(), []byte("Hello world!")); err != nil {
+		panic(err)
+	}
+
+	// Publish the current date and time every 5 seconds.
+	go func() {
+		for {
+			err := topic.Publish(context.TODO(), []byte(fmt.Sprintf("The time is: %s", time.Now().Format(time.RFC3339))))
+			if err != nil {
+				panic(err)
+			}
+			time.Sleep(time.Second * 5)
+		}
+	}()
+
+	// Subscribe to the topic.
+	sub, err := topic.Subscribe()
+	if err != nil {
+		panic(err)
+	}
+
+	for {
+		// Block until we recieve a new message.
+		msg, err := sub.Next(context.TODO())
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
+		fmt.Println()
+	}
+
 }
 
 // makeBasicHost creates a LibP2P host with a random peer ID listening on the
