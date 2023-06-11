@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"context"
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"sync"
 	"time"
 
@@ -26,57 +28,60 @@ const DiscoveryInterval = time.Second * 10
 
 // DiscoveryServiceTag is used in our DHT advertisements to discover
 // other peers.
-const DiscoveryServiceTag = "universal-connectivity"
+const DiscoveryServiceTag = "erebrus"
 
 func Init() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	// create a new libp2p Host
 	ha, err := makeBasicHost()
 	if err != nil {
 		log.Fatal(err)
 	}
-	//ip, _ := multiaddr.NewMultiaddr("/ip4/127.0.0.1/tcp/9001/p2p/QmbEWWeazJZUxZ9L64W8xvdEjbEiGdXbejRazZPt9rbDem")
+
+	// Create a new PubSub service using the GossipSub router.
+	ps, err := pubsub.NewGossipSub(ctx, ha)
+	if err != nil {
+		panic(err)
+	}
+
 	// Setup DHT with empty discovery peers so this will be a discovery peer for other
 	// peers. This peer should run with a public ip address, otherwise change "nil" to
 	// a list of peers to bootstrap with.
-	dht, err := NewDHT(ctx, ha, nil)
+	bootstrapPeer, err := multiaddr.NewMultiaddr(os.Getenv("MASTERNODE_PEERID"))
+	if err != nil {
+		panic(err)
+	}
+	dht, err := NewDHT(ctx, ha, []multiaddr.Multiaddr{bootstrapPeer})
 	if err != nil {
 		panic(err)
 	}
 
 	// Setup global peer discovery over DiscoveryServiceTag.
-	go Discover(context.TODO(), ha, dht, DiscoveryServiceTag)
+	go Discover(ctx, ha, dht, DiscoveryServiceTag)
 
 	//startListener(ctx, ha)
 
-	// Create a new PubSub service using the GossipSub router.
-	ps, err := pubsub.NewGossipSub(context.TODO(), ha)
-	if err != nil {
-		panic(err)
-	}
-
 	// Join a PubSub topic.
-	topicString := "UniversalPeer" // Change "UniversalPeer" to whatever you want!
+	topicString := "status" // Change "UniversalPeer" to whatever you want!
 	topic, err := ps.Join(DiscoveryServiceTag + "/" + topicString)
 	if err != nil {
 		panic(err)
 	}
 
-	if err := topic.Publish(context.TODO(), []byte("Hello world!")); err != nil {
-		panic(err)
-	}
+	sendMsg("status 200", topic, ctx)
 
-	// Publish the current date and time every 5 seconds.
-	go func() {
-		for {
-			err := topic.Publish(context.TODO(), []byte(fmt.Sprintf("The time is: %s", time.Now().Format(time.RFC3339))))
-			if err != nil {
-				panic(err)
-			}
-			time.Sleep(time.Second * 5)
-		}
-	}()
+	// // Publish the current date and time every 5 seconds.
+	// go func() {
+	// 	for {
+	// 		err := topic.Publish(context.TODO(), []byte(fmt.Sprintf("The time is: %s", time.Now().Format(time.RFC3339))))
+	// 		if err != nil {
+	// 			panic(err)
+	// 		}
+	// 		time.Sleep(time.Second * 5)
+	// 	}
+	// }()
 
 	// Subscribe to the topic.
 	sub, err := topic.Subscribe()
@@ -86,14 +91,30 @@ func Init() {
 
 	for {
 		// Block until we recieve a new message.
-		msg, err := sub.Next(context.TODO())
+		msg, err := sub.Next(ctx)
 		if err != nil {
 			panic(err)
 		}
 		fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
 		fmt.Println()
 	}
+}
 
+type status struct {
+	Status string
+}
+
+func sendMsg(msg string, topic *pubsub.Topic, ctx context.Context) {
+	m := status{
+		Status: msg,
+	}
+	msgBytes, err := json.Marshal(m)
+	if err != nil {
+		panic(err)
+	}
+	if err := topic.Publish(ctx, msgBytes); err != nil {
+		panic(err)
+	}
 }
 
 // makeBasicHost creates a LibP2P host with a random peer ID listening on the
