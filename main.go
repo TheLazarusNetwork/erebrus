@@ -126,7 +126,7 @@ func main() {
 	err := core.UpdateServerConfigWg()
 	util.CheckError("Error while creating WireGuard config file: ", err)
 
-	node.Init()
+	go node.Init()
 
 	//running updater
 	wg.Add(1)
