@@ -69,6 +69,14 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+	topicString2 := "client" // Change "UniversalPeer" to whatever you want!
+	topic2, err := ps.Join(DiscoveryServiceTag + "/" + topicString2)
+	if err != nil {
+		panic(err)
+	}
+	if err := topic2.Publish(ctx, []byte("client data")); err != nil {
+		panic(err)
+	}
 
 	sendMsg("status 200", topic, ctx)
 
