@@ -31,8 +31,10 @@ const DiscoveryInterval = time.Second * 10
 const DiscoveryServiceTag = "erebrus"
 
 func Init() {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	// ctx, cancel := context.WithCancel(context.Background())
+	// defer cancel()
+
+	ctx := context.Background()
 
 	// create a new libp2p Host
 	ha, err := makeBasicHost()
@@ -64,11 +66,11 @@ func Init() {
 	//startListener(ctx, ha)
 
 	// Join a PubSub topic.
-	topicString := "status" // Change "UniversalPeer" to whatever you want!
-	topic, err := ps.Join(DiscoveryServiceTag + "/" + topicString)
-	if err != nil {
-		panic(err)
-	}
+	// topicString := "status" // Change "UniversalPeer" to whatever you want!
+	// topic, err := ps.Join(DiscoveryServiceTag + "/" + topicString)
+	// if err != nil {
+	// 	panic(err)
+	// }
 	topicString2 := "client" // Change "UniversalPeer" to whatever you want!
 	topic2, err := ps.Join(DiscoveryServiceTag + "/" + topicString2)
 	if err != nil {
@@ -78,7 +80,7 @@ func Init() {
 		panic(err)
 	}
 
-	sendMsg("status 200", topic, ctx)
+	//sendMsg("status 200", topic, ctx)
 
 	// // Publish the current date and time every 5 seconds.
 	// go func() {
@@ -92,20 +94,47 @@ func Init() {
 	// }()
 
 	// Subscribe to the topic.
-	sub, err := topic.Subscribe()
+	// sub, err := topic.Subscribe()
+	// if err != nil {
+	// 	panic(err)
+	// }
+
+	// go func() {
+	// 	for {
+	// 		// Block until we recieve a new message.
+	// 		msg, err := sub.Next(ctx)
+	// 		if err != nil {
+	// 			panic(err)
+	// 		}
+	// 		fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
+
+	// 		fmt.Println()
+	// 	}
+	// }()
+
+	sub2, err := topic2.Subscribe()
 	if err != nil {
 		panic(err)
 	}
+	go func() {
+		for {
+			// Block until we recieve a new message.
+			msg, err := sub2.Next(ctx)
 
-	for {
-		// Block until we recieve a new message.
-		msg, err := sub.Next(ctx)
-		if err != nil {
-			panic(err)
+			if err != nil {
+				fmt.Println(err)
+				panic(err)
+			}
+			if msg.ReceivedFrom == ha.ID() {
+				continue
+			}
+			fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
+
+			fmt.Println()
 		}
-		fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
-		fmt.Println()
-	}
+
+	}()
+
 }
 
 type status struct {
