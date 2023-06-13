@@ -28,6 +28,9 @@ func Init() {
 		log.Fatal(err)
 	}
 
+	fullAddr := getHostAddress(ha)
+	log.Printf("I am %s\n", fullAddr)
+
 	// Create a new PubSub service using the GossipSub router.
 	ps, err := pubsub.NewGossipSub(ctx, ha)
 	if err != nil {
@@ -55,6 +58,8 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
+	sendStatusMsg("some message", topic, ctx)
+
 	//Subscribe to the topic.
 	sub, err := topic.Subscribe()
 	if err != nil {
@@ -68,13 +73,13 @@ func Init() {
 			if err != nil {
 				panic(err)
 			}
+			if msg.ReceivedFrom == ha.ID() {
+				continue
+			}
 			fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
-
 			fmt.Println()
 		}
 	}()
-
-	sendMsg("status 200", topic, ctx)
 
 	//Topic 2
 	topicString2 := "client" // Change "UniversalPeer" to whatever you want!
@@ -82,31 +87,28 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	if err := topic2.Publish(ctx, []byte("client data")); err != nil {
-		panic(err)
-	}
-
+	// if err := topic2.Publish(ctx, []byte("sending data over client topic")); err != nil {
+	// 	panic(err)
+	// }
 	sub2, err := topic2.Subscribe()
 	if err != nil {
 		panic(err)
 	}
+
 	go func() {
 		for {
 			// Block until we recieve a new message.
 			msg, err := sub2.Next(ctx)
 
 			if err != nil {
-				fmt.Println(err)
 				panic(err)
 			}
-			if msg.ReceivedFrom == ha.ID() {
-				continue
-			}
+			// if msg.ReceivedFrom == ha.ID() {
+			// 	continue
+			// }
 			fmt.Printf("[%s] %s", msg.ReceivedFrom, string(msg.Data))
-
 			fmt.Println()
 		}
-
 	}()
 
 }
@@ -115,7 +117,7 @@ type status struct {
 	Status string
 }
 
-func sendMsg(msg string, topic *pubsub.Topic, ctx context.Context) {
+func sendStatusMsg(msg string, topic *pubsub.Topic, ctx context.Context) {
 	m := status{
 		Status: msg,
 	}
