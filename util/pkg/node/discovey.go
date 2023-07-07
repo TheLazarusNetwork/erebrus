@@ -95,6 +95,8 @@ func Discover(ctx context.Context, h host.Host, dht *dht.IpfsDHT, rendezvous str
 					if err != nil {
 						fmt.Printf("Failed to connect to peer (%s): %s", p.ID, err.Error())
 						fmt.Println()
+						h.Network().ClosePeer(p.ID)
+						h.Peerstore().ClearAddrs(p.ID)
 						continue
 					}
 					fmt.Println("Connected to peer", p.ID.Pretty())

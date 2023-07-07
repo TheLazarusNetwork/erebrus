@@ -23,7 +23,7 @@ func makeBasicHost() (host.Host, error) {
 	}
 
 	opts := []libp2p.Option{
-		libp2p.ListenAddrStrings("/ip4/127.0.0.1/tcp/9000"),
+		libp2p.ListenAddrStrings("/ip4/0.0.0.0/tcp/9000"),
 		libp2p.Identity(priv),
 		libp2p.DisableRelay(),
 	}
