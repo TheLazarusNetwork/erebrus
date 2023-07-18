@@ -8,8 +8,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/TheLazarusNetwork/erebrus/core"
+	"github.com/TheLazarusNetwork/erebrus/util"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	"github.com/multiformats/go-multiaddr"
+	"github.com/sirupsen/logrus"
 )
 
 // DiscoveryInterval is how often we search for other peers via the DHT.
@@ -58,8 +61,26 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	sendStatusMsg("some message", topic, ctx)
 
+	go func() {
+		for range time.Tick(time.Second * 5) {
+			// do the interval task
+			status_data, err := core.GetServerStatus()
+			if err != nil {
+				logrus.WithFields(util.StandardFields).Error("Failed to get server status")
+				return
+			}
+			msgBytes, err := json.Marshal(status_data)
+			if err != nil {
+				panic(err)
+			}
+			if err := topic.Publish(ctx, msgBytes); err != nil {
+				panic(err)
+			}
+			fmt.Println("send status")
+		}
+
+	}()
 	//Subscribe to the topic.
 	sub, err := topic.Subscribe()
 	if err != nil {
