@@ -1,64 +1,68 @@
-syntax="proto3";
+syntax = "proto3";
 
 package model;
 
-message Response{
-    int64 status=1;
-    bool success=2;
-    string message=3;
-    string error=4;
-    Client client=5;
-    Server server=6;
-    repeated Client clients=7;
+option go_package = "github.com/TheLazarusNetwork/erebrus/model;model";
+
+message Response {
+  int64 status = 1;
+  bool success = 2;
+  string message = 3;
+  string error = 4;
+  Client client = 5;
+  Server server = 6;
+  repeated Client clients = 7;
 }
 
-message Client{
-    string UUID=1;
-    string Name=2;
-    repeated string Tags=3;
-    string WalletAddress=4;
-    bool Enable=5;
-    bool IgnorePersistentKeepalive=6;
-    string PublicKey=7;
-    string PresharedKey=8;
-    repeated string AllowedIPs=9;
-    repeated string Address=10;
-    string CreatedBy=11;
-    string UpdatedBy=12;
-    int64 CreatedAt=13;
-    int64 UpdatedAt=14;
+message Client {
+  string UUID = 1;
+  string Name = 2;
+  repeated string Tags = 3;
+  string WalletAddress = 4;
+  bool Enable = 5;
+  bool IgnorePersistentKeepalive = 6;
+  string PublicKey = 7;
+  string PresharedKey = 8;
+  repeated string AllowedIPs = 9;
+  repeated string Address = 10;
+  string CreatedBy = 11;
+  string UpdatedBy = 12;
+  int64 CreatedAt = 13;
+  int64 UpdatedAt = 14;
+  string ContractAdesss = 15;
+  string TokenId = 16;
 }
 
-message Server{
-    repeated string Address=1;
-    int64 ListenPort=2;
-    int64 Mtu=3;
-    string PrivateKey=4;
-    string PublicKey=5;
-    string Endpoint=6;
-    int64 PersistentKeepalive=7;
-    repeated string DNS=8;
-    repeated string AllowedIPs=9;
-    string PreUp=10;
-    string PostUp=11;
-    string PreDown=12;
-    string PostDown=13;
-    string UpdatedBy=14;
-    int64 CreatedAt=15;
-    int64 UpdatedAt=16;
+message Server {
+  repeated string Address = 1;
+  int64 ListenPort = 2;
+  int64 Mtu = 3;
+  string PrivateKey = 4;
+  string PublicKey = 5;
+  string Endpoint = 6;
+  int64 PersistentKeepalive = 7;
+  repeated string DNS = 8;
+  repeated string AllowedIPs = 9;
+  string PreUp = 10;
+  string PostUp = 11;
+  string PreDown = 12;
+  string PostDown = 13;
+  string UpdatedBy = 14;
+  int64 CreatedAt = 15;
+  int64 UpdatedAt = 16;
 }
 
-message Status{
-    string Version=1;
-    string Hostname=2;
-    string Domain=3;
-    string PublicIP=4;
-    string gRPCPort=5;
-    string PrivateIP=6;
-    string HttpPort=7;
-    string Region=8;
-    string VPNPort=9;
-    string PublicKey=10;
-    int64 PersistentKeepalive=11;
-    repeated string DNS=12;
+message Status {
+  string Version = 1;
+  string Hostname = 2;
+  string Domain = 3;
+  string PublicIP = 4;
+  string gRPCPort = 5;
+  string PrivateIP = 6;
+  string HttpPort = 7;
+  string Region = 8;
+  string VPNPort = 9;
+  string PublicKey = 10;
+  int64 PersistentKeepalive = 11;
+  repeated string DNS = 12;
 }
