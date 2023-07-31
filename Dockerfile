@@ -21,7 +21,6 @@ ENV WG_DNS=$WG_DNS WG_ALLOWED_IP_1=$WG_ALLOWED_IP_1 WG_ALLOWED_IP_2=$WG_ALLOWED_
 ENV WG_PRE_UP=$WG_PRE_UP WG_POST_UP=$WG_POST_UP WG_PRE_DOWN=$WG_PRE_DOWN WG_POST_DOWN=$WG_POST_DOWN
 RUN echo $'#!/usr/bin/env bash\n\
 set -eo pipefail\n\
-mkdir -p $WG_KEYS_DIR\n\
 /app/erebrus &\n\
 ./wg-watcher.sh\n\
 sleep infinity' > /app/start.sh && chmod +x /app/start.sh
